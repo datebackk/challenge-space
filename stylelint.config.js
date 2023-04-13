@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['@tinkoff/stylelint-config/angular-less'],
+    extends: ['@tinkoff/stylelint-config/angular-less'],
 };
