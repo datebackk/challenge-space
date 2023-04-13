@@ -77,6 +77,18 @@
         ]
       }
     },
+    "lint-styles": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx stylelint ./**/*.less"
+      }
+    },
+    "lint-staged": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx stylelint ./**/*.less"
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],

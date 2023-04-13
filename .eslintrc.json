@@ -1,7 +1,7 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
   "plugins": ["@nrwl/nx"],
+  "extends": ["@tinkoff/eslint-config"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -24,6 +24,9 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
+      "parserOptions": {
+        "project": ["./tsconfig.base.json"]
+      },
       "rules": {}
     },
     {
