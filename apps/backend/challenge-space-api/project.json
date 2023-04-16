@@ -1,0 +1,64 @@
+{
+    "name": "backend-challenge-space-api",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/backend/challenge-space-api/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/webpack:webpack",
+            "outputs": ["{options.outputPath}"],
+            "defaultConfiguration": "production",
+            "options": {
+                "target": "node",
+                "compiler": "tsc",
+                "outputPath": "dist/apps/backend/challenge-space-api",
+                "main": "apps/backend/challenge-space-api/src/main.ts",
+                "tsConfig": "apps/backend/challenge-space-api/tsconfig.app.json",
+                "assets": ["apps/backend/challenge-space-api/src/assets"],
+                "isolatedConfig": true,
+                "webpackConfig": "apps/backend/challenge-space-api/webpack.config.js"
+            },
+            "configurations": {
+                "development": {},
+                "production": {}
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/js:node",
+            "defaultConfiguration": "development",
+            "options": {
+                "buildTarget": "backend-challenge-space-api:build"
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "backend-challenge-space-api:build:development"
+                },
+                "production": {
+                    "buildTarget": "backend-challenge-space-api:build:production"
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/backend/challenge-space-api/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+            "options": {
+                "jestConfig": "apps/backend/challenge-space-api/jest.config.ts",
+                "passWithNoTests": true
+            },
+            "configurations": {
+                "ci": {
+                    "ci": true,
+                    "codeCoverage": true
+                }
+            }
+        }
+    },
+    "tags": []
+}
