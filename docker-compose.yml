@@ -31,6 +31,26 @@ services:
         networks:
             - backend
 
+    keycloak:
+        image: jboss/keycloak
+        container_name: keycloak
+        environment:
+            - DB_VENDOR=${DB_VENDOR}
+            - DB_ADDR=${DB_ADDR}
+            - DB_PORT=${DB_PORT}
+            - DB_DATABASE=${DB_NAME}
+            - DB_USER=${DB_USER_NAME}
+            - DB_PASSWORD=${DB_USER_PASSWORD}
+            - KEYCLOAK_USER=${KEYCLOAK_USER}
+            - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
+        ports:
+            - "${KEYCLOAK_EXPOSE_PORT}:${KEYCLOAK_CONTAINER_PORT}"
+        depends_on:
+            - postgres
+        networks:
+            - backend
+
+
 volumes:
     postgres-data:
     pgadmin-data:

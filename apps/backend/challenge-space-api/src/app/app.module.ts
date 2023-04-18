@@ -8,8 +8,8 @@ import {environment} from '../enviroment';
 @Module({
     imports: [
         TypeOrmModule.forRoot({
-            ...environment.connection
-        })
+            ...environment.connection,
+        }),
     ],
     controllers: [AppController],
     providers: [AppService],
