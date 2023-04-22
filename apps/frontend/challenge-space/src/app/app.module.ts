@@ -8,6 +8,7 @@ import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 
 import {AppComponent} from './app.component';
 import {appRoutes} from './app.routes';
+import {HttpClientModule} from "@angular/common/http";
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return async () =>
@@ -16,10 +17,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
                 realm: 'master',
                 url: 'http://localhost:8080/auth',
                 clientId: 'challenge-space-front',
+                secret: 'gkM8NdUgInrkFpiA092ITpz10UE4V8E7',
             },
             initOptions: {
-                checkLoginIframe: true,
-                checkLoginIframeInterval: 25,
+                onLoad: 'login-required',
             },
         });
 }
@@ -34,6 +35,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         TuiDialogModule,
         TuiAlertModule,
         KeycloakAngularModule,
+        HttpClientModule,
     ],
     providers: [
         {provide: TUI_SANITIZER, useClass: NgDompurifySanitizer},
