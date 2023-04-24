@@ -9,6 +9,8 @@ import type {KeycloakConnectConfig} from 'nest-keycloak-connect/interface/keyclo
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {configuration} from './config';
+import {UserModule} from './user/user.module';
+import {UserEntity} from './entities/users/user.entity';
 
 @Module({
     imports: [
@@ -19,6 +21,7 @@ import {configuration} from './config';
         TypeOrmModule.forRootAsync({
             useFactory: (config: ConfigService) => ({
                 ...config.get<TypeOrmModuleOptions>('db'),
+                entities: [UserEntity],
             }),
             inject: [ConfigService],
         }),
@@ -28,6 +31,7 @@ import {configuration} from './config';
             }),
             inject: [ConfigService],
         }),
+        UserModule,
     ],
     controllers: [AppController],
     providers: [

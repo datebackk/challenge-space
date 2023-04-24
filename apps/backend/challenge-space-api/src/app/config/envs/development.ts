@@ -16,7 +16,7 @@ export const config = {
     keycloack: {
         authServerUrl: 'http://localhost:8080/auth',
         realm: 'master',
-        clientId: 'challenge-space-front',
-        secret: 'gkM8NdUgInrkFpiA092ITpz10UE4V8E7',
+        clientId: 'challenge-space-backend',
+        secret: '21Q4Us6DET2lcReewnjNANlwH7iVUm6j',
     },
 };

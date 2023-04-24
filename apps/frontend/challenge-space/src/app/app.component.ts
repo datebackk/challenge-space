@@ -35,6 +35,6 @@ export class AppComponent implements OnInit {
     }
 
     onClick() {
-        this.http.get('http://localhost:3000/api').pipe(tap(console.log)).subscribe();
+        this.http.get('http://localhost:3000/api/current-user').pipe(tap(console.log)).subscribe();
     }
 }

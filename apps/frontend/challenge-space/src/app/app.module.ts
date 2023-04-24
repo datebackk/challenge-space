@@ -1,3 +1,4 @@
+import {HttpClientModule} from '@angular/common/http';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -8,7 +9,7 @@ import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 
 import {AppComponent} from './app.component';
 import {appRoutes} from './app.routes';
-import {HttpClientModule} from "@angular/common/http";
+import {ContestComponent} from './contest/contest/contest.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return async () =>
@@ -17,7 +18,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
                 realm: 'master',
                 url: 'http://localhost:8080/auth',
                 clientId: 'challenge-space-front',
-                secret: 'gkM8NdUgInrkFpiA092ITpz10UE4V8E7',
             },
             initOptions: {
                 onLoad: 'login-required',
@@ -26,7 +26,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
 }
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, ContestComponent],
     imports: [
         BrowserModule,
         RouterModule.forRoot(appRoutes, {initialNavigation: 'enabledBlocking'}),
