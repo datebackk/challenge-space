@@ -1,0 +1,39 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+
+:host {
+  display: block;
+}
+
+.wrapper {
+  .inset-border(bottom);
+  display: flex;
+  align-items: center;
+
+  &_main-menu {
+    padding: 0 2rem;
+  }
+
+  &_submenu {
+    justify-content: space-between;
+    padding: 1rem 1rem 0;
+  }
+}
+
+.title {
+  margin: 0;
+}
+
+.tabs {
+  width: ~'calc(100% - 15.625rem)';
+  justify-content: flex-end;
+  box-shadow: none;
+}
+
+.icon {
+  .transition(transform);
+  margin-left: 0.25rem;
+
+  &_rotated {
+    transform: rotate(180deg);
+  }
+}

@@ -1,0 +1,59 @@
+<div class="wrapper wrapper_main-menu">
+    <h4 class="tui-text_h4 title">WebOffice</h4>
+    <tui-tabs-with-more class="tabs" [moreContent]="more" [(activeItemIndex)]="activeItemIndex">
+        <ng-container *ngFor="let tab of tabs">
+            <a *tuiItem tuiTab routerLinkActive [routerLink]="tab.routerLink">
+                {{ tab.caption }}
+            </a>
+        </ng-container>
+    </tui-tabs-with-more>
+    <tui-hosted-dropdown [content]="dropdown" [(open)]="open">
+        <tui-avatar
+            size="s"
+            class="tui-island__marker"
+            [text]="'d d'"
+            [rounded]="true"
+        ></tui-avatar>
+    </tui-hosted-dropdown>
+</div>
+<div class="tui-container tui-container_adaptive tui-space_bottom-6 wrapper wrapper_submenu">
+    <h6 class="tui-text_h6 title">{{ tabs[activeItemIndex].caption }}</h6>
+    <tui-tabs-with-more
+        class="tabs"
+        [moreContent]="more"
+        [(activeItemIndex)]="activeSubNavigationItemIndex"
+    >
+        <!--    <ng-container *ngFor="let subNavigation of tabs[activeItemIndex].routerSubNavigation">-->
+        <!--        <a-->
+        <!--          *tuiItem-->
+        <!--          tuiTab-->
+        <!--          routerLinkActive-->
+        <!--          [routerLink]="subNavigation.routerLink"-->
+        <!--        >-->
+        <!--          {{ subNavigation.caption }}-->
+        <!--        </a>-->
+        <!--    </ng-container>-->
+    </tui-tabs-with-more>
+    <a
+        *ngFor="let navigationButton of tabs[activeItemIndex].navigationButtons"
+        tuiButton
+        size="s"
+        [routerLink]="navigationButton.routerLink"
+    >
+        {{ navigationButton.title }}
+    </a>
+</div>
+<ng-template #more>
+    <tui-svg src="tuiIconMoreHorLarge"></tui-svg>
+</ng-template>
+
+<ng-template #dropdown>
+    <tui-data-list>
+        <tui-opt-group>
+            <button tuiOption (click)="onMyProfile()">Мой профиль</button>
+        </tui-opt-group>
+        <tui-opt-group>
+            <button tuiOption (click)="onLogout()">Выход</button>
+        </tui-opt-group>
+    </tui-data-list>
+</ng-template>

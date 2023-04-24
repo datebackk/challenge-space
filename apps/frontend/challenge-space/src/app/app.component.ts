@@ -1,10 +1,13 @@
+import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
+import {select, Store} from '@ngrx/store';
 import {KeycloakService} from 'keycloak-angular';
 import {KeycloakProfile} from 'keycloak-js';
-import {HttpServer} from "@nestjs/common";
-import {HttpClient} from "@angular/common/http";
-import {tags} from "@angular-devkit/core";
-import {tap} from "rxjs";
+import {Observable, tap} from 'rxjs';
+
+import {IUser} from './shared/interfaces/user.interface';
+import {loadUser} from './store/auth/auth.actions';
+import {getUser} from './store/auth/auth.reducer';
 
 @Component({
     selector: 'challenge-space-root',
@@ -15,8 +18,13 @@ export class AppComponent implements OnInit {
     title = 'frontend-challenge-space';
     isLoggedIn = false;
     userProfile: KeycloakProfile | null = null;
+    user$: Observable<IUser | null> = this.store.pipe(select(getUser));
 
-    constructor(private readonly keycloak: KeycloakService, private readonly http: HttpClient) {}
+    constructor(
+        private readonly keycloak: KeycloakService,
+        private readonly http: HttpClient,
+        private readonly store: Store,
+    ) {}
 
     async ngOnInit(): Promise<void> {
         this.isLoggedIn = await this.keycloak.isLoggedIn();
@@ -24,6 +32,8 @@ export class AppComponent implements OnInit {
         if (this.isLoggedIn) {
             this.userProfile = await this.keycloak.loadUserProfile();
         }
+
+        this.store.dispatch(loadUser());
     }
 
     login() {
