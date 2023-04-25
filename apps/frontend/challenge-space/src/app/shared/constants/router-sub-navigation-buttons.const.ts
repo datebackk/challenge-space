@@ -1,7 +1,7 @@
-export const routerEmployeesSubNavigationButtons = [
+export const routerContestsSubNavigationButtons = [
     {
         title: 'Создать',
-        routerLink: '/employees/create',
+        routerLink: '/create',
     },
 ];
 

@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="container__settings" [ngSwitch]="activeItemIndex">
+        <challenge-space-contest-form-main-settings
+            *ngSwitchCase="0"
+            [form]="form.controls[activeItemIndex]"
+        ></challenge-space-contest-form-main-settings>
+        <challenge-space-contest-form-task-settings
+            *ngSwitchDefault
+            [form]="form.controls[activeItemIndex]"
+        ></challenge-space-contest-form-task-settings>
+    </div>
+    <div>
+        <tui-stepper orientation="vertical" [(activeItemIndex)]="activeItemIndex">
+            <button *ngFor="let step of steps" tuiStep>
+                {{ step }}
+            </button>
+        </tui-stepper>
+    </div>
+</div>

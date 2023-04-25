@@ -2,7 +2,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {RouterModule} from '@angular/router';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
@@ -11,7 +10,7 @@ import {NgDompurifySanitizer} from '@tinkoff/ng-dompurify';
 import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 
 import {AppComponent} from './app.component';
-import {appRoutes} from './app.routes';
+import {AppRoutingModule} from './app-routing.module';
 import {NavigationModule} from './shared/modules/navigation/navigation.module';
 import {SharedModule} from './shared/shared.module';
 import {effects} from './store/effects';
@@ -35,7 +34,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     declarations: [AppComponent],
     imports: [
         BrowserModule,
-        RouterModule.forRoot(appRoutes, {initialNavigation: 'enabledBlocking'}),
+        AppRoutingModule,
         BrowserAnimationsModule,
         TuiRootModule,
         TuiDialogModule,

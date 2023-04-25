@@ -1,0 +1,28 @@
+<ng-container [formGroup]="form">
+    <div class="tui-form__row">
+        <tui-input formControlName="name">
+            Введите название соревнования
+            <input tuiTextfield />
+        </tui-input>
+    </div>
+    <div class="tui-form__row">
+        <tui-text-area formControlName="description">Введите описание соревнования</tui-text-area>
+    </div>
+    <div class="tui-form__row tui-form__row_multi-fields" [formGroup]="intervalFormGroup">
+        <div class="tui-form__multi-field">
+            <tui-input-date-time formControlName="startDate">
+                Дата и время начала
+            </tui-input-date-time>
+        </div>
+        <div class="tui-form__multi-field">
+            <tui-input-date-time formControlName="endDate">
+                Дата и время окончания
+            </tui-input-date-time>
+        </div>
+    </div>
+    <div class="tui-form__row">
+        <tui-input-count formControlName="time" [tuiTextfieldPostfix]="'мин'">
+            Введите продолжительность
+        </tui-input-count>
+    </div>
+</ng-container>

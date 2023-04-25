@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {KeycloakService} from 'keycloak-angular';
 import {KeycloakProfile} from 'keycloak-js';
@@ -13,6 +13,7 @@ import {getUser} from './store/auth/auth.reducer';
     selector: 'challenge-space-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
     title = 'frontend-challenge-space';

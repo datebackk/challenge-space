@@ -1,14 +1,14 @@
 import {
-    routerEmployeesSubNavigationButtons,
+    routerContestsSubNavigationButtons,
     routerProjectsSubNavigationButtons,
 } from './router-sub-navigation-buttons.const';
 
 export const routerRoutes = [
     {
         caption: 'Соревнования',
-        routerLink: '/contests',
+        routerLink: '',
         routerSubNavigation: [],
-        navigationButtons: routerEmployeesSubNavigationButtons,
+        navigationButtons: routerContestsSubNavigationButtons,
     },
     {
         caption: 'Проекты',
