@@ -1,1 +1,11 @@
-<p>contest-form-task-settings works!</p>
+<ng-container [formGroup]="form">
+    <div class="tui-form__row">
+        <tui-input formControlName="name">
+            Введите название задачи
+            <input tuiTextfield />
+        </tui-input>
+    </div>
+    <div class="tui-form__row">
+        <tui-editor formControlName="condition">Placeholder</tui-editor>
+    </div>
+</ng-container>

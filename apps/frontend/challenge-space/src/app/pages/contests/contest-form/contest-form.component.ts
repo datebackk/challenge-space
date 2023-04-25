@@ -8,8 +8,8 @@ import {FormBuilder, Validators} from '@angular/forms';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContestFormComponent {
-    readonly steps = ['Start Up', 'Cash In', 'Sell Out', 'Bro Down'];
     activeItemIndex = 0;
+    readonly steps = ['Настройки', 'Задача 1'];
 
     readonly taskForm = this.formBuilder.group({
         name: [null, Validators.required],
