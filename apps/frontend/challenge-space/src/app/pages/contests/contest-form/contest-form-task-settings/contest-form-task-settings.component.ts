@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {defaultEditorExtensions, TUI_EDITOR_EXTENSIONS} from "@taiga-ui/addon-editor";
+import {defaultEditorExtensions, TUI_EDITOR_EXTENSIONS} from '@taiga-ui/addon-editor';
 
 @Component({
     selector: 'challenge-space-contest-form-task-settings',

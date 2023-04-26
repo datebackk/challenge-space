@@ -8,6 +8,28 @@
             *ngSwitchDefault
             [form]="form.controls[activeItemIndex]"
         ></challenge-space-contest-form-task-settings>
+        <div class="tui-form__buttons tui-form__buttons_align_end">
+            <button
+                *ngIf="activeItemIndex !== 0"
+                tuiButton
+                size="m"
+                class="tui-form__button"
+                (click)="onSubmit()"
+            >
+                Создать соревнование
+            </button>
+            <button
+                *ngIf="activeItemIndex !== 0"
+                tuiButton
+                size="m"
+                appearance="secondary"
+                class="tui-form__button"
+                [disabled]="form.controls.length === 2"
+                (click)="onDeleteTask()"
+            >
+                Удалить задачу
+            </button>
+        </div>
     </div>
     <div>
         <tui-stepper orientation="vertical" [(activeItemIndex)]="activeItemIndex">
@@ -15,5 +37,14 @@
                 {{ step }}
             </button>
         </tui-stepper>
+        <button
+            *ngIf="form.controls.length <= 6"
+            tuiButton
+            size="s"
+            class="tui-space_top-5"
+            (click)="onAddTask()"
+        >
+            Добавить задачу
+        </button>
     </div>
 </div>

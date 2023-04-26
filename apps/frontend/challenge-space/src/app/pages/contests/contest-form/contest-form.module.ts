@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
-import {TuiTextfieldControllerModule} from '@taiga-ui/core';
+import {TuiButtonModule, TuiTextfieldControllerModule} from '@taiga-ui/core';
 import {
     TuiInputCountModule,
     TuiInputDateTimeModule,
@@ -34,6 +34,7 @@ import {TuiEditorModule} from "@taiga-ui/addon-editor";
         TuiTextfieldControllerModule,
         TuiInputDateTimeModule,
         TuiEditorModule,
+        TuiButtonModule,
     ],
 })
 export class ContestFormModule {}
