@@ -1,12 +1,14 @@
 <ng-container [formGroup]="form">
     <div class="tui-form__row">
-        <tui-input formControlName="name">
-            Введите название соревнования
+        <tui-input formControlName="name" [tuiTextfieldCleaner]="true">
+            Название соревнования
             <input tuiTextfield />
         </tui-input>
     </div>
     <div class="tui-form__row">
-        <tui-text-area formControlName="description">Введите описание соревнования</tui-text-area>
+        <tui-text-area formControlName="description" [tuiTextfieldCleaner]="true">
+            Введите описание соревнования
+        </tui-text-area>
     </div>
     <div class="tui-form__row tui-form__row_multi-fields" [formGroup]="intervalFormGroup">
         <div class="tui-form__multi-field">

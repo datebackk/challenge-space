@@ -1,16 +1,55 @@
 <ng-container [formGroup]="form">
     <div class="tui-form__row">
-        <tui-input formControlName="name">
-            Введите название задачи
+        <tui-input formControlName="name" [tuiTextfieldCleaner]="true">
+            Название задачи
             <input tuiTextfield />
         </tui-input>
     </div>
     <div class="tui-form__row">
-        <tui-editor formControlName="condition">Placeholder</tui-editor>
+        <tui-editor formControlName="condition">Условие задачи</tui-editor>
     </div>
     <h3>Все задания тестируются через input - output</h3>
-    <div class="tui-form__row tui-form__row_multi-fields">
-        <tui-text-area tuiTextfieldSize="m" class="tui-form__multi-field">Input</tui-text-area>
-        <tui-text-area tuiTextfieldSize="m" class="tui-form__multi-field">Output</tui-text-area>
-    </div>
+    <ng-container formArrayName="testCases">
+        <ng-container *ngFor="let testCaseFormGroup of testCasesFormArrayControls; let i = index">
+            <ng-container [formGroup]="testCaseFormGroup">
+                <div class="tui-form__row tui-form__row_multi-fields test-case-container">
+                    <tui-text-area
+                        formControlName="input"
+                        tuiTextfieldSize="m"
+                        class="tui-form__multi-field"
+                        [tuiTextfieldCleaner]="true"
+                    >
+                        Input
+                    </tui-text-area>
+                    <tui-text-area
+                        formControlName="output"
+                        tuiTextfieldSize="m"
+                        class="tui-form__multi-field"
+                        [tuiTextfieldCleaner]="true"
+                    >
+                        Output
+                    </tui-text-area>
+                    <button
+                        tuiIconButton
+                        icon="tuiIconTrash2Large"
+                        appearance="secondary-destructive"
+                        title="Удалить тест кейс"
+                        size="m"
+                        class="tui-space_left-5"
+                        [disabled]="testCasesFormArrayControls.length <= 1"
+                        (click)="onDeleteTestCase(i)"
+                    ></button>
+                </div>
+            </ng-container>
+        </ng-container>
+        <button
+            tuiButton
+            appearance="secondary"
+            size="m"
+            class="tui-space_top-5"
+            (click)="onTestCaseAdd()"
+        >
+            Добавить тест кейс
+        </button>
+    </ng-container>
 </ng-container>

@@ -13,11 +13,16 @@ export class ContestFormComponent {
     activeItemIndex = 0;
     steps = ['Настройки', 'Задача 1'];
 
-    readonly taskForm = this.formBuilder.group({
+    readonly testCaseForm = {
+        input: [null, Validators.required],
+        output: [null, Validators.required],
+    };
+
+    readonly taskForm = {
         name: [null, Validators.required],
         condition: [null, Validators.required],
-        example: this.formBuilder.array([]),
-    });
+        testCases: this.formBuilder.array([this.formBuilder.group(this.testCaseForm)]),
+    };
 
     readonly form = this.formBuilder.array([
         this.formBuilder.group({
@@ -30,11 +35,23 @@ export class ContestFormComponent {
             time: [null, Validators.required],
             complexity: [null, Validators.required],
         }),
-        this.taskForm,
+        this.formBuilder.group(this.taskForm),
     ]);
 
     get stepState(): TuiStepState {
-        return this.form.controls[this.activeItemIndex].valid ? 'pass' : 'error';
+        const formGroup = this.form.controls[this.activeItemIndex];
+        const isPass = formGroup.valid;
+        const isError = formGroup.invalid && formGroup.touched;
+
+        if (isPass) {
+            return 'pass';
+        }
+
+        if (isError) {
+            return 'error';
+        }
+
+        return 'normal';
     }
 
     constructor(private readonly formBuilder: FormBuilder) {}
@@ -54,7 +71,7 @@ export class ContestFormComponent {
     onAddTask(): void {
         const taskName = `Задача ${this.form.controls.length}`;
 
-        this.form.push(this.taskForm);
+        this.form.push(this.formBuilder.group(this.taskForm));
         this.steps.push(taskName);
     }
 

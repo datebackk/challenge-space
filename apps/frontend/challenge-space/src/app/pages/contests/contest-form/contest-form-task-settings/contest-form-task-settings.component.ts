@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {defaultEditorExtensions, TUI_EDITOR_EXTENSIONS} from '@taiga-ui/addon-editor';
 
 @Component({
@@ -17,4 +17,27 @@ import {defaultEditorExtensions, TUI_EDITOR_EXTENSIONS} from '@taiga-ui/addon-ed
 export class ContestFormTaskSettingsComponent {
     @Input()
     form!: FormGroup;
+
+    readonly testCaseForm = {
+        input: [null, Validators.required],
+        output: [null, Validators.required],
+    };
+
+    constructor(private readonly formBuilder: FormBuilder) {}
+
+    get testCasesFormArray(): FormArray {
+        return this.form.get('testCases') as FormArray;
+    }
+
+    get testCasesFormArrayControls(): FormGroup[] {
+        return this.testCasesFormArray.controls as FormGroup[];
+    }
+
+    onDeleteTestCase(index: number): void {
+        this.testCasesFormArray.removeAt(index);
+    }
+
+    onTestCaseAdd(): void {
+        this.testCasesFormArray.push(this.formBuilder.group(this.testCaseForm));
+    }
 }
