@@ -1,7 +1,13 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
 import {tuiMarkControlAsTouchedAndValidate} from '@taiga-ui/cdk';
-import {TuiStepState} from '@taiga-ui/kit';
+import {Observable} from 'rxjs';
+
+import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
+import {createContest} from '../../../store/contests/contests.actions';
+import {getCreateContestLoadingStatus} from '../../../store/contests/contests.reducer';
+import {IContest} from '../interfaces/contest.interface';
 
 @Component({
     selector: 'challenge-space-contest-form',
@@ -12,6 +18,10 @@ import {TuiStepState} from '@taiga-ui/kit';
 export class ContestFormComponent {
     activeItemIndex = 0;
     steps = ['Настройки', 'Задача 1'];
+
+    readonly createContestLoadingStatus: Observable<LoadingStatus> = this.store.pipe(
+        select(getCreateContestLoadingStatus),
+    );
 
     readonly testCaseForm = {
         input: [null, Validators.required],
@@ -24,8 +34,8 @@ export class ContestFormComponent {
         testCases: this.formBuilder.array([this.formBuilder.group(this.testCaseForm)]),
     };
 
-    readonly form = this.formBuilder.array([
-        this.formBuilder.group({
+    readonly form = this.formBuilder.group({
+        mainSettings: this.formBuilder.group({
             name: [null, Validators.required],
             description: [null, Validators.required],
             interval: this.formBuilder.group({
@@ -35,29 +45,32 @@ export class ContestFormComponent {
             time: [null, Validators.required],
             complexity: [null, Validators.required],
         }),
-        this.formBuilder.group(this.taskForm),
-    ]);
+        tasks: this.formBuilder.array([this.formBuilder.group(this.taskForm)]),
+    });
 
-    get stepState(): TuiStepState {
-        const formGroup = this.form.controls[this.activeItemIndex];
-        const isPass = formGroup.valid;
-        const isError = formGroup.invalid && formGroup.touched;
-
-        if (isPass) {
-            return 'pass';
-        }
-
-        if (isError) {
-            return 'error';
-        }
-
-        return 'normal';
+    get mainSettingsFormGroup(): FormGroup {
+        return this.form.get('mainSettings') as FormGroup;
     }
 
-    constructor(private readonly formBuilder: FormBuilder) {}
+    get tasksFormArray(): FormArray {
+        return this.form.get('tasks') as FormArray;
+    }
+
+    get tasksFormArrayControls(): FormGroup[] {
+        return this.tasksFormArray.controls as FormGroup[];
+    }
+
+    constructor(
+        private readonly formBuilder: FormBuilder,
+        private readonly store: Store,
+    ) {}
+
+    shouldShowLoader(loadingStatus: LoadingStatus): boolean {
+        return loadingStatus === LoadingStatus.Loading;
+    }
 
     onDeleteTask(): void {
-        this.form.removeAt(this.activeItemIndex);
+        this.tasksFormArray.removeAt(this.activeItemIndex);
         this.steps.splice(this.activeItemIndex, 1);
         this.steps = this.steps.map((value, index) => {
             if (index === 0) {
@@ -66,18 +79,28 @@ export class ContestFormComponent {
 
             return `Задача ${index + 1}`;
         });
+
+        if (this.steps.length === this.activeItemIndex) {
+            this.activeItemIndex -= 1;
+        }
     }
 
     onAddTask(): void {
-        const taskName = `Задача ${this.form.controls.length}`;
+        const taskName = `Задача ${this.tasksFormArray.controls.length + 1}`;
 
-        this.form.push(this.formBuilder.group(this.taskForm));
+        this.tasksFormArray.push(this.formBuilder.group(this.taskForm));
         this.steps.push(taskName);
     }
 
     onSubmit(): void {
         if (this.form.invalid) {
             tuiMarkControlAsTouchedAndValidate(this.form);
+
+            return;
         }
+
+        this.store.dispatch(
+            createContest(this.form.getRawValue() as unknown as IContest),
+        );
     }
 }

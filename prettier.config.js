@@ -1,4 +1,4 @@
 module.exports = {
     ...require('@tinkoff/prettier-config/angular'),
-    printWidth: 100,
+    printWidth: 90,
 };
