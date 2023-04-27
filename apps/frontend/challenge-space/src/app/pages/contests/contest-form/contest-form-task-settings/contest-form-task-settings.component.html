@@ -6,11 +6,29 @@
         </tui-input>
     </div>
     <div class="tui-form__row">
-        <tui-editor formControlName="condition">Условие задачи</tui-editor>
+        <tui-tabs class="tui-space_bottom-5" [(activeItemIndex)]="activeItemIndex">
+            <button tuiTab>Редактор</button>
+            <button tuiTab>Превью</button>
+        </tui-tabs>
+        <ng-container [ngSwitch]="activeItemIndex">
+            <tui-editor
+                *ngSwitchCase="0"
+                formControlName="condition"
+            >
+                Условие задачи
+            </tui-editor>
+            <tui-editor-socket
+                *ngSwitchCase="1"
+                class="editor-socket"
+                [content]="conditionFormControl.value || ''"
+            ></tui-editor-socket>
+        </ng-container>
     </div>
     <h3>Все задания тестируются через input - output</h3>
     <ng-container formArrayName="testCases">
-        <ng-container *ngFor="let testCaseFormGroup of testCasesFormArrayControls; let i = index">
+        <ng-container
+            *ngFor="let testCaseFormGroup of testCasesFormArrayControls; let i = index"
+        >
             <ng-container [formGroup]="testCaseFormGroup">
                 <div class="tui-form__row tui-form__row_multi-fields test-case-container">
                     <tui-text-area

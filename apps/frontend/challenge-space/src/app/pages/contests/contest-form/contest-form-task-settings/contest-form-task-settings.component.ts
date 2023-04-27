@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {defaultEditorExtensions, TUI_EDITOR_EXTENSIONS} from '@taiga-ui/addon-editor';
 
 @Component({
@@ -18,12 +18,18 @@ export class ContestFormTaskSettingsComponent {
     @Input()
     form!: FormGroup;
 
+    activeItemIndex = 0;
+
     readonly testCaseForm = {
         input: [null, Validators.required],
         output: [null, Validators.required],
     };
 
     constructor(private readonly formBuilder: FormBuilder) {}
+
+    get conditionFormControl(): FormControl {
+        return this.form.get('condition') as FormControl;
+    }
 
     get testCasesFormArray(): FormArray {
         return this.form.get('testCases') as FormArray;
