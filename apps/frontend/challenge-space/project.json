@@ -5,6 +5,12 @@
   "prefix": "challenge-space",
   "sourceRoot": "apps/frontend/challenge-space/src",
   "tags": [],
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "less",
+      "changeDetection": "OnPush"
+    }
+  },
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
@@ -27,7 +33,11 @@
             "input": "node_modules/@taiga-ui/icons/src",
             "output": "assets/taiga-ui/icons"
           },
-          { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "/assets/monaco/" }
+          {
+              "glob": "**/*",
+              "input": "node_modules/monaco-editor",
+              "output": "/assets/monaco/"
+          }
         ],
         "styles": [
           "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
