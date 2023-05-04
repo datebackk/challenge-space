@@ -9,8 +9,16 @@ const routes: Routes = [
         component: ContestComponent,
         children: [
             {
+                path: '',
+                loadChildren: () => import('./contest-list/contest-list.module').then(m => m.ContestListModule),
+            },
+            {
                 path: 'create',
                 loadChildren: () => import('./contest-form/contest-form.module').then(m => m.ContestFormModule),
+            },
+            {
+                path: 'solution',
+                loadChildren: () => import('./contest-solution/contest-solution.module').then(m => m.ContestSolutionModule),
             },
         ],
     },
