@@ -1,11 +1,18 @@
 import {HttpClientModule} from '@angular/common/http';
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, inject, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {TUI_SANITIZER, TuiAlertModule, TuiDialogModule, TuiRootModule} from '@taiga-ui/core';
+import {TUI_IS_CYPRESS} from '@taiga-ui/cdk';
+import {
+    TUI_ANIMATIONS_DURATION,
+    TUI_SANITIZER,
+    TuiAlertModule,
+    TuiDialogModule,
+    TuiRootModule,
+} from '@taiga-ui/core';
 import {NgDompurifySanitizer} from '@tinkoff/ng-dompurify';
 import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 
@@ -54,6 +61,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
             useFactory: initializeKeycloak,
             multi: true,
             deps: [KeycloakService],
+        },
+        {
+            provide: TUI_ANIMATIONS_DURATION,
+            useFactory: () => (inject(TUI_IS_CYPRESS) ? 0 : 300),
         },
     ],
     bootstrap: [AppComponent],
