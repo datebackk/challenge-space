@@ -7,7 +7,7 @@
     </div>
     <div class="tui-form__row">
         <tui-text-area formControlName="description" [tuiTextfieldCleaner]="true">
-            Введите описание соревнования
+            Описание соревнования
         </tui-text-area>
     </div>
     <div class="tui-form__row tui-form__row_multi-fields" [formGroup]="intervalFormGroup">
@@ -23,8 +23,13 @@
         </div>
     </div>
     <div class="tui-form__row">
-        <tui-input-count formControlName="time" [tuiTextfieldPostfix]="'мин'">
-            Введите продолжительность
+        <tui-input-count
+            formControlName="time"
+            tuiHintContent="Время которое отводится на решение всего соревнования после того как пользователь его начнет"
+            [tuiTextfieldPostfix]="'мин'"
+            [tuiTextfieldCleaner]="true"
+        >
+            Продолжительность
         </tui-input-count>
     </div>
 </ng-container>
