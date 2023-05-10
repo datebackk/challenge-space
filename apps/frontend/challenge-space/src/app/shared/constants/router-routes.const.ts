@@ -1,6 +1,5 @@
 import {
     routerContestsSubNavigationButtons,
-    routerProjectsSubNavigationButtons,
 } from './router-sub-navigation-buttons.const';
 
 export const routerRoutes = [
@@ -9,11 +8,5 @@ export const routerRoutes = [
         routerLink: '',
         routerSubNavigation: [],
         navigationButtons: routerContestsSubNavigationButtons,
-    },
-    {
-        caption: 'Проекты',
-        routerLink: '/projects',
-        routerSubNavigation: [],
-        navigationButtons: routerProjectsSubNavigationButtons,
     },
 ];

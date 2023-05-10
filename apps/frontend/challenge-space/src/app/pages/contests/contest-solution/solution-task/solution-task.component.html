@@ -1,0 +1,30 @@
+<div class="tui-row tui-row_adaptive">
+    <div class="tui-col_6">
+        <tui-tabs class="tui-space_bottom-5" [(activeItemIndex)]="activeItemIndex">
+            <button tuiTab>Условие</button>
+            <button tuiTab>Output</button>
+        </tui-tabs>
+        <ng-container [ngSwitch]="activeItemIndex">
+            <tui-editor-socket
+                *ngSwitchCase="0"
+                class="editor-socket"
+                [content]="''"
+            ></tui-editor-socket>
+        </ng-container>
+    </div>
+    <div class="tui-col_6 right-container">
+        <tui-select class="tui-space_bottom-2" [formControl]="languageControl">
+            Язык
+            <input tuiTextfield placeholder="Выберите язызык программирования" />
+            <tui-data-list-wrapper
+                *tuiDataList
+                [items]="languages"
+            ></tui-data-list-wrapper>
+        </tui-select>
+        <ngx-monaco-editor
+            class="right-container__code-editor"
+            [options]="editorOptions"
+            [(ngModel)]="code"
+        ></ngx-monaco-editor>
+    </div>
+</div>

@@ -4,10 +4,3 @@ export const routerContestsSubNavigationButtons = [
         routerLink: '/create',
     },
 ];
-
-export const routerProjectsSubNavigationButtons = [
-    {
-        title: 'Создать',
-        routerLink: '/projects/create',
-    },
-];

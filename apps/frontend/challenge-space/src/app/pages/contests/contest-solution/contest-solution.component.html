@@ -1,3 +1,28 @@
-<div style="height: 500px">
-    <ngx-monaco-editor style="height: 100%" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
+<div class="tui-row tui-row_adaptive margin-0">
+    <div class="top-container">
+        <div>
+            <tui-stepper [(activeItemIndex)]="activeItemIndex">
+                <button tuiStep>Описание</button>
+                <button
+                    *ngFor="let taskFormArray of tasksFormArrayControls; let i = index"
+                    tuiStep
+                >
+                    {{ 'Задача ' + (i + 1) }}
+                </button>
+            </tui-stepper>
+        </div>
+        <div>
+            <span [textContent]="'Осталось'"></span>
+            <tui-badge [value]="'24:13'"></tui-badge>
+        </div>
+    </div>
 </div>
+<ng-container [ngSwitch]="activeItemIndex">
+    <challenge-space-solution-welcome
+        *ngSwitchCase="0"
+    ></challenge-space-solution-welcome>
+    <challenge-space-solution-task
+        *ngSwitchDefault
+        [taskSettingsForm]="tasksFormArrayControls[activeItemIndex - 1]"
+    ></challenge-space-solution-task>
+</ng-container>

@@ -1,6 +1,10 @@
 <div class="wrapper wrapper_main-menu">
-    <h4 class="tui-text_h4 title">WebOffice</h4>
-    <tui-tabs-with-more class="tabs" [moreContent]="more" [(activeItemIndex)]="activeItemIndex">
+    <h4 class="tui-text_h4 title">ChallengeSpace</h4>
+    <tui-tabs-with-more
+        class="tabs"
+        [moreContent]="more"
+        [(activeItemIndex)]="activeItemIndex"
+    >
         <ng-container *ngFor="let tab of tabs">
             <a *tuiItem tuiTab routerLinkActive [routerLink]="tab.routerLink">
                 {{ tab.caption }}
@@ -16,7 +20,9 @@
         ></tui-avatar>
     </tui-hosted-dropdown>
 </div>
-<div class="tui-container tui-container_adaptive tui-space_bottom-6 wrapper wrapper_submenu">
+<div
+    class="tui-container_fullwidth tui-container_adaptive tui-space_bottom-6 wrapper wrapper_submenu"
+>
     <h6 class="tui-text_h6 title">{{ tabs[activeItemIndex].caption }}</h6>
     <tui-tabs-with-more
         class="tabs"

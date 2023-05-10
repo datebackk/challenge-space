@@ -10,13 +10,13 @@ enum ContestsActions {
 
 export const createContest = createAction(
     ContestsActions.CreateContest,
-    (contest: IContest) => ({contest,})
+    (contest: IContest) => ({contest}),
 );
 export const createContestSuccess = createAction(
     ContestsActions.CreateContestSuccess,
-    (contest: IContest) => ({contest,})
+    (contest: IContest) => ({contest}),
 );
 export const createContestError = createAction(
     ContestsActions.CreateContestError,
-    (contest: IContest) => ({contest,})
+    (contest: IContest) => ({contest}),
 );

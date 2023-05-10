@@ -1,4 +1,7 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+
+import {contestMock} from '../mocks/contest.mock';
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -6,7 +9,28 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
     styleUrls: ['./contest-solution.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContestSolutionComponent {
-    editorOptions = {theme: 'vs-dark', language: 'javascript'};
-    code = 'function x() {\nconsole.log("Hello world!");\n}';
+export class ContestSolutionComponent implements OnInit {
+    activeItemIndex = 0;
+
+    readonly contestSolutionForm = this.formBuilder.group({
+        mainSettings: this.formBuilder.group({}),
+        tasks: this.formBuilder.array([]),
+    });
+
+    constructor(private readonly formBuilder: FormBuilder) {}
+
+    get tasksFormArray(): FormArray {
+        return this.contestSolutionForm.get('tasks') as FormArray;
+    }
+
+    get tasksFormArrayControls(): FormGroup[] {
+        return this.tasksFormArray.controls as FormGroup[];
+    }
+
+    ngOnInit(): void {
+        this.tasksFormArray.clear();
+        contestMock.tasks.forEach(task => {
+            this.tasksFormArray.push(task);
+        });
+    }
 }

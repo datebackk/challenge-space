@@ -11,10 +11,7 @@
             <button tuiTab>Превью</button>
         </tui-tabs>
         <ng-container [ngSwitch]="activeItemIndex">
-            <tui-editor
-                *ngSwitchCase="0"
-                formControlName="condition"
-            >
+            <tui-editor *ngSwitchCase="0" formControlName="condition">
                 Условие задачи
             </tui-editor>
             <tui-editor-socket
