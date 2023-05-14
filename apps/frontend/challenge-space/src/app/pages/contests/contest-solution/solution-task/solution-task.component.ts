@@ -13,9 +13,18 @@ export class SolutionTaskComponent {
 
     editorOptions = {theme: 'vs-dark', language: 'javascript'};
     code = 'function x() {\nconsole.log("Hello world!");\n}';
+
     activeItemIndex = 0;
 
     languages = ['JavaScript', 'Python'];
 
     languageControl = new FormControl(this.languages[0]);
+
+    get taskName(): string {
+        return this.taskSettingsForm.get('name')?.value;
+    }
+
+    get taskCondition(): string {
+        return this.taskSettingsForm.get('condition')?.value;
+    }
 }

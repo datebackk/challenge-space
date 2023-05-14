@@ -2,6 +2,7 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TuiEditorSocketModule} from '@taiga-ui/addon-editor';
+import {TuiButtonModule} from '@taiga-ui/core';
 import {
     TuiBadgeModule,
     TuiDataListWrapperModule,
@@ -35,6 +36,7 @@ import {SolutionWelcomeComponent} from './solution-welcome/solution-welcome.comp
         TuiSelectModule,
         TuiDataListWrapperModule,
         TuiBadgeModule,
+        TuiButtonModule,
     ],
     providers: [
         {

@@ -30,7 +30,7 @@ export class ContestSolutionComponent implements OnInit {
     ngOnInit(): void {
         this.tasksFormArray.clear();
         contestMock.tasks.forEach(task => {
-            this.tasksFormArray.push(task);
+            this.tasksFormArray.push(this.formBuilder.group(task));
         });
     }
 }
