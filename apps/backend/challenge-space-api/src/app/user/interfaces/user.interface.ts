@@ -1,4 +1,4 @@
-import type {IContest} from '../../contest/interfaces/contest.interface';
+import {ContestEntity} from '../../contest/entities/contest.entity';
 
 export interface IUser {
     id: number;
@@ -6,5 +6,5 @@ export interface IUser {
     username: string;
     createdAt: string;
     updatedAt: string;
-    contests: IContest[];
+    contests: ContestEntity[];
 }

@@ -1,13 +1,15 @@
-import type {IUser} from '../../user/interfaces/user.interface';
+import {TaskEntity} from '../../task/entities/task.entity';
+import {UserEntity} from '../../user/entities/user.entity';
 
 export interface IContest {
     id: number;
-    user: IUser;
     name: string;
     description: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
     duration: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
+    user: UserEntity;
+    tasks: TaskEntity[]
 }

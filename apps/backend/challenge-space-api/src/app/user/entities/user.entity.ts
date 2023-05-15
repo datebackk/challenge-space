@@ -7,7 +7,6 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import type {IUser} from '../interfaces/user.interface';
-import type {IContest} from '../../contest/interfaces/contest.interface';
 import {ContestEntity} from '../../contest/entities/contest.entity';
 
 @Entity({
@@ -30,5 +29,5 @@ export class UserEntity implements IUser {
     updatedAt: string;
 
     @OneToMany(() => ContestEntity, contest => contest.user)
-    contests: IContest[];
+    contests: ContestEntity[];
 }

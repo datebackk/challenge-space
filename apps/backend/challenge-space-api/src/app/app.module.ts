@@ -18,6 +18,10 @@ import {UserModule} from './user/user.module';
 import {UserEntity} from './user/entities/user.entity';
 import {ContestModule} from './contest/contest.module';
 import {ContestEntity} from './contest/entities/contest.entity';
+import { TaskModule } from './task/task.module';
+import { TestCaseModule } from './test-case/test-case.module';
+import {TaskEntity} from './task/entities/task.entity';
+import {TestCaseEntity} from './test-case/entities/test-case.entity';
 
 @Module({
     imports: [
@@ -28,7 +32,7 @@ import {ContestEntity} from './contest/entities/contest.entity';
         TypeOrmModule.forRootAsync({
             useFactory: (config: ConfigService) => ({
                 ...config.get<TypeOrmModuleOptions>('db'),
-                entities: [UserEntity, ContestEntity],
+                entities: [UserEntity, ContestEntity, TaskEntity, TestCaseEntity],
             }),
             inject: [ConfigService],
         }),
@@ -40,6 +44,8 @@ import {ContestEntity} from './contest/entities/contest.entity';
         }),
         UserModule,
         ContestModule,
+        TaskModule,
+        TestCaseModule,
     ],
     controllers: [AppController],
     providers: [

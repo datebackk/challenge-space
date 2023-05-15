@@ -1,11 +1,21 @@
 import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
 import type {CreateContestDto} from './dto/create-contest.dto';
 import type {UpdateContestDto} from './dto/update-contest.dto';
+import {ContestEntity} from './entities/contest.entity';
 
 @Injectable()
 export class ContestService {
-    create(createContestDto: CreateContestDto) {
-        return 'This action adds a new contest';
+    constructor(
+        @InjectRepository(ContestEntity)
+        private readonly contestRepository: Repository<ContestEntity>,
+    ) {}
+
+    async create(createContestDto: CreateContestDto) {
+        const newContest = await this.contestRepository.create(createContestDto);
+
+        return this.contestRepository.save(newContest);
     }
 
     findAll() {

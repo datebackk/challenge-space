@@ -1,12 +1,14 @@
 import {
+    Column,
     CreateDateColumn,
     Entity,
-    ManyToOne,
+    ManyToOne, OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import type {IContest} from '../interfaces/contest.interface';
 import {UserEntity} from '../../user/entities/user.entity';
+import {TaskEntity} from '../../task/entities/task.entity';
 
 @Entity({
     name: 'contests',
@@ -15,18 +17,30 @@ export class ContestEntity implements IContest {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => UserEntity, user => user.contests)
-    user: UserEntity;
-
+    @Column()
     name: string;
+
+    @Column()
     description: string;
-    startDate: string;
-    endDate: string;
+
+    @Column({type: 'timestamptz'})
+    startDate: Date;
+
+    @Column({type: 'timestamptz'})
+    endDate: Date;
+
+    @Column()
     duration: string;
 
     @CreateDateColumn()
-    createdAt: string;
+    createdAt: Date;
 
     @UpdateDateColumn()
-    updatedAt: string;
+    updatedAt: Date;
+
+    @ManyToOne(() => UserEntity, user => user.contests)
+    user: UserEntity;
+
+    @OneToMany(() => TaskEntity, task => task.contest)
+    tasks: TaskEntity[]
 }
