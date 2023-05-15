@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Actions, ofType} from '@ngrx/effects';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, of, switchMap} from 'rxjs';
 
 import {ContestsApiService} from '../../api/contests/contests.api.service';
@@ -7,14 +7,16 @@ import {createContest, createContestError, createContestSuccess} from './contest
 
 @Injectable()
 export class ContestsEffects {
-    createContest$ = this.actions$.pipe(
-        ofType(createContest),
-        switchMap(({contest}) =>
-            this.contestsApiService.createContest(contest).pipe(
-                map(createdContest => createContestSuccess(createdContest)),
-                catchError(() => of(createContestError(contest))),
+    createContest$= createEffect(() =>
+        this.actions$.pipe(
+            ofType(createContest),
+            switchMap(({contest}) =>
+                this.contestsApiService.createContest(contest).pipe(
+                    map(createdContest => createContestSuccess(createdContest)),
+                    catchError(() => of(createContestError(contest))),
+                ),
             ),
-        ),
+        )
     );
 
     constructor(

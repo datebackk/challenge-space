@@ -41,6 +41,6 @@ export class ContestEntity implements IContest {
     @ManyToOne(() => UserEntity, user => user.contests)
     user: UserEntity;
 
-    @OneToMany(() => TaskEntity, task => task.contest)
+    @OneToMany(() => TaskEntity, task => task.contest, {cascade: true})
     tasks: TaskEntity[]
 }

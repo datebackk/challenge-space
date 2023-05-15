@@ -30,7 +30,7 @@ export class ContestFormComponent {
 
     readonly taskForm = {
         name: [null, Validators.required],
-        condition: [null, Validators.required],
+        description: [null, Validators.required],
         testCases: this.formBuilder.array([this.formBuilder.group(this.testCaseForm)]),
     };
 
@@ -42,8 +42,7 @@ export class ContestFormComponent {
                 startDate: [null, Validators.required],
                 endDate: [null, Validators.required],
             }),
-            time: [null, Validators.required],
-            complexity: [null, Validators.required],
+            duration: [null, Validators.required],
         }),
         tasks: this.formBuilder.array([this.formBuilder.group(this.taskForm)]),
     });

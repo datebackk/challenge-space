@@ -19,6 +19,6 @@ export class TaskEntity implements ITask {
     @ManyToOne(() => ContestEntity, contest=> contest.tasks)
     contest: ContestEntity;
 
-    @OneToMany(() => TestCaseEntity, testCase => testCase.task)
+    @OneToMany(() => TestCaseEntity, testCase => testCase.task, {cascade: true})
     testCases: TestCaseEntity[];
 }

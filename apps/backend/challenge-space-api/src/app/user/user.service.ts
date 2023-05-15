@@ -14,6 +14,10 @@ export class UserService {
         return this.userRepository.find();
     }
 
+    async findMatchedKeycloackUser(keycloackUser): Promise<UserEntity> {
+        return await this.findOneByUserName(keycloackUser.preferred_username);
+    }
+
     async findOneById(id: number): Promise<UserEntity> {
         return (await this.userRepository.findOne({where: {id}})) || null;
     }

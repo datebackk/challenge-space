@@ -1,1 +1,4 @@
-export class CreateTestCaseDto {}
+export class CreateTestCaseDto {
+    input: string;
+    output: string;
+}

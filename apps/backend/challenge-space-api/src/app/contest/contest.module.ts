@@ -5,10 +5,14 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {TaskEntity} from '../task/entities/task.entity';
 import {ContestEntity} from './entities/contest.entity';
 import {TestCaseEntity} from '../test-case/entities/test-case.entity';
+import {UserModule} from '../user/user.module';
 
 @Module({
     controllers: [ContestController],
     providers: [ContestService],
-    imports: [TypeOrmModule.forFeature([ContestEntity, TaskEntity, TestCaseEntity])],
+    imports: [
+        TypeOrmModule.forFeature([ContestEntity, TaskEntity, TestCaseEntity]),
+        UserModule,
+    ],
 })
 export class ContestModule {}

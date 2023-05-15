@@ -1,13 +1,19 @@
-import type {IContest} from '../interfaces/contest.interface';
-import {TaskEntity} from '../../task/entities/task.entity';
+import {CreateTaskDto} from '../../task/dto/create-task.dto';
+import {Type} from 'class-transformer';
+import {IsDate} from 'class-validator';
 
-export class CreateContestDto
-    implements Omit<IContest, 'user' | 'id' | 'createdAt' | 'updatedAt'>
-{
-    description: string;
-    duration: string;
-    endDate: Date;
-    name: string;
-    startDate: Date;
-    tasks: TaskEntity[];
+export class CreateContestDto {
+    readonly name: string;
+    readonly description: string;
+
+    @Type(() => Date)
+    @IsDate()
+    readonly startDate: Date;
+
+    @Type(() => Date)
+    @IsDate()
+    readonly endDate: Date;
+
+    readonly duration: string;
+    readonly tasks: CreateTaskDto[];
 }

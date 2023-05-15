@@ -4,18 +4,21 @@ import {Repository} from 'typeorm';
 import type {CreateContestDto} from './dto/create-contest.dto';
 import type {UpdateContestDto} from './dto/update-contest.dto';
 import {ContestEntity} from './entities/contest.entity';
+import {UserService} from '../user/user.service';
 
 @Injectable()
 export class ContestService {
     constructor(
         @InjectRepository(ContestEntity)
         private readonly contestRepository: Repository<ContestEntity>,
+        private readonly userService: UserService,
     ) {}
 
-    async create(createContestDto: CreateContestDto) {
-        const newContest = await this.contestRepository.create(createContestDto);
+    async create(keycloackUser, createContestDto: CreateContestDto) {
+        const contest = await this.contestRepository.create(createContestDto);
+        const user = await this.userService.findMatchedKeycloackUser(keycloackUser);
 
-        return this.contestRepository.save(newContest);
+        return this.contestRepository.save({...contest, user});
     }
 
     findAll() {
