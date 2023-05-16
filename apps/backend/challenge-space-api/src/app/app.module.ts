@@ -22,6 +22,8 @@ import { TaskModule } from './task/task.module';
 import { TestCaseModule } from './test-case/test-case.module';
 import {TaskEntity} from './task/entities/task.entity';
 import {TestCaseEntity} from './test-case/entities/test-case.entity';
+import { SolutionModule } from './solution/solution.module';
+import { TokenModule } from './token/token.module';
 
 @Module({
     imports: [
@@ -46,6 +48,8 @@ import {TestCaseEntity} from './test-case/entities/test-case.entity';
         ContestModule,
         TaskModule,
         TestCaseModule,
+        SolutionModule,
+        TokenModule,
     ],
     controllers: [AppController],
     providers: [
