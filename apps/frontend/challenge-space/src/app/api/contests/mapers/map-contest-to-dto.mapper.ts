@@ -1,5 +1,6 @@
 import {IContest} from '../../../pages/contests/interfaces/contest.interface';
 import {ContestDto} from '../dto/contest.dto';
+import {getISODateFromTuiDayAndTime} from '../../../shared/utils/getISODateFromTuiDayAndTime';
 
 export function mapContestToDto(contest: IContest): ContestDto {
     const {
@@ -17,8 +18,8 @@ export function mapContestToDto(contest: IContest): ContestDto {
     return {
         name,
         description,
-        startDate: interval.startDate,
-        endDate: interval.endDate,
+        startDate: getISODateFromTuiDayAndTime(interval.startDate),
+        endDate: getISODateFromTuiDayAndTime(interval.endDate),
         duration,
         tasks
     }

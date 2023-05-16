@@ -2,7 +2,7 @@ import {IContestMainSettings} from '../../../pages/contests/interfaces/contest-m
 import {IContestTask} from '../../../pages/contests/interfaces/contest-task.interface';
 
 export interface ContestDto extends Omit<IContestMainSettings, 'interval'> {
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     tasks: IContestTask[];
 }

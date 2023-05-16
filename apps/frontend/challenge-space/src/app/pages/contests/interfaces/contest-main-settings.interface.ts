@@ -6,5 +6,5 @@ export interface IContestMainSettings {
     name: string;
     description: string;
     interval: IContestMainSettingsInterval;
-    duration: TuiDay;
+    duration: string;
 }
