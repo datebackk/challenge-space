@@ -2,6 +2,8 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
 import {contestMock} from '../mocks/contest.mock';
+import {ActivatedRoute} from '@angular/router';
+import {Store} from '@ngrx/store';
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -17,7 +19,11 @@ export class ContestSolutionComponent implements OnInit {
         tasks: this.formBuilder.array([]),
     });
 
-    constructor(private readonly formBuilder: FormBuilder) {}
+    constructor(
+        private readonly formBuilder: FormBuilder,
+        private readonly store: Store,
+        private readonly route: ActivatedRoute,
+    ) {}
 
     get tasksFormArray(): FormArray {
         return this.contestSolutionForm.get('tasks') as FormArray;

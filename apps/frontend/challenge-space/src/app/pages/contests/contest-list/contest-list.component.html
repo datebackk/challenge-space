@@ -1,1 +1,9 @@
-<p>contest-list works!</p>
+<div class="tui-row">
+    <challenge-space-contest-card
+        *ngFor="let contest of (contests$ | async)"
+        [contest]="contest"
+        class="tui-col_md-3"
+    >
+    </challenge-space-contest-card>
+</div>
+

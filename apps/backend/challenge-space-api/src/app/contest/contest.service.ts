@@ -22,7 +22,11 @@ export class ContestService {
     }
 
     findAll() {
-        return `This action returns all contest`;
+        return this.contestRepository.find({relations: {
+                tasks: {
+                    testCases: true
+                }
+            }});
     }
 
     findOne(id: number) {

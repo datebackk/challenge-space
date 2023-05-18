@@ -1,0 +1,25 @@
+<a
+    tuiIsland
+    class="tui-space_bottom-4"
+    size="s"
+    [routerLink]="routerLink"
+    [hoverable]="true"
+>
+  <span>
+    <img
+        alt="Taiga"
+        class="image"
+        [src]="bannerImage"
+    />
+  </span>
+    <h3
+        class="title title_size_s"
+    >
+        {{contest.mainSettings.name}}
+    </h3>
+    <p
+        class="text"
+    >
+        {{contest.mainSettings.description}}
+    </p>
+</a>

@@ -1,7 +1,5 @@
-import {IContestMainSettings} from './contest-main-settings.interface';
-import {IContestTask} from './contest-task.interface';
+import {IContestWithoutId} from './contest-without-id.interface';
 
-export interface IContest {
-    mainSettings: IContestMainSettings;
-    tasks: IContestTask[];
+export interface IContest extends IContestWithoutId {
+    id: number;
 }

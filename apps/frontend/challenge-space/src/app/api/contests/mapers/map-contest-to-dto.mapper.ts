@@ -1,8 +1,8 @@
-import {IContest} from '../../../pages/contests/interfaces/contest.interface';
 import {ContestDto} from '../dto/contest.dto';
 import {getISODateFromTuiDayAndTime} from '../../../shared/utils/getISODateFromTuiDayAndTime';
+import {IContestWithoutId} from '../../../pages/contests/interfaces/contest-without-id.interface';
 
-export function mapContestToDto(contest: IContest): ContestDto {
+export function mapContestToDto(contest: IContestWithoutId): Partial<ContestDto> {
     const {
         mainSettings,
         tasks

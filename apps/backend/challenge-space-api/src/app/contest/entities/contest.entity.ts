@@ -9,6 +9,7 @@ import {
 import type {IContest} from '../interfaces/contest.interface';
 import {UserEntity} from '../../user/entities/user.entity';
 import {TaskEntity} from '../../task/entities/task.entity';
+import {SolutionEntity} from '../../solution/entities/solution.entity';
 
 @Entity({
     name: 'contests',
@@ -42,5 +43,8 @@ export class ContestEntity implements IContest {
     user: UserEntity;
 
     @OneToMany(() => TaskEntity, task => task.contest, {cascade: true})
-    tasks: TaskEntity[]
+    tasks: TaskEntity[];
+
+    @OneToMany(() => SolutionEntity, solution => solution.contest)
+    solutions: SolutionEntity[];
 }

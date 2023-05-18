@@ -4,9 +4,10 @@ import {map, Observable} from 'rxjs';
 
 import {ISolution} from '../../pages/contests/contest-solution/interfaces/solution.interface';
 import {IContest} from '../../pages/contests/interfaces/contest.interface';
-import {mapContestFromDtoMapper} from './mapers/map-contest-from-dto.mapper';
+import {mapContestFromDto} from './mapers/map-contest-from.dto';
 import {ContestDto} from './dto/contest.dto';
 import {mapContestToDto} from './mapers/map-contest-to-dto.mapper';
+import {IContestWithoutId} from '../../pages/contests/interfaces/contest-without-id.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -14,19 +15,21 @@ import {mapContestToDto} from './mapers/map-contest-to-dto.mapper';
 export class ContestsApiService {
     constructor(private readonly http: HttpClient) {}
 
-    loadContests(): Observable<IContest> {
-        return this.http.get<IContest>('http://localhost:3000/api/contests');
+    loadContests(): Observable<IContest[]> {
+        return this.http.get<ContestDto[]>('http://localhost:3000/api/contests').pipe(
+            map((contests) => contests.map(mapContestFromDto)),
+        );
     }
 
     submitTaskSolution(): Observable<any> {
         return this.http.post<IContest>('http://localhost:3000/api/contests/task', null);
     }
 
-    createContest(contest: IContest): Observable<IContest> {
+    createContest(contest: IContestWithoutId): Observable<IContest> {
         return this.http.post<ContestDto>(
             'http://localhost:3000/api/contests',
             mapContestToDto(contest),
-        ).pipe(map(mapContestFromDtoMapper));
+        ).pipe(map(mapContestFromDto));
     }
 
     createSolution(solution: ISolution): Observable<ISolution> {

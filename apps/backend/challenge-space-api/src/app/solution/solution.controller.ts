@@ -3,7 +3,7 @@ import { SolutionService } from './solution.service';
 import { CreateSolutionDto } from './dto/create-solution.dto';
 import { UpdateSolutionDto } from './dto/update-solution.dto';
 
-@Controller('solution')
+@Controller('solutions')
 export class SolutionController {
   constructor(private readonly solutionService: SolutionService) {}
 

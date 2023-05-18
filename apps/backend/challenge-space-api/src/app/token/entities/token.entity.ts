@@ -1,6 +1,9 @@
-import {Entity} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity({
     name: 'tokens'
 })
-export class TokenEntity {}
+export class TokenEntity {
+    @PrimaryGeneratedColumn()
+    id: number;
+}

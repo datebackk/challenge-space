@@ -5,9 +5,9 @@ import {ContestSolutionComponent} from './contest-solution.component';
 
 const routes: Routes = [
     {
-        path: '',
+        path: ':id',
         component: ContestSolutionComponent,
-    },
+    }
 ];
 
 @NgModule({

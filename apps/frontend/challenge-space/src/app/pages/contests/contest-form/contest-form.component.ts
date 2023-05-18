@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
 import {createContest} from '../../../store/contests/contests.actions';
 import {getCreateContestLoadingStatus} from '../../../store/contests/contests.reducer';
-import {IContest} from '../interfaces/contest.interface';
+import {IContestWithoutId} from '../interfaces/contest-without-id.interface';
 
 @Component({
     selector: 'challenge-space-contest-form',
@@ -101,7 +101,7 @@ export class ContestFormComponent {
         }
 
         this.store.dispatch(
-            createContest(this.form.getRawValue() as unknown as IContest),
+            createContest(this.form.getRawValue() as unknown as IContestWithoutId),
         );
     }
 }

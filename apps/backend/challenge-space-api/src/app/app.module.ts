@@ -24,6 +24,8 @@ import {TaskEntity} from './task/entities/task.entity';
 import {TestCaseEntity} from './test-case/entities/test-case.entity';
 import { SolutionModule } from './solution/solution.module';
 import { TokenModule } from './token/token.module';
+import {SolutionEntity} from './solution/entities/solution.entity';
+import {TokenEntity} from './token/entities/token.entity';
 
 @Module({
     imports: [
@@ -34,7 +36,7 @@ import { TokenModule } from './token/token.module';
         TypeOrmModule.forRootAsync({
             useFactory: (config: ConfigService) => ({
                 ...config.get<TypeOrmModuleOptions>('db'),
-                entities: [UserEntity, ContestEntity, TaskEntity, TestCaseEntity],
+                entities: [UserEntity, ContestEntity, TaskEntity, TestCaseEntity, SolutionEntity, TokenEntity],
             }),
             inject: [ConfigService],
         }),

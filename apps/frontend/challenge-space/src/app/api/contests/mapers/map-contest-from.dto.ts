@@ -2,8 +2,9 @@ import {ContestDto} from '../dto/contest.dto';
 import {IContest} from '../../../pages/contests/interfaces/contest.interface';
 import {getTuiDayAndTimeFromISODate} from '../../../shared/utils/getTuiDayAndTimeFromISODate';
 
-export function mapContestFromDtoMapper(contest: ContestDto): IContest {
+export function mapContestFromDto(contest: ContestDto): IContest {
     const {
+        id,
         name,
         description,
         startDate,
@@ -13,6 +14,7 @@ export function mapContestFromDtoMapper(contest: ContestDto): IContest {
     } = contest;
 
     return {
+        id,
         mainSettings: {
             name,
             description,
