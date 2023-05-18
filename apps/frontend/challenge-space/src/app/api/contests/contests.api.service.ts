@@ -15,9 +15,15 @@ import {IContestWithoutId} from '../../pages/contests/interfaces/contest-without
 export class ContestsApiService {
     constructor(private readonly http: HttpClient) {}
 
-    loadContests(): Observable<IContest[]> {
+    getContests(): Observable<IContest[]> {
         return this.http.get<ContestDto[]>('http://localhost:3000/api/contests').pipe(
             map((contests) => contests.map(mapContestFromDto)),
+        );
+    }
+
+    getContest(id: number): Observable<IContest> {
+        return this.http.get<ContestDto>(`http://localhost:3000/api/contests/${id}`).pipe(
+            map(mapContestFromDto),
         );
     }
 

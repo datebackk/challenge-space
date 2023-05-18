@@ -22,15 +22,24 @@ export class ContestService {
     }
 
     findAll() {
-        return this.contestRepository.find({relations: {
-                tasks: {
-                    testCases: true
+        return this.contestRepository.find({
+            relations: {
+            tasks: {
+                testCases: true
                 }
-            }});
+            }
+        });
     }
 
     findOne(id: number) {
-        return `This action returns a #${id} contest`;
+        return this.contestRepository.findOneOrFail({
+            where: {id},
+            relations: {
+                tasks: {
+                    testCases: true
+                }
+            },
+        });
     }
 
     update(id: number, updateContestDto: UpdateContestDto) {

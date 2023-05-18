@@ -9,6 +9,8 @@ import {
     loadContestsSuccess
 } from './contests.actions';
 import {contestsAdapter, contestsInitialState, IContestsState} from './contests.state';
+import {Dictionary} from '@ngrx/entity';
+import {IContest} from '../../pages/contests/interfaces/contest.interface';
 
 export const CONTESTS_FEATURE = 'contests';
 
@@ -47,6 +49,11 @@ export const contestsReducer = createReducer(
 const contestsFeatureSelector = createFeatureSelector<IContestsState>(CONTESTS_FEATURE);
 
 export const {selectAll: getContests, selectEntities: getContestsEntities} = contestsAdapter.getSelectors(contestsFeatureSelector);
+
+export const getContestById = createSelector(
+    getContestsEntities,
+    (entities: Dictionary<IContest>, id: number) => entities[id]
+);
 
 export const getContestsLoadingStatus = createSelector(
     contestsFeatureSelector,

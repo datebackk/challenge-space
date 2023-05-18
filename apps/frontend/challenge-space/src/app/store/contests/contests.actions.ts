@@ -7,6 +7,9 @@ enum ContestsActions {
     LoadContests = '[Contests] load contests',
     LoadContestsSuccess = '[Contests] load contests success',
     LoadContestsError = '[Contests] load contests error',
+    LoadContest = '[Contests] load contest',
+    LoadContestSuccess = '[Contests] load contest success',
+    LoadContestError = '[Contests] load contest error',
     CreateContest = '[Contests] create contest',
     CreateContestSuccess = '[Contests] create contest success',
     CreateContestError = '[Contests] create contest error',
@@ -18,6 +21,20 @@ export const loadContestsSuccess = createAction(
     (contests: IContest[]) => ({contests}),
 );
 export const loadContestsError = createAction(ContestsActions.LoadContestsError);
+
+export const loadContest = createAction(
+    ContestsActions.LoadContest,
+    (id: number) => ({id}),
+);
+
+export const loadContestSuccess = createAction(
+    ContestsActions.LoadContestSuccess,
+    (contest: IContest) => ({contest}),
+);
+
+export const loadContestError = createAction(
+    ContestsActions.LoadContestError,
+);
 
 export const createContest = createAction(
     ContestsActions.CreateContest,

@@ -1,9 +1,12 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
-import {contestMock} from '../mocks/contest.mock';
 import {ActivatedRoute} from '@angular/router';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
+import {getContestById, getContestsLoadingStatus} from '../../../store/contests/contests.reducer';
+import {Observable} from 'rxjs';
+import {IContest} from '../interfaces/contest.interface';
+import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -12,6 +15,9 @@ import {Store} from '@ngrx/store';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContestSolutionComponent implements OnInit {
+    readonly contest$: Observable<IContest | undefined> = this.store.select(getContestById, this.selectedContestId);
+    readonly contestsLoadingStatus: Observable<LoadingStatus> = this.store.pipe(select(getContestsLoadingStatus));
+
     activeItemIndex = 0;
 
     readonly contestSolutionForm = this.formBuilder.group({
@@ -25,6 +31,10 @@ export class ContestSolutionComponent implements OnInit {
         private readonly route: ActivatedRoute,
     ) {}
 
+    get selectedContestId(): number {
+        return Number(this.route.snapshot.params['id']);
+    }
+
     get tasksFormArray(): FormArray {
         return this.contestSolutionForm.get('tasks') as FormArray;
     }
@@ -34,9 +44,5 @@ export class ContestSolutionComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.tasksFormArray.clear();
-        contestMock.tasks.forEach(task => {
-            this.tasksFormArray.push(this.formBuilder.group(task));
-        });
     }
 }
