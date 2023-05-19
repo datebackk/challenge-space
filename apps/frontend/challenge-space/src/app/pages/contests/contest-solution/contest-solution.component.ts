@@ -4,9 +4,17 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {getContestById, getContestsLoadingStatus} from '../../../store/contests/contests.reducer';
-import {Observable} from 'rxjs';
+import {distinctUntilKeyChanged, filter, Observable} from 'rxjs';
 import {IContest} from '../interfaces/contest.interface';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
+import {loadContest} from '../../../store/contests/contests.actions';
+import {createSolution, loadSolutionById} from '../../../store/solutions/solutions.actions';
+import {
+    getCreateSolutionLoadingStatus,
+    getSolutionById,
+    getSolutionsLoadingStatus
+} from '../../../store/solutions/solutions.reducer';
+import {ISolution} from './interfaces/solution.interface';
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -18,10 +26,13 @@ export class ContestSolutionComponent implements OnInit {
     readonly contest$: Observable<IContest | undefined> = this.store.select(getContestById, this.selectedContestId);
     readonly contestsLoadingStatus: Observable<LoadingStatus> = this.store.pipe(select(getContestsLoadingStatus));
 
+    readonly solution$: Observable<ISolution | undefined> = this.store.select(getSolutionById, this.selectedContestId);
+    readonly solutionsLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getSolutionsLoadingStatus));
+    readonly createSolutionLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getCreateSolutionLoadingStatus));
+
     activeItemIndex = 0;
 
     readonly contestSolutionForm = this.formBuilder.group({
-        mainSettings: this.formBuilder.group({}),
         tasks: this.formBuilder.array([]),
     });
 
@@ -44,5 +55,27 @@ export class ContestSolutionComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.store.dispatch(loadContest(this.selectedContestId));
+        this.store.dispatch(loadSolutionById(this.selectedContestId));
+        this.updateContestForm();
+    }
+
+    onStartContest(): void {
+        this.store.dispatch(createSolution({contestId: this.selectedContestId}));
+    }
+
+    private updateContestForm(): void {
+        this.contest$.pipe(
+            filter<IContest | undefined>(Boolean),
+            distinctUntilKeyChanged('id'),
+        ).subscribe(contest => {
+            const tasks = contest.tasks.map(task => this.formBuilder.group(task))
+
+            this.tasksFormArray.clear();
+
+            tasks.forEach(task => {
+                this.tasksFormArray.push(task);
+            })
+        });
     }
 }

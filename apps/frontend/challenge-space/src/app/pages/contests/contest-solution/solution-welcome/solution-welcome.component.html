@@ -1,3 +1,9 @@
 <div class="tui-row tui-row_adaptive margin-0">
-    <p>solution-welcome works!</p>
+    <div class="tui-container">
+        <h1>{{ contest.mainSettings.name }}</h1>
+        <tui-editor-socket
+            [content]="contest.mainSettings.description"
+        ></tui-editor-socket>
+        <button tuiButton (click)="onStartContest()" [showLoader]="isLoading">Начать</button>
+    </div>
 </div>

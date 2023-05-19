@@ -1,28 +1,38 @@
-<div class="tui-row tui-row_adaptive margin-left-0 margin-right-0 tui-space_bottom-3">
-    <div class="top-container">
-        <div>
-            <tui-stepper [(activeItemIndex)]="activeItemIndex">
-                <button tuiStep>Описание</button>
-                <button
-                    *ngFor="let taskFormArray of tasksFormArrayControls; let i = index"
-                    tuiStep
-                >
-                    {{ 'Задача ' + (i + 1) }}
-                </button>
-            </tui-stepper>
-        </div>
-        <div>
-            <span [textContent]="'Осталось: '"></span>
-            <tui-badge status="primary" [value]="'24:13'"></tui-badge>
+<ng-container *tuiLet="{
+        solution: solution$ | async,
+        contest: contest$ | async,
+    } as contestInfo"
+>
+    <div *ngIf="contestInfo.contest" class="tui-row tui-row_adaptive margin-left-0 margin-right-0 tui-space_bottom-3">
+        <div class="top-container">
+            <div>
+                <tui-stepper [(activeItemIndex)]="activeItemIndex">
+                    <button tuiStep>Описание</button>
+                    <button
+                        *ngFor="let taskFormArray of tasksFormArrayControls; let i = index"
+                        tuiStep
+                        [disabled]="!contestInfo.solution"
+                    >
+                        {{ 'Задача ' + (i + 1) }}
+                    </button>
+                </tui-stepper>
+            </div>
+            <div>
+                <span [textContent]="'Осталось: '"></span>
+                <tui-badge status="primary" [value]="'24:13'"></tui-badge>
+            </div>
         </div>
     </div>
-</div>
-<ng-container [ngSwitch]="activeItemIndex">
-    <challenge-space-solution-welcome
-        *ngSwitchCase="0"
-    ></challenge-space-solution-welcome>
-    <challenge-space-solution-task
-        *ngSwitchDefault
-        [taskSettingsForm]="tasksFormArrayControls[activeItemIndex - 1]"
-    ></challenge-space-solution-task>
+    <ng-container [ngSwitch]="activeItemIndex">
+        <challenge-space-solution-welcome
+            *ngSwitchCase="0"
+            [contest]="contestInfo.contest"
+            [createSolutionLoadingStatus]="createSolutionLoadingStatus$ | async"
+            (startContest)="onStartContest()"
+        ></challenge-space-solution-welcome>
+        <challenge-space-solution-task
+            *ngSwitchDefault
+            [taskSettingsForm]="tasksFormArrayControls[activeItemIndex - 1]"
+        ></challenge-space-solution-task>
+    </ng-container>
 </ng-container>

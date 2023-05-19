@@ -1,9 +1,11 @@
 import {createAction} from '@ngrx/store';
 
 import {ISolution} from '../../pages/contests/contest-solution/interfaces/solution.interface';
+import {ISolutionWithoutId} from '../../pages/contests/contest-solution/interfaces/solution-without-id.interface';
 
 enum SolutionsActions {
-    LoadSolution = '[Solutions] load solution',
+    LoadSolutionById = '[Solutions] load solution by id',
+    LoadSolutionByContestID = '[Solutions] load solution by id',
     LoadSolutionSuccess = '[Solutions] load solution success',
     LoadSolutionError = '[Solutions] load solution error',
     CreateSolution = '[Solutions] create solution',
@@ -11,9 +13,14 @@ enum SolutionsActions {
     CreateSolutionError = '[Solutions] create solution error',
 }
 
-export const loadSolution = createAction(
-    SolutionsActions.LoadSolution,
+export const loadSolutionById = createAction(
+    SolutionsActions.LoadSolutionById,
     (id: number) => ({id}),
+);
+
+export const loadSolutionByContestId = createAction(
+    SolutionsActions.LoadSolutionById,
+    (contestId: number) => ({contestId}),
 );
 
 export const loadSolutionSuccess = createAction(
@@ -27,7 +34,7 @@ export const loadSolutionError = createAction(
 
 export const createSolution = createAction(
     SolutionsActions.CreateSolution,
-    (solution: ISolution) => ({solution}),
+    (solution: ISolutionWithoutId) => ({solution}),
 );
 
 export const createSolutionSuccess = createAction(

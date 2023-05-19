@@ -1,4 +1,6 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {IContest} from '../../interfaces/contest.interface';
+import {LoadingStatus} from '../../../../shared/enums/loading-status.enum';
 
 @Component({
     selector: 'challenge-space-solution-welcome',
@@ -6,4 +8,17 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
     styleUrls: ['./solution-welcome.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SolutionWelcomeComponent {}
+export class SolutionWelcomeComponent {
+    @Input() contest!: IContest;
+    @Input() createSolutionLoadingStatus!: LoadingStatus;
+
+    @Output() startContest = new EventEmitter<void>();
+
+    get isLoading(): boolean {
+        return  this.createSolutionLoadingStatus === LoadingStatus.Loading;
+    }
+
+    onStartContest(): void {
+        this.startContest.emit();
+    }
+}

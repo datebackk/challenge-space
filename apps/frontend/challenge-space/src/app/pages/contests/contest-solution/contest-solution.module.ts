@@ -17,6 +17,7 @@ import {ContestSolutionComponent} from './contest-solution.component';
 import {ContestSolutionRoutingModule} from './contest-solution-routing.module';
 import {SolutionTaskComponent} from './solution-task/solution-task.component';
 import {SolutionWelcomeComponent} from './solution-welcome/solution-welcome.component';
+import {TuiLetModule} from '@taiga-ui/cdk';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import {SolutionWelcomeComponent} from './solution-welcome/solution-welcome.comp
         TuiDataListWrapperModule,
         TuiBadgeModule,
         TuiButtonModule,
+        TuiLetModule,
     ],
     providers: [
         {

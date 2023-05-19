@@ -28,7 +28,7 @@ export const solutionsReducer = createReducer(
         createLoadingStatus: LoadingStatus.Loading,
     })),
     on(createSolutionSuccess, (state, {solution}) =>
-        solutionsAdapter.addOne(solution, {
+        solutionsAdapter.upsertOne(solution, {
             ...state,
             createLoadingStatus: LoadingStatus.Success,
         }),

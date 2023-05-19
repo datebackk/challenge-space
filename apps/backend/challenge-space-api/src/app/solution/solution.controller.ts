@@ -18,9 +18,14 @@ export class SolutionController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOneById(@Param('id') id: string) {
     return this.solutionService.findOne(+id);
   }
+
+    @Get(':contestId')
+    findOneByContestId(@Param('contestId') contestId: string) {
+        return this.solutionService.findOne(+contestId);
+    }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSolutionDto: UpdateSolutionDto) {
