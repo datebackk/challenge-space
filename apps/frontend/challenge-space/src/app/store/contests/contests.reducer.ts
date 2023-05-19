@@ -6,7 +6,7 @@ import {
     createContestError,
     createContestSuccess,
     loadContests, loadContestsError,
-    loadContestsSuccess
+    loadContestsSuccess, loadContestSuccess
 } from './contests.actions';
 import {contestsAdapter, contestsInitialState, IContestsState} from './contests.state';
 import {Dictionary} from '@ngrx/entity';
@@ -30,6 +30,11 @@ export const contestsReducer = createReducer(
         ...state,
         loadingStatus: LoadingStatus.Error,
     })),
+    on(loadContestSuccess, (state, {contest}) =>
+        contestsAdapter.upsertOne(contest, {
+            ...state
+        }),
+    ),
     on(createContest, state => ({
         ...state,
         createLoadingStatus: LoadingStatus.Loading,
