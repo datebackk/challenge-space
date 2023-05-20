@@ -11,8 +11,6 @@ import {
 } from 'nest-keycloak-connect';
 import {APP_GUARD} from '@nestjs/core';
 import type {KeycloakConnectConfig} from 'nest-keycloak-connect/interface/keycloak-connect-options.interface';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
 import {configuration} from './config';
 import {UserModule} from './user/user.module';
 import {UserEntity} from './user/entities/user.entity';
@@ -53,9 +51,7 @@ import {TokenEntity} from './token/entities/token.entity';
         SolutionModule,
         TokenModule,
     ],
-    controllers: [AppController],
     providers: [
-        AppService,
         {
             provide: APP_GUARD,
             useClass: AuthGuard,
