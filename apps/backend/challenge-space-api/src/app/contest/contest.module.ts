@@ -15,5 +15,6 @@ import {SolutionEntity} from '../solution/entities/solution.entity';
         TypeOrmModule.forFeature([ContestEntity, TaskEntity, TestCaseEntity, SolutionEntity]),
         UserModule,
     ],
+    exports: [ContestService]
 })
 export class ContestModule {}

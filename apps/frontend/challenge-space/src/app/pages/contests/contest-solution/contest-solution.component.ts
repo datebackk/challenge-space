@@ -8,7 +8,7 @@ import {distinctUntilKeyChanged, filter, Observable} from 'rxjs';
 import {IContest} from '../interfaces/contest.interface';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
 import {loadContest} from '../../../store/contests/contests.actions';
-import {createSolution, loadSolutionById} from '../../../store/solutions/solutions.actions';
+import {createSolution, loadSolutionByContestId} from '../../../store/solutions/solutions.actions';
 import {
     getCreateSolutionLoadingStatus,
     getSolutionById,
@@ -56,7 +56,7 @@ export class ContestSolutionComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.dispatch(loadContest(this.selectedContestId));
-        this.store.dispatch(loadSolutionById(this.selectedContestId));
+        this.store.dispatch(loadSolutionByContestId(this.selectedContestId));
         this.updateContestForm();
     }
 

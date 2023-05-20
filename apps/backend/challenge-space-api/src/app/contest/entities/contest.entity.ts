@@ -31,7 +31,7 @@ export class ContestEntity implements IContest {
     endDate: Date;
 
     @Column()
-    duration: string;
+    duration: number;
 
     @CreateDateColumn()
     createdAt: Date;

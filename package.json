@@ -36,6 +36,7 @@
         "axios": "^1.0.0",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.0",
+        "date-fns": "^2.30.0",
         "dompurify": "2.2.9",
         "keycloak-angular": "^13.0.0",
         "keycloak-connect": "^20.0.5",

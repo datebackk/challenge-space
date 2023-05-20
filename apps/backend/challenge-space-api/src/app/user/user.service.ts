@@ -23,9 +23,9 @@ export class UserService {
     }
 
     async findOneByUserName(username: string): Promise<UserEntity> {
-        const users = await this.userRepository.find({where: {username}});
+        const user = await this.userRepository.findOneBy({username});
 
-        return users.length === 1 ? users[0] : null;
+        return user || null;
     }
 
     async createUser(user: Partial<UserEntity>): Promise<UserEntity> {

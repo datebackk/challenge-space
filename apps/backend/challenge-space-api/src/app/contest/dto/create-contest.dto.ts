@@ -14,6 +14,6 @@ export class CreateContestDto {
     @IsDate()
     readonly endDate: Date;
 
-    readonly duration: string;
+    readonly duration: number;
     readonly tasks: CreateTaskDto[];
 }

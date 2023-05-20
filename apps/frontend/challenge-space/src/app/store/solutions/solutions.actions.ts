@@ -5,7 +5,7 @@ import {ISolutionWithoutId} from '../../pages/contests/contest-solution/interfac
 
 enum SolutionsActions {
     LoadSolutionById = '[Solutions] load solution by id',
-    LoadSolutionByContestID = '[Solutions] load solution by id',
+    LoadSolutionByContestId = '[Solutions] load solution by id',
     LoadSolutionSuccess = '[Solutions] load solution success',
     LoadSolutionError = '[Solutions] load solution error',
     CreateSolution = '[Solutions] create solution',

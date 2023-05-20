@@ -1,1 +1,3 @@
-export class CreateSolutionDto {}
+export class CreateSolutionDto {
+    readonly contestId: number;
+}

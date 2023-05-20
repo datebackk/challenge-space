@@ -7,7 +7,7 @@ export interface IContest {
     description: string;
     startDate: Date;
     endDate: Date;
-    duration: string;
+    duration: number;
     createdAt: Date;
     updatedAt: Date;
     user: UserEntity;

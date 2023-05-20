@@ -11,11 +11,11 @@ export class SolutionEntity {
     @CreateDateColumn()
     createdAt: string;
 
-    @Column()
-    completeAt: string;
+    @Column({nullable: true, type: 'timestamptz'})
+    completeAt: Date;
 
-    @Column()
-    shouldCompleteAt: string;
+    @Column({type: 'timestamptz'})
+    shouldCompleteAt: Date;
 
     @ManyToOne(() => ContestEntity, contest => contest.solutions)
     contest: ContestEntity;
