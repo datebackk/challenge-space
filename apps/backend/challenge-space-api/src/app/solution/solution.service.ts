@@ -26,15 +26,40 @@ export class SolutionService {
         return this.solutionRepository.save({contest, user, shouldCompleteAt});
     }
 
-    findAll({contestId}: ISolutionQuery) {
-        return this.solutionRepository.findBy({
-            contest: {
-                id: contestId
+    async findAll({contestId}: ISolutionQuery) {
+        return this.solutionRepository.find({
+            where: {
+                contest: {
+                    id: contestId
+                }
+            },
+            relations: {
+                user: true,
+                contest: true,
             }
         });
     }
 
-    findOne(id: number) {
+    async findOne(keycloackUser, {contestId}: ISolutionQuery) {
+        const user = await this.userService.findMatchedKeycloackUser(keycloackUser);
+
+        return this.solutionRepository.findOne({
+            where: {
+                user: {
+                    id: user.id,
+                },
+                contest: {
+                    id: contestId
+                },
+            },
+            relations: {
+                user: true,
+                contest: true,
+            }
+        });
+    }
+
+    findOneById(id: number) {
         return `This action returns a #${id} solution`;
     }
 

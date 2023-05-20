@@ -4,6 +4,6 @@
         <tui-editor-socket
             [content]="contest.mainSettings.description"
         ></tui-editor-socket>
-        <button tuiButton (click)="onStartContest()" [showLoader]="isLoading">Начать</button>
+        <button *ngIf="!solution" tuiButton (click)="onStartContest()" [showLoader]="isLoading">Начать</button>
     </div>
 </div>

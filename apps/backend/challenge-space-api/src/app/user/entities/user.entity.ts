@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import type {IUser} from '../interfaces/user.interface';
 import {ContestEntity} from '../../contest/entities/contest.entity';
+import {SolutionEntity} from '../../solution/entities/solution.entity';
 
 @Entity({
     name: 'users',
@@ -30,4 +31,7 @@ export class UserEntity implements IUser {
 
     @OneToMany(() => ContestEntity, contest => contest.user)
     contests: ContestEntity[];
+
+    @OneToMany(() => SolutionEntity, solution => solution.user)
+    solutions: SolutionEntity[];
 }

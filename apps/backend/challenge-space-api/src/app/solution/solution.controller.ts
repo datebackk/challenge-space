@@ -19,9 +19,14 @@ export class SolutionController {
     return this.solutionService.findAll(params);
   }
 
+  @Get('solution')
+  findOne(@AuthenticatedUser() keycloackUser, @Query() params?: ISolutionQuery) {
+      return this.solutionService.findOne(keycloackUser, params);
+  }
+
   @Get(':id')
   findOneById(@Param('id') id: string) {
-    return this.solutionService.findOne(+id);
+    return this.solutionService.findOneById(+id);
   }
 
 

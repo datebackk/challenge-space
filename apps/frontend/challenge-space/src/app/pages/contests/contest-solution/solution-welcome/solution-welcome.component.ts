@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {IContest} from '../../interfaces/contest.interface';
 import {LoadingStatus} from '../../../../shared/enums/loading-status.enum';
+import {ISolution} from '../interfaces/solution.interface';
 
 @Component({
     selector: 'challenge-space-solution-welcome',
@@ -10,6 +11,7 @@ import {LoadingStatus} from '../../../../shared/enums/loading-status.enum';
 })
 export class SolutionWelcomeComponent {
     @Input() contest!: IContest;
+    @Input() solution: ISolution | undefined;
     @Input() createSolutionLoadingStatus!: LoadingStatus;
 
     @Output() startContest = new EventEmitter<void>();

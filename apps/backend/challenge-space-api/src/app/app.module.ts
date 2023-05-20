@@ -24,6 +24,7 @@ import { SolutionModule } from './solution/solution.module';
 import { TokenModule } from './token/token.module';
 import {SolutionEntity} from './solution/entities/solution.entity';
 import {TokenEntity} from './token/entities/token.entity';
+import {HttpModule} from '@nestjs/axios';
 
 @Module({
     imports: [
@@ -43,6 +44,9 @@ import {TokenEntity} from './token/entities/token.entity';
                 ...config.get<KeycloakConnectConfig>('keycloack'),
             }),
             inject: [ConfigService],
+        }),
+        HttpModule.registerAsync({
+            useFactory: () => ({}),
         }),
         UserModule,
         ContestModule,

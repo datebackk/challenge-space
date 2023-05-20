@@ -11,6 +11,6 @@ export class AuthApiService {
     constructor(private readonly http: HttpClient) {}
 
     getCurrentUser(): Observable<IUser> {
-        return this.http.get<IUser>('http://localhost:3000/api/current-user');
+        return this.http.get<IUser>('http://localhost:3000/api/users/me');
     }
 }

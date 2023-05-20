@@ -23,10 +23,11 @@
             </div>
         </div>
     </div>
-    <ng-container [ngSwitch]="activeItemIndex">
+    <ng-container *ngIf="contestInfo.contest" [ngSwitch]="activeItemIndex">
         <challenge-space-solution-welcome
             *ngSwitchCase="0"
             [contest]="contestInfo.contest"
+            [solution]="contestInfo.solution"
             [createSolutionLoadingStatus]="createSolutionLoadingStatus$ | async"
             (startContest)="onStartContest()"
         ></challenge-space-solution-welcome>

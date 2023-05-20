@@ -13,6 +13,8 @@ import {
 } from './solutions.state';
 import {Dictionary} from '@ngrx/entity';
 import {ISolution} from '../../pages/contests/contest-solution/interfaces/solution.interface';
+import {getUser} from '../auth/auth.reducer';
+import {IUser} from '../../shared/interfaces/user.interface';
 
 export const SOLUTIONS_FEATURE = 'solutions';
 
@@ -45,9 +47,10 @@ const solutionsFeatureSelector =
 
 export const {selectAll: getSolutions, selectEntities: getSolutionsEntities} = solutionsAdapter.getSelectors(solutionsFeatureSelector);
 
-export const getSolutionById = createSelector(
-    getSolutionsEntities,
-    (entities: Dictionary<ISolution>, id: number) => entities[id]
+export const getSolutionByUserIdAndContestId = createSelector(
+    getSolutions,
+    getUser,
+    (solutions: ISolution[], user: IUser | null, contestId: number) => solutions.find(solution => solution.user.id === user?.id && solution.contest.id === contestId)
 );
 
 export const getSolutionsLoadingStatus = createSelector(

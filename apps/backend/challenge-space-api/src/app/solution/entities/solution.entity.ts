@@ -1,5 +1,6 @@
 import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {ContestEntity} from '../../contest/entities/contest.entity';
+import {UserEntity} from '../../user/entities/user.entity';
 
 @Entity({
     name: 'solutions'
@@ -19,4 +20,7 @@ export class SolutionEntity {
 
     @ManyToOne(() => ContestEntity, contest => contest.solutions)
     contest: ContestEntity;
+
+    @ManyToOne(() => UserEntity, user => user.solutions)
+    user: UserEntity;
 }

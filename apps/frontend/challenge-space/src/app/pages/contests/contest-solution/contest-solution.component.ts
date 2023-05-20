@@ -11,7 +11,7 @@ import {loadContest} from '../../../store/contests/contests.actions';
 import {createSolution, loadSolutionByContestId} from '../../../store/solutions/solutions.actions';
 import {
     getCreateSolutionLoadingStatus,
-    getSolutionById,
+    getSolutionByUserIdAndContestId,
     getSolutionsLoadingStatus
 } from '../../../store/solutions/solutions.reducer';
 import {ISolution} from './interfaces/solution.interface';
@@ -26,7 +26,7 @@ export class ContestSolutionComponent implements OnInit {
     readonly contest$: Observable<IContest | undefined> = this.store.select(getContestById, this.selectedContestId);
     readonly contestsLoadingStatus: Observable<LoadingStatus> = this.store.pipe(select(getContestsLoadingStatus));
 
-    readonly solution$: Observable<ISolution | undefined> = this.store.select(getSolutionById, this.selectedContestId);
+    readonly solution$: Observable<ISolution | undefined> = this.store.select(getSolutionByUserIdAndContestId, this.selectedContestId);
     readonly solutionsLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getSolutionsLoadingStatus));
     readonly createSolutionLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getCreateSolutionLoadingStatus));
 

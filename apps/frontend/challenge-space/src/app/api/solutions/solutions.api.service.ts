@@ -11,7 +11,7 @@ export class SolutionsApiService {
     constructor(private readonly http: HttpClient) {}
 
     getSolutionByContestId(contestId: number): Observable<ISolution> {
-        return this.http.get<ISolution>(`http://localhost:3000/api/solutions`, {params: {contestId}});
+        return this.http.get<ISolution>(`http://localhost:3000/api/solutions/solution`, {params: {contestId}});
     }
 
     createSolution(solution: ISolutionWithoutId): Observable<ISolution> {
