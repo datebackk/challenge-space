@@ -1,6 +1,6 @@
 import {createAction} from '@ngrx/store';
-import {IJudge0BatchedResponse} from '../../shared/interfaces/judge0-batched-response.interface';
 import {IJudge0Submission} from '../../shared/interfaces/judge0-submission.interface';
+import {IContestTaskSolution} from '../../pages/contests/contest-solution/interfaces/contest-task-solution.interface';
 
 enum TokensActions {
     sendTaskSolution = '[Tokens] send task solution',
@@ -21,7 +21,7 @@ export const loadTaskSolutions = createAction(
 
 export const loadTaskSolutionsSuccess = createAction(
     TokensActions.loadTaskSolutionsSuccess,
-    (solutionId: number, taskId: number, result: IJudge0BatchedResponse) => ({solutionId, taskId, result})
+    (contestTaskSolution: IContestTaskSolution) => ({contestTaskSolution})
 );
 
 export const loadTaskSolutionsError = createAction(

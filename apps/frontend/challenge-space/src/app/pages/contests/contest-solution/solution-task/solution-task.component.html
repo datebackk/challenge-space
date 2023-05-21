@@ -15,8 +15,9 @@
                 *ngSwitchCase="1"
             >
                 <challenge-space-solution-task-output
-                    *ngFor="let result of (taskSolution | async)?.result?.submissions"
+                    *ngFor="let result of (taskSolution | async)?.result?.submissions; let i = index"
                     [result]="result"
+                    [index]="i"
                 ></challenge-space-solution-task-output>
             </ng-container>
         </ng-container>

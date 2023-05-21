@@ -10,6 +10,7 @@ import {TaskService} from '../task/task.service';
 import {TestCaseService} from '../test-case/test-case.service';
 import {ITokenQuery} from './interfaces/token-query.interface';
 import {Judge0Service} from '../solution/judge0.service';
+import {firstValueFrom} from 'rxjs';
 
 @Injectable()
 export class TokenService {
@@ -54,9 +55,9 @@ export class TokenService {
             }
         });
 
-        const result = await this.judge0Service.getBatchedResultByTokens(tokens);
+        const result = await firstValueFrom(this.judge0Service.getBatchedResultByTokens(tokens));
 
-        return {taskId: params?.taskId, solutionId: params.solutionId, result};
+        return {taskId: Number(params?.taskId), solutionId: Number(params.solutionId), result};
     }
 
     findOne(id: number) {

@@ -4,6 +4,7 @@ import {IContest} from '../../pages/contests/interfaces/contest.interface';
 import {IContestWithoutId} from '../../pages/contests/interfaces/contest-without-id.interface';
 
 enum ContestsActions {
+    SetCurrentTask = '[Contests] set current task',
     LoadContests = '[Contests] load contests',
     LoadContestsSuccess = '[Contests] load contests success',
     LoadContestsError = '[Contests] load contests error',
@@ -14,6 +15,11 @@ enum ContestsActions {
     CreateContestSuccess = '[Contests] create contest success',
     CreateContestError = '[Contests] create contest error',
 }
+
+export const setCurrentTask = createAction(
+    ContestsActions.SetCurrentTask,
+    (contestId: number, taskId: number) => ({contestId, taskId}),
+);
 
 export const loadContests = createAction(ContestsActions.LoadContests);
 export const loadContestsSuccess = createAction(

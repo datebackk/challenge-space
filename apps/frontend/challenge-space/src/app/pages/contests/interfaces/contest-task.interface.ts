@@ -1,6 +1,6 @@
 export interface IContestTask {
     id: number;
     name: string;
-    condition: string;
+    description: string;
     testCases: IContestTask[];
 }

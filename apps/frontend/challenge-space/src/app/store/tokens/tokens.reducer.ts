@@ -2,13 +2,15 @@ import {createFeatureSelector, createReducer, createSelector, on} from '@ngrx/st
 import {ITokensState, tokenInitialState, tokensAdapter} from './tokens.state';
 import {loadTaskSolutionsSuccess} from './tokens.actions';
 import {IContestTaskSolution} from '../../pages/contests/contest-solution/interfaces/contest-task-solution.interface';
+import {getCurrentContestTask} from '../contests/contests.reducer';
+import {IContestTask} from '../../pages/contests/interfaces/contest-task.interface';
 
 export const TOKENS_FEATURE = 'tokens';
 
 export const tokensReducer = createReducer(
     tokenInitialState,
-    on(loadTaskSolutionsSuccess, (state, {solutionId, taskId, result}) =>
-        tokensAdapter.upsertOne({solutionId, taskId, result}, {
+    on(loadTaskSolutionsSuccess, (state, {contestTaskSolution}) =>
+        tokensAdapter.upsertOne(contestTaskSolution, {
             ...state
         }),
     ),
@@ -20,7 +22,9 @@ export const {selectAll: getTasksSolutions, selectEntities: getTasksSolutionsEnt
 
 export const getTaskSolutionByTaskId = createSelector(
     getTasksSolutions,
-    (taskSolutions: IContestTaskSolution[], taskId: number) => taskSolutions.find(taskSolution => taskSolution.taskId === taskId)
+    getCurrentContestTask,
+    (taskSolutions: IContestTaskSolution[], contestTask: IContestTask | null) =>
+        taskSolutions.find(taskSolution => taskSolution.taskId === contestTask?.id)
 );
 
 

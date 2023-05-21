@@ -2,9 +2,9 @@ import {
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
-    Input,
+    Input, OnChanges,
     OnInit,
-    Output,
+    Output, SimpleChanges,
 } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ISolution} from '../interfaces/solution.interface';
@@ -22,13 +22,13 @@ import {loadTaskSolutions} from '../../../../store/tokens/tokens.actions';
     styleUrls: ['./solution-task.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SolutionTaskComponent implements OnInit {
+export class SolutionTaskComponent implements OnInit, OnChanges {
     @Input() taskSettingsForm!: FormGroup;
     @Input() solution!: ISolution;
     @Input() task!: IContestTask;
     @Output() sendTaskSolution = new EventEmitter<{solutionId: number, taskId: number, body: IJudge0Submission}>();
 
-    taskSolution: Observable<IContestTaskSolution| undefined> = this.store.pipe(select(getTaskSolutionByTaskId, this.task.id));
+    taskSolution: Observable<IContestTaskSolution | undefined> = this.store.pipe(select(getTaskSolutionByTaskId));
 
     editorOptions = {theme: 'vs-dark', language: 'javascript'};
     code = 'function x() {\nconsole.log("Hello world!");\n}';
@@ -63,5 +63,11 @@ export class SolutionTaskComponent implements OnInit {
                 source_code: this.code,
             }
         });
+    }
+
+    ngOnChanges({task}: SimpleChanges): void {
+        if (task && task.currentValue) {
+
+        }
     }
 }

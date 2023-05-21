@@ -3,4 +3,6 @@ import {IJudge0SubmissionRequiredParameters} from './judge0-submission-required-
 
 export interface IJudge0Submission extends IJudge0SubmissionRequiredParameters {
     status?: IJudge0SubmissionStatusInterface;
+    message?: string;
+    stderr?: string;
 }

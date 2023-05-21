@@ -1,1 +1,30 @@
-<p>{{result.status}}</p>
+<tui-island
+    size="m"
+    [class.border-success]="isPassed"
+    [class.border-wrong]="isFailed"
+>
+    <div class="tui-island__content">
+        <div class="tui-island__figure">
+
+        </div>
+        <div>
+            <p
+                class="tui-island__category"
+                [class.positive-color]="isPassed"
+                [class.negative-color]="isFailed"
+            >{{ 'Test Case ' + (index + 1)}}</p>
+            <p
+                *ngIf="isFailed"
+                class="tui-island__paragraph negative-color"
+            >{{ this.result.status.description }}</p>
+            <p
+                class="tui-island__paragraph"
+                [class.positive-color]="isPassed"
+                [class.negative-color]="isFailed"
+            >{{ text }}</p>
+            <p
+                class="tui-island__paragraph tui-island__paragraph_link"
+            ></p>
+        </div>
+    </div>
+</tui-island>

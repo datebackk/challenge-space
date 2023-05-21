@@ -7,7 +7,7 @@ import {getContestById, getContestsLoadingStatus} from '../../../store/contests/
 import {distinctUntilKeyChanged, filter, Observable} from 'rxjs';
 import {IContest} from '../interfaces/contest.interface';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
-import {loadContest} from '../../../store/contests/contests.actions';
+import {loadContest, setCurrentTask} from '../../../store/contests/contests.actions';
 import {createSolution, loadSolutionByContestId} from '../../../store/solutions/solutions.actions';
 import {
     getCreateSolutionLoadingStatus,
@@ -31,8 +31,6 @@ export class ContestSolutionComponent implements OnInit {
     readonly solution$: Observable<ISolution | undefined> = this.store.select(getSolutionByUserIdAndContestId, this.selectedContestId);
     readonly solutionsLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getSolutionsLoadingStatus));
     readonly createSolutionLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getCreateSolutionLoadingStatus));
-
-
 
     activeItemIndex = 0;
 
@@ -66,6 +64,10 @@ export class ContestSolutionComponent implements OnInit {
 
     onStartContest(): void {
         this.store.dispatch(createSolution({contestId: this.selectedContestId}));
+    }
+
+    onTasksNavigationClick(contestId: number, taskId: number): void {
+        this.store.dispatch(setCurrentTask(contestId, taskId));
     }
 
     onSendTaskSolution({solutionId, taskId, body}: {solutionId: number, taskId: number, body: IJudge0Submission}): void {

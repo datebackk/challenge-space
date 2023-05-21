@@ -5,7 +5,7 @@ import {TuiEditorSocketModule} from '@taiga-ui/addon-editor';
 import {TuiButtonModule} from '@taiga-ui/core';
 import {
     TuiBadgeModule,
-    TuiDataListWrapperModule,
+    TuiDataListWrapperModule, TuiIslandModule,
     TuiSelectModule,
     TuiStepperModule,
     TuiTabsModule,
@@ -41,6 +41,7 @@ import {SolutionTaskOutputComponent} from './solution-task-output/solution-task-
         TuiBadgeModule,
         TuiButtonModule,
         TuiLetModule,
+        TuiIslandModule,
     ],
     providers: [
         {

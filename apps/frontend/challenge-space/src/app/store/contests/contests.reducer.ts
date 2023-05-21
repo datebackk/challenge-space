@@ -6,7 +6,7 @@ import {
     createContestError,
     createContestSuccess,
     loadContests, loadContestsError,
-    loadContestsSuccess, loadContestSuccess
+    loadContestsSuccess, loadContestSuccess, setCurrentTask
 } from './contests.actions';
 import {contestsAdapter, contestsInitialState, IContestsState} from './contests.state';
 import {Dictionary} from '@ngrx/entity';
@@ -16,6 +16,10 @@ export const CONTESTS_FEATURE = 'contests';
 
 export const contestsReducer = createReducer(
     contestsInitialState,
+    on(setCurrentTask, (state, {contestId, taskId}) => ({
+        ...state,
+        currentTask: state.entities[contestId]?.tasks.find(task => task.id === taskId) || null,
+    })),
     on(loadContests, state => ({
         ...state,
         loadingStatus: LoadingStatus.Loading,
@@ -58,6 +62,11 @@ export const {selectAll: getContests, selectEntities: getContestsEntities} = con
 export const getContestById = createSelector(
     getContestsEntities,
     (entities: Dictionary<IContest>, id: number) => entities[id]
+);
+
+export const getCurrentContestTask = createSelector(
+    contestsFeatureSelector,
+    (state: IContestsState) => state.currentTask
 );
 
 export const getContestsLoadingStatus = createSelector(

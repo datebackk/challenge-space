@@ -1,7 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {HttpService} from '@nestjs/axios';
 import {Judge0BatchedRequestDto} from './dto/judge0-batched-request-dto';
-import {catchError, map} from 'rxjs';
+import {catchError, map, tap} from 'rxjs';
 import {TokenEntity} from '../token/entities/token.entity';
 
 @Injectable()
@@ -20,6 +20,7 @@ export class Judge0Service {
                 }
             },
         ).pipe(
+            tap((response) => console.log(response)),
             map(response => response.data),
             catchError(async (error) => console.log(error)),
         );

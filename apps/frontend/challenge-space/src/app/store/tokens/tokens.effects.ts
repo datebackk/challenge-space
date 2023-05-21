@@ -11,7 +11,7 @@ export class TokensEffects {
             ofType(loadTaskSolutions),
             switchMap(({solutionId, taskId}) =>
                 this.solutionsApiService.getSolutionTaskResults(solutionId, taskId).pipe(
-                    map((result) => loadTaskSolutionsSuccess(solutionId, taskId, result)),
+                    map((contestTaskSolution) => loadTaskSolutionsSuccess(contestTaskSolution)),
                     catchError(() => of(loadTaskSolutionsError)),
                 )
             ),
