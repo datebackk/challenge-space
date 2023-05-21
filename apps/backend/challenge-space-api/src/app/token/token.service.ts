@@ -54,7 +54,9 @@ export class TokenService {
             }
         });
 
-        return this.judge0Service.getBatchedResultByTokens(tokens);
+        const result = await this.judge0Service.getBatchedResultByTokens(tokens);
+
+        return {taskId: params?.taskId, solutionId: params.solutionId, result};
     }
 
     findOne(id: number) {

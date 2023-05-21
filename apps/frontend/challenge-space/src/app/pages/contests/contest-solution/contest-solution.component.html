@@ -31,10 +31,14 @@
             [createSolutionLoadingStatus]="createSolutionLoadingStatus$ | async"
             (startContest)="onStartContest()"
         ></challenge-space-solution-welcome>
-        <challenge-space-solution-task
-            *ngSwitchDefault
-            [solution]="contestInfo.solution"
-            [taskSettingsForm]="tasksFormArrayControls[activeItemIndex - 1]"
-        ></challenge-space-solution-task>
+        <ng-container *ngIf="contestInfo.contest && contestInfo.solution">
+            <challenge-space-solution-task
+                *ngSwitchDefault
+                [solution]="contestInfo.solution"
+                [task]="contestInfo.contest.tasks[activeItemIndex - 1]"
+                [taskSettingsForm]="tasksFormArrayControls[activeItemIndex - 1]"
+                (sendTaskSolution)="onSendTaskSolution($event)"
+            ></challenge-space-solution-task>
+        </ng-container>
     </ng-container>
 </ng-container>

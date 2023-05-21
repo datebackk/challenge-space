@@ -11,6 +11,14 @@
                 class="editor-socket"
                 [content]="taskDescription"
             ></tui-editor-socket>
+            <ng-container
+                *ngSwitchCase="1"
+            >
+                <challenge-space-solution-task-output
+                    *ngFor="let result of (taskSolution | async)?.result?.submissions"
+                    [result]="result"
+                ></challenge-space-solution-task-output>
+            </ng-container>
         </ng-container>
     </div>
     <div class="tui-col_6 right-container">

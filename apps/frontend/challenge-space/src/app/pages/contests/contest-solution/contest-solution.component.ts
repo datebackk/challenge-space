@@ -15,6 +15,8 @@ import {
     getSolutionsLoadingStatus
 } from '../../../store/solutions/solutions.reducer';
 import {ISolution} from './interfaces/solution.interface';
+import {sendTaskSolution} from '../../../store/tokens/tokens.actions';
+import {IJudge0Submission} from '../../../shared/interfaces/judge0-submission.interface';
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -29,6 +31,8 @@ export class ContestSolutionComponent implements OnInit {
     readonly solution$: Observable<ISolution | undefined> = this.store.select(getSolutionByUserIdAndContestId, this.selectedContestId);
     readonly solutionsLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getSolutionsLoadingStatus));
     readonly createSolutionLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getCreateSolutionLoadingStatus));
+
+
 
     activeItemIndex = 0;
 
@@ -62,6 +66,10 @@ export class ContestSolutionComponent implements OnInit {
 
     onStartContest(): void {
         this.store.dispatch(createSolution({contestId: this.selectedContestId}));
+    }
+
+    onSendTaskSolution({solutionId, taskId, body}: {solutionId: number, taskId: number, body: IJudge0Submission}): void {
+        this.store.dispatch(sendTaskSolution(solutionId, taskId, body));
     }
 
     private updateContestForm(): void {

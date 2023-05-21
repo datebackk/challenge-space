@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {ISolution} from '../../pages/contests/contest-solution/interfaces/solution.interface';
 import {Observable} from 'rxjs';
 import {ISolutionWithoutId} from '../../pages/contests/contest-solution/interfaces/solution-without-id.interface';
+import {IJudge0BatchedResponse} from '../../shared/interfaces/judge0-batched-response.interface';
+import {IJudge0Submission} from '../../shared/interfaces/judge0-submission.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -17,8 +19,11 @@ export class SolutionsApiService {
     createSolution(solution: ISolutionWithoutId): Observable<ISolution> {
         return this.http.post<ISolution>(`http://localhost:3000/api/solutions`, solution);
     }
+    submitTaskSolution(solutionId: number, taskId: number, body: IJudge0Submission,): Observable<void> {
+        return this.http.post<any>(`http://localhost:3000/api/solutions/${solutionId}`, body, {params: {taskId}});
+    }
 
-    submitTaskSolution(solutionId: number, judge0BatchedRequest: any, params: any): Observable<void> {
-        return this.http.post<any>(`http://localhost:3000/api/solutions/${solutionId}`, judge0BatchedRequest, {params: params});
+    getSolutionTaskResults(solutionId: number, taskId: number): Observable<IJudge0BatchedResponse> {
+        return this.http.get<IJudge0BatchedResponse>(`http://localhost:3000/api/solutions`, {params: {solutionId, taskId}});
     }
 }

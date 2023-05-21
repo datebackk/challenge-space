@@ -1,9 +1,8 @@
-import {HttpClient} from '@angular/common/http';
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {KeycloakService} from 'keycloak-angular';
 import {KeycloakProfile} from 'keycloak-js';
-import {Observable, tap} from 'rxjs';
+import {Observable} from 'rxjs';
 
 import {IUser} from './shared/interfaces/user.interface';
 import {loadUser} from './store/auth/auth.actions';
@@ -23,7 +22,6 @@ export class AppComponent implements OnInit {
 
     constructor(
         private readonly keycloak: KeycloakService,
-        private readonly http: HttpClient,
         private readonly store: Store,
     ) {}
 
@@ -43,9 +41,5 @@ export class AppComponent implements OnInit {
 
     logout() {
         this.keycloak.logout();
-    }
-
-    onClick() {
-        this.http.get('http://localhost:3000/api/current-user').pipe(tap(console.log)).subscribe();
     }
 }
