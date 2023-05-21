@@ -13,22 +13,26 @@ export class TaskService {
         private readonly taskRepository: Repository<TaskEntity>,
     ) {}
     create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+        return 'This action adds a new task';
     }
 
     findAll() {
-    return `This action returns all task`;
+        return `This action returns all task`;
     }
 
     findOne(id: number) {
-    return `This action returns a #${id} task`;
+        return `This action returns a #${id} task`;
+    }
+
+    findOneById(id: number) {
+        return this.taskRepository.findOneBy({id});
     }
 
     update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+        return `This action updates a #${id} task`;
     }
 
     remove(id: number) {
-    return `This action removes a #${id} task`;
+        return `This action removes a #${id} task`;
     }
 }

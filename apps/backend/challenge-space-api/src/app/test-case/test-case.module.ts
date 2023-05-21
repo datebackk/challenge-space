@@ -6,8 +6,9 @@ import {TestCaseEntity} from './entities/test-case.entity';
 import {TaskEntity} from '../task/entities/task.entity';
 
 @Module({
-  controllers: [TestCaseController],
-  providers: [TestCaseService],
-  imports: [TypeOrmModule.forFeature([TaskEntity, TestCaseEntity])],
+    controllers: [TestCaseController],
+    providers: [TestCaseService],
+    exports: [TestCaseService],
+    imports: [TypeOrmModule.forFeature([TaskEntity, TestCaseEntity])],
 })
 export class TestCaseModule {}

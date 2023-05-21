@@ -25,6 +25,7 @@ import { TokenModule } from './token/token.module';
 import {SolutionEntity} from './solution/entities/solution.entity';
 import {TokenEntity} from './token/entities/token.entity';
 import {HttpModule} from '@nestjs/axios';
+import {forwardRef} from '@angular/core';
 
 @Module({
     imports: [
@@ -48,11 +49,11 @@ import {HttpModule} from '@nestjs/axios';
         HttpModule.registerAsync({
             useFactory: () => ({}),
         }),
+        SolutionModule,
         UserModule,
         ContestModule,
         TaskModule,
         TestCaseModule,
-        SolutionModule,
         TokenModule,
     ],
     providers: [

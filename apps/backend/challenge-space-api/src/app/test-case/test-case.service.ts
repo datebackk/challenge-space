@@ -13,22 +13,26 @@ export class TestCaseService {
     ) {
     }
     create(createTestCaseDto: CreateTestCaseDto) {
-    return 'This action adds a new testCase';
+        return 'This action adds a new testCase';
     }
 
     findAll() {
-    return `This action returns all testCase`;
+        return `This action returns all testCase`;
     }
 
     findOne(id: number) {
-    return `This action returns a #${id} testCase`;
+        return `This action returns a #${id} testCase`;
+    }
+
+    findOneById(id: number) {
+        return this.testCaseRepository.findOneBy({id});
     }
 
     update(id: number, updateTestCaseDto: UpdateTestCaseDto) {
-    return `This action updates a #${id} testCase`;
+        return `This action updates a #${id} testCase`;
     }
 
     remove(id: number) {
-    return `This action removes a #${id} testCase`;
+        return `This action removes a #${id} testCase`;
     }
 }

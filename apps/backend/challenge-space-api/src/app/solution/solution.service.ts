@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {forwardRef, Inject, Injectable} from '@nestjs/common';
 import {CreateSolutionDto} from './dto/create-solution.dto';
 import {UpdateSolutionDto} from './dto/update-solution.dto';
 import {InjectRepository} from '@nestjs/typeorm';
@@ -8,6 +8,9 @@ import {UserService} from '../user/user.service';
 import {ContestService} from '../contest/contest.service';
 import {add, min} from 'date-fns'
 import {ISolutionQuery} from './interfaces/solution-query.interface';
+import {Judge0Service} from './judge0.service';
+import {TokenService} from '../token/token.service';
+import {TaskSolutionDto} from './dto/task-solution.dto';
 
 @Injectable()
 export class SolutionService {
@@ -16,6 +19,9 @@ export class SolutionService {
         private readonly solutionRepository: Repository<SolutionEntity>,
         private readonly userService: UserService,
         private readonly contestService: ContestService,
+        @Inject(forwardRef(() => TokenService))
+        private readonly tokenService: TokenService,
+        private readonly judge0Service: Judge0Service,
     ) {}
     async create(keycloackUser, createSolutionDto: CreateSolutionDto) {
         const contest = await this.contestService.findOne(createSolutionDto.contestId);
@@ -59,8 +65,16 @@ export class SolutionService {
         });
     }
 
+    async createTaskSolution(solutionId: number, params: ISolutionQuery, taskSolutionDto: TaskSolutionDto) {
+        this.judge0Service.createBatchedSubmission(taskSolutionDto).subscribe(result => {
+            const tokens = this.tokenService.removeMany(solutionId, params);
+
+            this.tokenService.createMany(solutionId, params, result)
+        });
+    }
+
     findOneById(id: number) {
-        return `This action returns a #${id} solution`;
+        return this.solutionRepository.findOneBy({id});
     }
 
     update(id: number, updateSolutionDto: UpdateSolutionDto) {

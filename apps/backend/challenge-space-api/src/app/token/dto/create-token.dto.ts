@@ -1,1 +1,5 @@
-export class CreateTokenDto {}
+export class CreateTokenDto {
+    solutionId: number;
+    testCaseId: number;
+    taskId: number;
+}

@@ -1,12 +1,13 @@
 import {Injectable} from '@nestjs/common';
 import {HttpService} from '@nestjs/axios';
+import {TaskSolutionDto} from './dto/task-solution.dto';
 
 @Injectable()
 export class Judge0Service {
     constructor(private readonly httpService: HttpService) {}
 
-    createBatchedSubmission() {
-        this.httpService.post('https://judge0-ce.p.rapidapi.com/submissions/batch', {
+    createBatchedSubmission(taskSolutionDto: TaskSolutionDto) {
+        return this.httpService.post('https://judge0-ce.p.rapidapi.com/submissions/batch', {
             headers: {
                 'content-type': 'application/json',
                 'Content-Type': 'application/json',
@@ -14,7 +15,7 @@ export class Judge0Service {
                 'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
             },
             body: {
-
+                ...taskSolutionDto
             }
         })
     }
