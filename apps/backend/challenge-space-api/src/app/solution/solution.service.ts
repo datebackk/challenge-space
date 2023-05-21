@@ -11,17 +11,21 @@ import {ISolutionQuery} from './interfaces/solution-query.interface';
 import {Judge0Service} from './judge0.service';
 import {TokenService} from '../token/token.service';
 import {TaskSolutionDto} from './dto/task-solution.dto';
+import {TaskService} from '../task/task.service';
+import {Judge0BatchedRequestDto} from './dto/judge0-batched-request-dto';
+import {Judge0SubmissionRequestDto} from './dto/judge0-submission-request.dto';
 
 @Injectable()
 export class SolutionService {
     constructor(
         @InjectRepository(SolutionEntity)
         private readonly solutionRepository: Repository<SolutionEntity>,
-        private readonly userService: UserService,
-        private readonly contestService: ContestService,
         @Inject(forwardRef(() => TokenService))
         private readonly tokenService: TokenService,
+        private readonly userService: UserService,
+        private readonly contestService: ContestService,
         private readonly judge0Service: Judge0Service,
+        private readonly taskService: TaskService,
     ) {}
     async create(keycloackUser, createSolutionDto: CreateSolutionDto) {
         const contest = await this.contestService.findOne(createSolutionDto.contestId);
@@ -66,8 +70,22 @@ export class SolutionService {
     }
 
     async createTaskSolution(solutionId: number, params: ISolutionQuery, taskSolutionDto: TaskSolutionDto) {
-        this.judge0Service.createBatchedSubmission(taskSolutionDto).subscribe(result => {
+        const task = await this.taskService.findOneById(params.taskId);
+        const judge0SubmissionRequestDto: Judge0SubmissionRequestDto[] = task.testCases.map(testCase => ({
+            language_id: taskSolutionDto.language_id,
+            source_code: taskSolutionDto.source_code,
+            stdin: testCase.input,
+            expected_output: testCase.output,
+        }));
+
+        const judge0BatchedRequestDto: Judge0BatchedRequestDto = {
+            submissions: judge0SubmissionRequestDto
+        }
+
+        this.judge0Service.createBatchedSubmission(judge0BatchedRequestDto).subscribe(result => {
             const tokens = this.tokenService.removeMany(solutionId, params);
+
+            console.log(result)
 
             this.tokenService.createMany(solutionId, params, result)
         });

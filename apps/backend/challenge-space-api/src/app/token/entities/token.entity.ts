@@ -1,4 +1,4 @@
-import {Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {TestCaseEntity} from '../../test-case/entities/test-case.entity';
 import {SolutionEntity} from '../../solution/entities/solution.entity';
 import {TaskEntity} from '../../task/entities/task.entity';
@@ -9,6 +9,9 @@ import {TaskEntity} from '../../task/entities/task.entity';
 export class TokenEntity {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column({unique: true})
+    token: string;
 
     @ManyToOne(() => SolutionEntity, solution => solution.tokens)
     solution: SolutionEntity;

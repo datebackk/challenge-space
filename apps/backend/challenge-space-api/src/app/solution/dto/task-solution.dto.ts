@@ -1,4 +1,4 @@
 export class TaskSolutionDto {
-    readonly languageId: number;
+    readonly language_id: number;
     readonly source_code: string;
 }

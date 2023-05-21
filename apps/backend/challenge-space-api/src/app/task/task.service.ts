@@ -25,7 +25,14 @@ export class TaskService {
     }
 
     findOneById(id: number) {
-        return this.taskRepository.findOneBy({id});
+        return this.taskRepository.findOne({
+            where: {
+                id
+            },
+            relations: {
+                testCases: true,
+            }
+        });
     }
 
     update(id: number, updateTaskDto: UpdateTaskDto) {

@@ -15,7 +15,7 @@ import {TestCaseModule} from '../test-case/test-case.module';
 @Module({
     controllers: [SolutionController],
     providers: [SolutionService, Judge0Service],
-    exports: [SolutionService],
+    exports: [SolutionService, Judge0Service],
     imports: [
         TypeOrmModule.forFeature([SolutionEntity, ContestEntity]),
         forwardRef(() => TokenModule),

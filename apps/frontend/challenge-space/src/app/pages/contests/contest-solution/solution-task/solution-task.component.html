@@ -9,7 +9,7 @@
             <tui-editor-socket
                 *ngSwitchCase="0"
                 class="editor-socket"
-                [content]="taskCondition"
+                [content]="taskDescription"
             ></tui-editor-socket>
         </ng-container>
     </div>
@@ -28,7 +28,7 @@
             [(ngModel)]="code"
         ></ngx-monaco-editor>
         <div class="tui-form__buttons tui-form__buttons_align_end">
-            <button tuiButton size="m" class="tui-space_left-auto">
+            <button tuiButton size="m" class="tui-space_left-auto" (click)="submitTaskSolution()">
                 Запустить и проверить
             </button>
         </div>

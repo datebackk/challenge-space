@@ -33,6 +33,7 @@
         ></challenge-space-solution-welcome>
         <challenge-space-solution-task
             *ngSwitchDefault
+            [solution]="contestInfo.solution"
             [taskSettingsForm]="tasksFormArrayControls[activeItemIndex - 1]"
         ></challenge-space-solution-task>
     </ng-container>

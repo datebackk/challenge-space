@@ -8,6 +8,8 @@ import {ISolutionQuery} from '../solution/interfaces/solution-query.interface';
 import {SolutionService} from '../solution/solution.service';
 import {TaskService} from '../task/task.service';
 import {TestCaseService} from '../test-case/test-case.service';
+import {ITokenQuery} from './interfaces/token-query.interface';
+import {Judge0Service} from '../solution/judge0.service';
 
 @Injectable()
 export class TokenService {
@@ -18,20 +20,21 @@ export class TokenService {
         private readonly solutionService: SolutionService,
         private readonly taskService: TaskService,
         private readonly testCaseService: TestCaseService,
+        private readonly judge0Service: Judge0Service,
     ) {}
     create(createTokenDto: CreateTokenDto) {
         return 'This action adds a new token';
     }
 
     async createMany(solutionId: number, params: ISolutionQuery, judge0BatchedResponse) {
-        const solution = await this.solutionService.findOneById(solutionId)
+        const solution = await this.solutionService.findOneById(solutionId);
         const task = await this.taskService.findOneById(params.taskId);
-        const testCase = await this.testCaseService.findOneById(params.testCaseId);
+
         const tokens = task.testCases.map((testCase, index) => ({
             token: judge0BatchedResponse[index].token,
             task,
             solution,
-            testCase
+            testCase,
         }));
 
         tokens.forEach(tokenEntity => {
@@ -39,8 +42,19 @@ export class TokenService {
         })
     }
 
-    findAll() {
-        return `This action returns all token`;
+    async findAll(params?: ITokenQuery) {
+        const tokens = await this.tokenRepository.find({
+            where: {
+                task: {
+                    id: params?.taskId
+                },
+                solution: {
+                    id: params?.solutionId
+                },
+            }
+        });
+
+        return this.judge0Service.getBatchedResultByTokens(tokens);
     }
 
     findOne(id: number) {

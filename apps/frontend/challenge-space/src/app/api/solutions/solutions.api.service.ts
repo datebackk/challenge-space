@@ -17,4 +17,8 @@ export class SolutionsApiService {
     createSolution(solution: ISolutionWithoutId): Observable<ISolution> {
         return this.http.post<ISolution>(`http://localhost:3000/api/solutions`, solution);
     }
+
+    submitTaskSolution(solutionId: number, judge0BatchedRequest: any, params: any): Observable<void> {
+        return this.http.post<any>(`http://localhost:3000/api/solutions/${solutionId}`, judge0BatchedRequest, {params: params});
+    }
 }
