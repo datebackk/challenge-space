@@ -6,6 +6,7 @@ import {TokenEntity} from './entities/token.entity';
 import {TaskModule} from '../task/task.module';
 import {TestCaseModule} from '../test-case/test-case.module';
 import {SolutionModule} from '../solution/solution.module';
+import {ContestModule} from '../contest/contest.module';
 
 @Module({
     controllers: [TokenController],
@@ -14,6 +15,7 @@ import {SolutionModule} from '../solution/solution.module';
     imports: [
         TypeOrmModule.forFeature([TokenEntity]),
         forwardRef(() => SolutionModule),
+        ContestModule,
         TaskModule,
         TestCaseModule,
     ],

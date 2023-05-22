@@ -31,6 +31,10 @@ export class ContestService {
         });
     }
 
+    findOneById(id: number) {
+        return this.contestRepository.findOneBy({id});
+    }
+
     findOne(id: number) {
         return this.contestRepository.findOneOrFail({
             where: {id},

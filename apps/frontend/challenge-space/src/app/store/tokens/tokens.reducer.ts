@@ -28,7 +28,7 @@ export const tokensReducer = createReducer(
         tokensAdapter.upsertOne(
             {
                 ...contestTaskSolution,
-                isFullLoaded: !contestTaskSolution.result.submissions.some(
+                isFullLoaded: !contestTaskSolution?.result?.submissions.some(
                     contestTaskSolution =>
                         // @ts-ignore
                         contestTaskSolution.status.id in judge0SubmissionWaitingStatuses,
@@ -43,7 +43,7 @@ export const tokensReducer = createReducer(
         const contestSolutions = contestTasksSolutions.map(contestTaskSolution => ({
             ...contestTaskSolution,
             // @ts-ignore
-            isFullLoaded: contestTaskSolution.result.submissions.some(submission => submission.status.id in judge0SubmissionWaitingStatuses),
+            isFullLoaded: contestTaskSolution?.result?.submissions.some(submission => submission.status.id in judge0SubmissionWaitingStatuses),
         }));
 
         return tokensAdapter.setAll(contestSolutions, state);

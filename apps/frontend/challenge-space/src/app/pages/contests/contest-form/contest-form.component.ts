@@ -87,7 +87,7 @@ export class ContestFormComponent {
     onAddTask(): void {
         const taskName = `Задача ${this.tasksFormArray.controls.length + 1}`;
 
-        this.tasksFormArray.push(this.formBuilder.group(this.taskForm));
+        this.tasksFormArray.push(this.formBuilder.group({...this.taskForm, testCases: this.formBuilder.array([this.formBuilder.group(this.testCaseForm)])}));
         this.steps.push(taskName);
     }
 

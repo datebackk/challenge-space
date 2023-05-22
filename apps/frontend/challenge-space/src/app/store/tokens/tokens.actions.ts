@@ -14,8 +14,9 @@ enum TokensActions {
 
 export const sendTaskSolution = createAction(
     TokensActions.SendTaskSolution,
-    (solutionId: number, taskId: number, body: IJudge0Submission) => ({
+    (contestId: number, solutionId: number, taskId: number, body: IJudge0Submission) => ({
         solutionId,
+        contestId,
         taskId,
         body,
     }),

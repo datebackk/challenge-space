@@ -36,8 +36,10 @@
         <ng-container *ngIf="contestInfo.contest && contestInfo.solution">
             <challenge-space-solution-task
                 *ngSwitchDefault
+                [contest]="contestInfo.contest"
                 [solution]="contestInfo.solution"
                 [task]="contestInfo.contest.tasks[activeItemIndex - 1]"
+                [taskIndex]="activeItemIndex - 1"
                 [taskSettingsForm]="tasksFormArrayControls[activeItemIndex - 1]"
                 [codesSettingsForm]="codesFormArrayControls[activeItemIndex - 1]"
                 (sendTaskSolution)="onSendTaskSolution($event)"

@@ -12,6 +12,7 @@ import {ITokenQuery} from './interfaces/token-query.interface';
 import {Judge0Service} from '../solution/judge0.service';
 import {firstValueFrom} from 'rxjs';
 import {groupBy} from 'lodash';
+import {ContestService} from '../contest/contest.service';
 
 @Injectable()
 export class TokenService {
@@ -20,6 +21,7 @@ export class TokenService {
         private readonly tokenRepository: Repository<TokenEntity>,
         @Inject(forwardRef(() => SolutionService))
         private readonly solutionService: SolutionService,
+        private readonly contestService: ContestService,
         private readonly taskService: TaskService,
         private readonly testCaseService: TestCaseService,
         private readonly judge0Service: Judge0Service,
@@ -31,10 +33,12 @@ export class TokenService {
     async createMany(solutionId: number, params: ISolutionQuery, judge0BatchedResponse) {
         const solution = await this.solutionService.findOneById(solutionId);
         const task = await this.taskService.findOneById(params.taskId);
+        const contest = await this.contestService.findOneById(params.contestId);
 
         const tokens = task.testCases.map((testCase, index) => ({
             token: judge0BatchedResponse[index].token,
             task,
+            contest,
             solution,
             testCase,
         }));
@@ -67,13 +71,9 @@ export class TokenService {
         if (!params?.taskId) {
             const result = [];
             const groupedTokens = groupBy(tokens, (token) => token.task.id);
-            console.log('tokens', groupedTokens)
 
             for (const taskId of Object.keys(groupedTokens)) {
-                const submissionResult = await firstValueFrom(this.judge0Service.getBatchedResultByTokens(tokens));
-
-                console.log('taskID', taskId);
-
+                const submissionResult = await firstValueFrom(this.judge0Service.getBatchedResultByTokens(groupedTokens[taskId]));
 
                 result.push({taskId: Number(taskId), solutionId: Number(params.solutionId), contestId: Number(params.contestId), result: submissionResult})
             }

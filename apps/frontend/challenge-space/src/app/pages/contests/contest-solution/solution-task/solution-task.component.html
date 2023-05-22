@@ -40,7 +40,7 @@
         <ngx-monaco-editor
             class="right-container__code-editor"
             [options]="editorOptions"
-            [ngModel]="code"
+            [(ngModel)]="code"
             (ngModelChange)="onModelChange($event)"
         ></ngx-monaco-editor>
         <div class="tui-form__buttons tui-form__buttons_align_end">

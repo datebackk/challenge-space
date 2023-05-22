@@ -1,10 +1,9 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {Router} from '@angular/router';
-import {Store} from '@ngrx/store';
 
-import {logoutUser} from '../../../store/auth/auth.actions';
 import {routerRoutes} from '../../constants/router-routes.const';
 import {IUser} from "../../interfaces/user.interface";
+import {KeycloakService} from 'keycloak-angular';
 
 @Component({
     selector: 'app-navigation',
@@ -21,13 +20,16 @@ export class NavigationComponent {
     activeItemIndex = 0;
     activeSubNavigationItemIndex = 0;
 
-    constructor(private readonly router: Router, private readonly store: Store) {}
+    constructor(
+        private readonly router: Router,
+        private readonly keycloakService: KeycloakService,
+    ) {}
 
     onMyProfile() {
         this.router.navigate([`/employees/profile/${this.user.id}`]);
     }
 
     onLogout() {
-        this.store.dispatch(logoutUser());
+        this.keycloakService.logout();
     }
 }

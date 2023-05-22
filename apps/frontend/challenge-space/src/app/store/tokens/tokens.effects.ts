@@ -45,8 +45,8 @@ export class TokensEffects {
         () =>
             this.actions$.pipe(
                 ofType(sendTaskSolution),
-                switchMap(({solutionId, taskId, body}) =>
-                    this.solutionsApiService.submitTaskSolution(solutionId, taskId, body),
+                switchMap(({contestId, solutionId, taskId, body}) =>
+                    this.solutionsApiService.submitTaskSolution(contestId, solutionId, taskId, body),
                 ),
             ),
         {dispatch: false},

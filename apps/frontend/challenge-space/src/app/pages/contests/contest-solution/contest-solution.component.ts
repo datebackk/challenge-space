@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
 import {ActivatedRoute} from '@angular/router';
@@ -20,6 +20,8 @@ import {IJudge0Submission} from '../../../shared/interfaces/judge0-submission.in
 import {TuiDestroyService} from '@taiga-ui/cdk';
 import {getContestTasksSolutionsByContestId} from '../../../store/tokens/tokens.reducer';
 import {IContestTaskSolution} from './interfaces/contest-task-solution.interface';
+import {LOCAL_STORAGE} from '@ng-web-apis/common';
+import {judge0Languages} from '../../../shared/constants/judge0-languages.const';
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -50,6 +52,7 @@ export class ContestSolutionComponent implements OnInit {
         private readonly store: Store,
         private readonly route: ActivatedRoute,
         private readonly destroy$: TuiDestroyService,
+        @Inject(LOCAL_STORAGE) private readonly storage: Storage,
     ) {}
 
     get selectedContestId(): number {
@@ -86,8 +89,8 @@ export class ContestSolutionComponent implements OnInit {
         this.store.dispatch(setCurrentTask(contestId, taskId));
     }
 
-    onSendTaskSolution({solutionId, taskId, body}: {solutionId: number, taskId: number, body: IJudge0Submission}): void {
-        this.store.dispatch(sendTaskSolution(solutionId, taskId, body));
+    onSendTaskSolution({contestId, solutionId, taskId, body}: {contestId: number, solutionId: number, taskId: number, body: IJudge0Submission}): void {
+        this.store.dispatch(sendTaskSolution(contestId, solutionId, taskId, body));
     }
 
     private updateContestForm(): void {
@@ -96,35 +99,51 @@ export class ContestSolutionComponent implements OnInit {
             distinctUntilKeyChanged('id'),
             takeUntil(this.destroy$),
         ).subscribe(contest => {
-            const tasks = contest.tasks.map(task => this.formBuilder.group(task))
+            const tasks = contest.tasks.map(task => task);
+            let codes = tasks.map(() => ({
+                languageId: judge0Languages[0].id,
+                sourceCode: '',
+            }));
 
             this.tasksFormArray.clear();
+            this.codesFormArray.clear();
 
             tasks.forEach(task => {
-                this.tasksFormArray.push(task);
-            })
+                codes = codes.map(code => ({...code, taskId: task.id}))
+                this.tasksFormArray.push(this.formBuilder.group(task));
+            });
+
+            codes.forEach(code => {
+                this.codesFormArray.push(this.formBuilder.group(code));
+            });
+
+            this.storage.setItem(String(this.selectedContestId), JSON.stringify(this.codesFormArray.getRawValue()));
+
+            this.contestSolutionForm.updateValueAndValidity();
         });
 
         this.contestTasksSolutions.pipe(
             filter<IContestTaskSolution[]>((contestTaskSolution => Boolean(contestTaskSolution.length))),
             take(1),
         ).subscribe(contestTaskSolutions => {
-            console.log(contestTaskSolutions);
             const codes = contestTaskSolutions.map(contestTasksSolutions => {
                     return this.formBuilder.group({
-                        languageId: contestTasksSolutions.result.submissions[0]?.language_id,
-                        sourceCode: contestTasksSolutions.result?.submissions[0]?.source_code
+                        taskId: contestTasksSolutions.taskId,
+                        languageId: contestTasksSolutions.result?.submissions[0]?.language_id || judge0Languages[0].id,
+                        sourceCode: contestTasksSolutions.result?.submissions[0]?.source_code || '',
                     });
                 }
             );
-
-            console.log(codes);
 
             this.codesFormArray.clear();
 
             codes.forEach(code => {
                 this.codesFormArray.push(code);
             });
+
+            this.storage.setItem(String(this.selectedContestId), JSON.stringify(this.codesFormArray.getRawValue()));
+
+            this.contestSolutionForm.updateValueAndValidity();
         });
     }
 }

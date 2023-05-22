@@ -1,7 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
-    EventEmitter,
+    EventEmitter, Inject,
     Input, OnChanges,
     OnInit,
     Output,
@@ -13,7 +13,7 @@ import {IJudge0Submission} from '../../../../shared/interfaces/judge0-submission
 import {IContestTask} from '../../interfaces/contest-task.interface';
 import {select, Store} from '@ngrx/store';
 import {getTaskSolutionByTaskId} from '../../../../store/tokens/tokens.reducer';
-import {Observable, takeUntil, timer} from 'rxjs';
+import {distinctUntilChanged, Observable, takeUntil, timer} from 'rxjs';
 import {IContestTaskSolution} from '../interfaces/contest-task-solution.interface';
 import {loadTaskSolutions} from '../../../../store/tokens/tokens.actions';
 import {judge0Languages} from '../../../../shared/constants/judge0-languages.const';
@@ -22,6 +22,9 @@ import {
     judge0LanguagesToVscodeLanguages
 } from '../../../../shared/constants/judge0-languages-to-vscode-languages.const';
 import {get} from 'lodash';
+import {IContest} from '../../interfaces/contest.interface';
+import {LOCAL_STORAGE} from '@ng-web-apis/common';
+import {JSONParse} from '../../../../shared/utils/json-parse';
 
 @Component({
     selector: 'challenge-space-solution-task',
@@ -31,18 +34,20 @@ import {get} from 'lodash';
     providers: [TuiDestroyService],
 })
 export class SolutionTaskComponent implements OnInit, OnChanges {
+    @Input() contest!: IContest;
     @Input() taskSettingsForm!: FormGroup;
     @Input() codesSettingsForm!: FormGroup;
+    @Input() taskIndex!: number;
     @Input() solution!: ISolution;
     @Input() task!: IContestTask;
-    @Output() sendTaskSolution = new EventEmitter<{ solutionId: number, taskId: number, body: IJudge0Submission }>();
+    @Output() sendTaskSolution = new EventEmitter<{ contestId: number, solutionId: number, taskId: number, body: IJudge0Submission }>();
 
     readonly intervalUpdate = timer(0, 6000).pipe(takeUntil(this.destroy$));
 
     taskSolution: Observable<IContestTaskSolution | undefined> = this.store.pipe(select(getTaskSolutionByTaskId));
 
     editorOptions = {theme: 'vs-dark', language: 'javascript'};
-    code = 'function x() {\nconsole.log("Hello world!");\n}';
+    code = '';
 
     activeItemIndex = 0;
 
@@ -50,11 +55,23 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
 
     languageControl = new FormControl(this.languages[0]);
 
-    constructor(private readonly store: Store, private readonly destroy$: TuiDestroyService) {
-    }
+    constructor(
+        private readonly store: Store,
+        private readonly destroy$: TuiDestroyService,
+        @Inject(LOCAL_STORAGE) private readonly storage: Storage,
+    ) {}
 
-    ngOnChanges({task}: SimpleChanges): void {
-        if (tas && task.currentValue) {
+    ngOnChanges({codesSettingsForm}: SimpleChanges): void {
+        if (codesSettingsForm && codesSettingsForm.currentValue) {
+            const settings = JSONParse(this.storage.getItem(String(this.contest.id)));
+
+            this.code = settings.find((setting: any) => setting.taskId === this.task.id)?.sourceCode || '';
+
+            console.log(this.code);
+
+            // @ts-ignore
+            this.languageControl.setValue(judge0Languages.find(language => language.id === settings[this.activeItemIndex].languageId) || judge0Languages[0].id);
+            this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, settings[this.activeItemIndex].languageId || judge0Languages[0].id)}
         }
     }
 
@@ -66,11 +83,26 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
         return this.taskSettingsForm.get('description')?.value;
     }
 
+    get codeControl(): FormControl {
+        return this.codesSettingsForm.get('sourceCode') as FormControl;
+    }
+
+    get codesSettingsFormLanguageControl(): FormControl {
+        return this.codesSettingsForm.get('languageId') as FormControl;
+    }
+
     ngOnInit(): void {
         this.intervalUpdate.subscribe(() => {
             this.store.dispatch(loadTaskSolutions(this.solution.id, this.task.id))
         });
+        this.listenCodesSettingsFormLanguageControl();
         this.listenLanguageControl();
+    }
+
+    private listenCodesSettingsFormLanguageControl() {
+        this.codesSettingsFormLanguageControl.valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(languageId => {
+           this.languageControl.setValue({id: languageId, name: ''});
+        });
     }
 
     private listenLanguageControl(): void {
@@ -85,6 +117,7 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
         this.activeItemIndex = 1;
         this.sendTaskSolution.emit({
             solutionId: this.solution.id,
+            contestId: this.contest.id,
             taskId: this.task.id,
             body: {
                 // @ts-ignore
@@ -95,6 +128,5 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
     }
 
     onModelChange($event: any) {
-
     }
 }
