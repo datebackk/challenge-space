@@ -23,14 +23,19 @@
         </ng-container>
     </div>
     <div class="tui-col_6 right-container">
-        <tui-select class="tui-space_bottom-2" [formControl]="languageControl">
+        <tui-select class="tui-space_bottom-2"
+                    [formControl]="languageControl"
+                    [valueContent]="valueContent"
+        >
             Язык
             <input tuiTextfield placeholder="Выберите язызык программирования" />
             <tui-data-list-wrapper
                 *tuiDataList
                 [items]="languages"
+                [itemContent]="valueContent"
             ></tui-data-list-wrapper>
         </tui-select>
+        <ng-template #valueContent let-language>{{ language.name }}</ng-template>
         <ngx-monaco-editor
             class="right-container__code-editor"
             [options]="editorOptions"

@@ -2,9 +2,9 @@ import {
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
-    Input, OnChanges,
+    Input,
     OnInit,
-    Output, SimpleChanges,
+    Output,
 } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ISolution} from '../interfaces/solution.interface';
@@ -12,17 +12,24 @@ import {IJudge0Submission} from '../../../../shared/interfaces/judge0-submission
 import {IContestTask} from '../../interfaces/contest-task.interface';
 import {select, Store} from '@ngrx/store';
 import {getTaskSolutionByTaskId} from '../../../../store/tokens/tokens.reducer';
-import {Observable} from 'rxjs';
+import {Observable, takeUntil} from 'rxjs';
 import {IContestTaskSolution} from '../interfaces/contest-task-solution.interface';
 import {loadTaskSolutions} from '../../../../store/tokens/tokens.actions';
+import {judge0Languages} from '../../../../shared/constants/judge0-languages.const';
+import {TuiDestroyService} from '@taiga-ui/cdk';
+import {
+    judge0LanguagesToVscodeLanguages
+} from '../../../../shared/constants/judge0-languages-to-vscode-languages.const';
+import {get} from 'lodash';
 
 @Component({
     selector: 'challenge-space-solution-task',
     templateUrl: './solution-task.component.html',
     styleUrls: ['./solution-task.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [TuiDestroyService],
 })
-export class SolutionTaskComponent implements OnInit, OnChanges {
+export class SolutionTaskComponent implements OnInit {
     @Input() taskSettingsForm!: FormGroup;
     @Input() solution!: ISolution;
     @Input() task!: IContestTask;
@@ -35,12 +42,11 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
 
     activeItemIndex = 0;
 
-    languages = ['JavaScript', 'Python'];
+    languages = judge0Languages;
 
     languageControl = new FormControl(this.languages[0]);
 
-    constructor(private readonly store: Store) {
-    }
+    constructor(private readonly store: Store, private readonly destroy$: TuiDestroyService) {}
 
     get taskName(): string {
         return this.taskSettingsForm.get('name')?.value;
@@ -52,22 +58,26 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.store.dispatch(loadTaskSolutions(this.solution.id, this.task.id));
+        this.listenLanguageControl();
     }
 
-    submitTaskSolution() {
+    private listenLanguageControl(): void {
+        // @ts-ignore
+        this.languageControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((language: {id: number, name: string}) => {
+            const strLanguageId = String(language.id);
+            this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, strLanguageId)}
+        })
+    }
+
+    submitTaskSolution(): void {
         this.sendTaskSolution.emit({
             solutionId: this.solution.id,
             taskId: this.task.id,
             body: {
-                language_id: 92,
+                // @ts-ignore
+                language_id: this.languageControl.value.id,
                 source_code: this.code,
             }
         });
-    }
-
-    ngOnChanges({task}: SimpleChanges): void {
-        if (task && task.currentValue) {
-
-        }
     }
 }
