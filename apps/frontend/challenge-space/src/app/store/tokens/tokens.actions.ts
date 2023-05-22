@@ -4,14 +4,16 @@ import {IContestTaskSolution} from '../../pages/contests/contest-solution/interf
 import {IJudge0Submission} from '../../shared/interfaces/judge0-submission.interface';
 
 enum TokensActions {
-    sendTaskSolution = '[Tokens] send task solution',
-    loadTaskSolutions = '[Tokens] load task solutions',
-    loadTaskSolutionsSuccess = '[Tokens] load task solutions success',
-    loadTaskSolutionsError = '[Tokens] load task solutions error',
+    SendTaskSolution = '[Tokens] send task solution',
+    LoadContestSolutions = '[Tokens] load contest solutions',
+    LoadContestSolutionsSuccess = '[Tokens] load contest solutions success',
+    LoadTaskSolutions = '[Tokens] load task solutions',
+    LoadTaskSolutionsSuccess = '[Tokens] load task solutions success',
+    LoadTaskSolutionsError = '[Tokens] load task solutions error',
 }
 
 export const sendTaskSolution = createAction(
-    TokensActions.sendTaskSolution,
+    TokensActions.SendTaskSolution,
     (solutionId: number, taskId: number, body: IJudge0Submission) => ({
         solutionId,
         taskId,
@@ -19,14 +21,24 @@ export const sendTaskSolution = createAction(
     }),
 );
 
+export const loadContestSolutions = createAction(
+    TokensActions.LoadContestSolutions,
+    (solutionId: number) => ({solutionId}),
+)
+
+export const loadContestSolutionsSuccess = createAction(
+    TokensActions.LoadContestSolutionsSuccess,
+    (contestTasksSolutions: IContestTaskSolution[]) => ({contestTasksSolutions}),
+)
+
 export const loadTaskSolutions = createAction(
-    TokensActions.loadTaskSolutions,
+    TokensActions.LoadTaskSolutions,
     (solutionId: number, taskId: number) => ({solutionId, taskId}),
 );
 
 export const loadTaskSolutionsSuccess = createAction(
-    TokensActions.loadTaskSolutionsSuccess,
+    TokensActions.LoadTaskSolutionsSuccess,
     (contestTaskSolution: IContestTaskSolution) => ({contestTaskSolution}),
 );
 
-export const loadTaskSolutionsError = createAction(TokensActions.loadTaskSolutionsError);
+export const loadTaskSolutionsError = createAction(TokensActions.LoadTaskSolutionsError);

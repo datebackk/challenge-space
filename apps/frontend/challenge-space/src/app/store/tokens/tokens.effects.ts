@@ -4,6 +4,7 @@ import {catchError, map, of, switchMap} from 'rxjs';
 
 import {SolutionsApiService} from '../../api/solutions/solutions.api.service';
 import {
+    loadContestSolutions, loadContestSolutionsSuccess,
     loadTaskSolutions,
     loadTaskSolutionsError,
     loadTaskSolutionsSuccess,
@@ -26,7 +27,21 @@ export class TokensEffects {
         ),
     );
 
-    sendTaskSolution = createEffect(
+    loadContestTasksSolution$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadContestSolutions),
+            switchMap(({solutionId}) =>
+                this.solutionsApiService.getSolutionTasksResults(solutionId).pipe(
+                    map(contestTaskSolution =>
+                        loadContestSolutionsSuccess(contestTaskSolution),
+                    ),
+                    catchError(() => of(loadTaskSolutionsError)),
+                ),
+            ),
+        ),
+    );
+
+    sendTaskSolution$ = createEffect(
         () =>
             this.actions$.pipe(
                 ofType(sendTaskSolution),

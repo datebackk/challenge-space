@@ -4,7 +4,11 @@ import {IContestTaskSolution} from '../../pages/contests/contest-solution/interf
 import {IContestTask} from '../../pages/contests/interfaces/contest-task.interface';
 import {judge0SubmissionWaitingStatuses} from '../../shared/constants/judge0-submission-waiting-statuses.const';
 import {getCurrentContestTask} from '../contests/contests.reducer';
-import {loadTaskSolutionsSuccess, sendTaskSolution} from './tokens.actions';
+import {
+    loadContestSolutionsSuccess,
+    loadTaskSolutionsSuccess,
+    sendTaskSolution,
+} from './tokens.actions';
 import {ITokensState, tokenInitialState, tokensAdapter} from './tokens.state';
 
 export const TOKENS_FEATURE = 'tokens';
@@ -26,13 +30,8 @@ export const tokensReducer = createReducer(
                 ...contestTaskSolution,
                 isFullLoaded: !contestTaskSolution.result.submissions.some(
                     contestTaskSolution =>
-                        (
-                            (
-                                // @ts-ignore
-                                contestTaskSolution.status.id in
-                                judge0SubmissionWaitingStatuses
-                            )
-                        ),
+                        // @ts-ignore
+                        contestTaskSolution.status.id in judge0SubmissionWaitingStatuses,
                 ),
             },
             {
@@ -40,6 +39,16 @@ export const tokensReducer = createReducer(
             },
         ),
     ),
+    on(loadContestSolutionsSuccess, (state, {contestTasksSolutions}) => {
+        const contestSolutions = contestTasksSolutions.map(contestTasksSolution => ({
+            ...contestTasksSolution,
+            isFullLoaded:
+                // @ts-ignore
+                contestTaskSolution.status.id in judge0SubmissionWaitingStatuses,
+        }));
+
+        return tokensAdapter.upsertMany(contestSolutions, state);
+    }),
 );
 
 export const tokensFeatureSelector = createFeatureSelector<ITokensState>(TOKENS_FEATURE);

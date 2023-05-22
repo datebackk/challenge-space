@@ -19,10 +19,23 @@
                     class="tui-island__paragraph negative-color"
                 >{{ this.result.status.description }}</p>
                 <p
+                    *ngIf="isPassed"
                     class="tui-island__paragraph"
                     [class.positive-color]="isPassed"
                     [class.negative-color]="isFailed"
                 >{{ text }}</p>
+                <p
+                    *ngIf="isFailed"
+                    class="tui-island__paragraph"
+                    [class.positive-color]="isPassed"
+                    [class.negative-color]="isFailed"
+                >{{ result.stderr }}</p>
+                <p
+                    *ngIf="isFailed"
+                    class="tui-island__paragraph"
+                    [class.positive-color]="isPassed"
+                    [class.negative-color]="isFailed"
+                >{{ result.compile_output }}</p>
                 <p
                     class="tui-island__paragraph tui-island__paragraph_link"
                 ></p>

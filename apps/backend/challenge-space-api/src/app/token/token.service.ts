@@ -44,6 +44,7 @@ export class TokenService {
     }
 
     async findAll(params?: ITokenQuery) {
+        const tasks = await this.taskService.findOneByContestId(params?.contestId);
         const tokens = await this.tokenRepository.find({
             where: {
                 task: {
@@ -60,6 +61,10 @@ export class TokenService {
         }
 
         const result = await firstValueFrom(this.judge0Service.getBatchedResultByTokens(tokens));
+
+        if (!params?.taskId) {
+            return
+        }
 
         return {taskId: Number(params?.taskId), solutionId: Number(params.solutionId), result};
     }

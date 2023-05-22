@@ -35,6 +35,16 @@ export class TaskService {
         });
     }
 
+    findOneByContestId(contestId: number) {
+        return  this.taskRepository.findOneBy(
+            {
+                contest: {
+                    id: contestId,
+                }
+            }
+        );
+    }
+
     update(id: number, updateTaskDto: UpdateTaskDto) {
         return `This action updates a #${id} task`;
     }
