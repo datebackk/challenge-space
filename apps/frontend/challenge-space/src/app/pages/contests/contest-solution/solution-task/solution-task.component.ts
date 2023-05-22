@@ -32,6 +32,7 @@ import {get} from 'lodash';
 })
 export class SolutionTaskComponent implements OnInit, OnChanges {
     @Input() taskSettingsForm!: FormGroup;
+    @Input() codesSettingsForm!: FormGroup;
     @Input() solution!: ISolution;
     @Input() task!: IContestTask;
     @Output() sendTaskSolution = new EventEmitter<{ solutionId: number, taskId: number, body: IJudge0Submission }>();
@@ -53,7 +54,7 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges({task}: SimpleChanges): void {
-        if (task && task.currentValue) {
+        if (tas && task.currentValue) {
         }
     }
 
@@ -91,5 +92,9 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
                 source_code: this.code,
             }
         });
+    }
+
+    onModelChange($event: any) {
+
     }
 }

@@ -23,7 +23,7 @@ export const sendTaskSolution = createAction(
 
 export const loadContestSolutions = createAction(
     TokensActions.LoadContestSolutions,
-    (solutionId: number) => ({solutionId}),
+    (contestId: number, solutionId: number) => ({contestId, solutionId}),
 )
 
 export const loadContestSolutionsSuccess = createAction(

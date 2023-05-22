@@ -1,6 +1,6 @@
 import {forwardRef, Inject, Injectable} from '@nestjs/common';
-import { CreateTokenDto } from './dto/create-token.dto';
-import { UpdateTokenDto } from './dto/update-token.dto';
+import {CreateTokenDto} from './dto/create-token.dto';
+import {UpdateTokenDto} from './dto/update-token.dto';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {TokenEntity} from './entities/token.entity';
@@ -11,6 +11,7 @@ import {TestCaseService} from '../test-case/test-case.service';
 import {ITokenQuery} from './interfaces/token-query.interface';
 import {Judge0Service} from '../solution/judge0.service';
 import {firstValueFrom} from 'rxjs';
+import {groupBy} from 'lodash';
 
 @Injectable()
 export class TokenService {
@@ -24,7 +25,7 @@ export class TokenService {
         private readonly judge0Service: Judge0Service,
     ) {}
     create(createTokenDto: CreateTokenDto) {
-        return 'This action adds a new token';
+
     }
 
     async createMany(solutionId: number, params: ISolutionQuery, judge0BatchedResponse) {
@@ -44,7 +45,6 @@ export class TokenService {
     }
 
     async findAll(params?: ITokenQuery) {
-        const tasks = await this.taskService.findOneByContestId(params?.contestId);
         const tokens = await this.tokenRepository.find({
             where: {
                 task: {
@@ -53,6 +53,9 @@ export class TokenService {
                 solution: {
                     id: params?.solutionId
                 },
+            },
+            relations: {
+                task: true
             }
         });
 
@@ -60,11 +63,25 @@ export class TokenService {
             return [];
         }
 
-        const result = await firstValueFrom(this.judge0Service.getBatchedResultByTokens(tokens));
 
         if (!params?.taskId) {
-            return
+            const result = [];
+            const groupedTokens = groupBy(tokens, (token) => token.task.id);
+            console.log('tokens', groupedTokens)
+
+            for (const taskId of Object.keys(groupedTokens)) {
+                const submissionResult = await firstValueFrom(this.judge0Service.getBatchedResultByTokens(tokens));
+
+                console.log('taskID', taskId);
+
+
+                result.push({taskId: Number(taskId), solutionId: Number(params.solutionId), contestId: Number(params.contestId), result: submissionResult})
+            }
+
+            return result;
         }
+
+        const result = await firstValueFrom(this.judge0Service.getBatchedResultByTokens(tokens));
 
         return {taskId: Number(params?.taskId), solutionId: Number(params.solutionId), result};
     }

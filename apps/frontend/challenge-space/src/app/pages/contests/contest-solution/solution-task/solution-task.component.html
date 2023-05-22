@@ -40,11 +40,12 @@
         <ngx-monaco-editor
             class="right-container__code-editor"
             [options]="editorOptions"
-            [(ngModel)]="code"
+            [ngModel]="code"
+            (ngModelChange)="onModelChange($event)"
         ></ngx-monaco-editor>
         <div class="tui-form__buttons tui-form__buttons_align_end">
             <button tuiButton size="m" class="tui-space_left-auto" (click)="submitTaskSolution()">
-                Запустить и проверить
+                Отправить и проверить
             </button>
         </div>
     </div>

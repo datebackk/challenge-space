@@ -3,6 +3,7 @@ import {IJudge0BatchedResponse} from '../../../../shared/interfaces/judge0-batch
 export interface IContestTaskSolution {
     solutionId: number;
     taskId: number;
+    contestId: number;
     result: IJudge0BatchedResponse;
     isFullLoaded: boolean;
 }

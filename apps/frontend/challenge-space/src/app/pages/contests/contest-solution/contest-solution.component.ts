@@ -4,7 +4,7 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {getContestById, getContestsLoadingStatus} from '../../../store/contests/contests.reducer';
-import {distinctUntilKeyChanged, filter, Observable} from 'rxjs';
+import {distinctUntilKeyChanged, filter, Observable, take, takeUntil} from 'rxjs';
 import {IContest} from '../interfaces/contest.interface';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
 import {loadContest, setCurrentTask} from '../../../store/contests/contests.actions';
@@ -17,12 +17,16 @@ import {
 import {ISolution} from './interfaces/solution.interface';
 import {sendTaskSolution} from '../../../store/tokens/tokens.actions';
 import {IJudge0Submission} from '../../../shared/interfaces/judge0-submission.interface';
+import {TuiDestroyService} from '@taiga-ui/cdk';
+import {getContestTasksSolutionsByContestId} from '../../../store/tokens/tokens.reducer';
+import {IContestTaskSolution} from './interfaces/contest-task-solution.interface';
 
 @Component({
     selector: 'challenge-space-contest-solution',
     templateUrl: './contest-solution.component.html',
     styleUrls: ['./contest-solution.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [TuiDestroyService],
 })
 export class ContestSolutionComponent implements OnInit {
     readonly contest$: Observable<IContest | undefined> = this.store.select(getContestById, this.selectedContestId);
@@ -31,6 +35,8 @@ export class ContestSolutionComponent implements OnInit {
     readonly solution$: Observable<ISolution | undefined> = this.store.select(getSolutionByUserIdAndContestId, this.selectedContestId);
     readonly solutionsLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getSolutionsLoadingStatus));
     readonly createSolutionLoadingStatus$: Observable<LoadingStatus> = this.store.pipe(select(getCreateSolutionLoadingStatus));
+
+    readonly contestTasksSolutions: Observable<IContestTaskSolution[]> = this.store.pipe(select(getContestTasksSolutionsByContestId, this.selectedContestId));
 
     activeItemIndex = 0;
 
@@ -43,6 +49,7 @@ export class ContestSolutionComponent implements OnInit {
         private readonly formBuilder: FormBuilder,
         private readonly store: Store,
         private readonly route: ActivatedRoute,
+        private readonly destroy$: TuiDestroyService,
     ) {}
 
     get selectedContestId(): number {
@@ -51,6 +58,14 @@ export class ContestSolutionComponent implements OnInit {
 
     get tasksFormArray(): FormArray {
         return this.contestSolutionForm.get('tasks') as FormArray;
+    }
+
+    get codesFormArray(): FormArray {
+        return this.contestSolutionForm.get('codes') as FormArray;
+    }
+
+    get codesFormArrayControls(): FormGroup[] {
+        return this.codesFormArray.controls as FormGroup[];
     }
 
     get tasksFormArrayControls(): FormGroup[] {
@@ -79,6 +94,7 @@ export class ContestSolutionComponent implements OnInit {
         this.contest$.pipe(
             filter<IContest | undefined>(Boolean),
             distinctUntilKeyChanged('id'),
+            takeUntil(this.destroy$),
         ).subscribe(contest => {
             const tasks = contest.tasks.map(task => this.formBuilder.group(task))
 
@@ -87,6 +103,28 @@ export class ContestSolutionComponent implements OnInit {
             tasks.forEach(task => {
                 this.tasksFormArray.push(task);
             })
+        });
+
+        this.contestTasksSolutions.pipe(
+            filter<IContestTaskSolution[]>((contestTaskSolution => Boolean(contestTaskSolution.length))),
+            take(1),
+        ).subscribe(contestTaskSolutions => {
+            console.log(contestTaskSolutions);
+            const codes = contestTaskSolutions.map(contestTasksSolutions => {
+                    return this.formBuilder.group({
+                        languageId: contestTasksSolutions.result.submissions[0]?.language_id,
+                        sourceCode: contestTasksSolutions.result?.submissions[0]?.source_code
+                    });
+                }
+            );
+
+            console.log(codes);
+
+            this.codesFormArray.clear();
+
+            codes.forEach(code => {
+                this.codesFormArray.push(code);
+            });
         });
     }
 }

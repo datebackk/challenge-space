@@ -40,14 +40,13 @@ export const tokensReducer = createReducer(
         ),
     ),
     on(loadContestSolutionsSuccess, (state, {contestTasksSolutions}) => {
-        const contestSolutions = contestTasksSolutions.map(contestTasksSolution => ({
-            ...contestTasksSolution,
-            isFullLoaded:
-                // @ts-ignore
-                contestTaskSolution.status.id in judge0SubmissionWaitingStatuses,
+        const contestSolutions = contestTasksSolutions.map(contestTaskSolution => ({
+            ...contestTaskSolution,
+            // @ts-ignore
+            isFullLoaded: contestTaskSolution.result.submissions.some(submission => submission.status.id in judge0SubmissionWaitingStatuses),
         }));
 
-        return tokensAdapter.upsertMany(contestSolutions, state);
+        return tokensAdapter.setAll(contestSolutions, state);
     }),
 );
 
@@ -61,4 +60,10 @@ export const getTaskSolutionByTaskId = createSelector(
     getCurrentContestTask,
     (taskSolutions: IContestTaskSolution[], contestTask: IContestTask | null) =>
         taskSolutions.find(taskSolution => taskSolution.taskId === contestTask?.id),
+);
+
+export const getContestTasksSolutionsByContestId = createSelector(
+    getTasksSolutions,
+    (taskSolutions: IContestTaskSolution[], contestId: number) =>
+        taskSolutions.filter(taskSolution => taskSolution.contestId === contestId),
 );

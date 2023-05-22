@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {SolutionsApiService} from '../../api/solutions/solutions.api.service';
 import {createSolution, createSolutionSuccess, loadSolutionByContestId, loadSolutionSuccess} from './solutions.actions';
-import {map, switchMap} from 'rxjs';
+import {map, mergeMap, switchMap} from 'rxjs';
+import {loadContestSolutions} from '../tokens/tokens.actions';
 
 @Injectable()
 export class SolutionsEffects {
@@ -11,7 +12,7 @@ export class SolutionsEffects {
             ofType(loadSolutionByContestId),
             switchMap(({contestId}) =>
                 this.solutionsApiService.getSolutionByContestId(contestId).pipe(
-                    map((solution) => loadSolutionSuccess(solution))
+                    mergeMap((solution) => [loadSolutionSuccess(solution), loadContestSolutions(contestId, solution.id)])
                 )
             )
         )

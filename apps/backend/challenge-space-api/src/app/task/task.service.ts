@@ -36,7 +36,7 @@ export class TaskService {
     }
 
     findOneByContestId(contestId: number) {
-        return  this.taskRepository.findOneBy(
+        return this.taskRepository.findOneBy(
             {
                 contest: {
                     id: contestId,

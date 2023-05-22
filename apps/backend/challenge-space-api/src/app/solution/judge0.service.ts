@@ -6,6 +6,7 @@ import {TokenEntity} from '../token/entities/token.entity';
 
 @Injectable()
 export class Judge0Service {
+    private readonly submissionFields = 'stdout,time,memory,stderr,token,compile_output,message,status,language_id,source_code';
     constructor(private readonly httpService: HttpService) {}
 
     getBatchedResultByTokens(tokens: TokenEntity[]) {
@@ -17,10 +18,10 @@ export class Judge0Service {
                 },
                 params: {
                     tokens: tokens.map(token => token.token).join(','),
+                    fields: this.submissionFields,
                 }
             },
         ).pipe(
-            tap((response) => console.log(response)),
             map(response => response.data),
             catchError(async (error) => console.log(error)),
         );

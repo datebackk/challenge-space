@@ -27,7 +27,7 @@ export class SolutionsApiService {
         return this.http.get<IContestTaskSolution>(`http://localhost:3000/api/tokens`, {params: {solutionId, taskId}});
     }
 
-    getSolutionTasksResults(solutionId: number): Observable<IContestTaskSolution[]> {
-        return this.http.get<IContestTaskSolution[]>(`http://localhost:3000/api/tokens`, {params: {solutionId}});
+    getSolutionTasksResults(contestId: number, solutionId: number): Observable<IContestTaskSolution[]> {
+        return this.http.get<IContestTaskSolution[]>(`http://localhost:3000/api/tokens`, {params: {contestId, solutionId}});
     }
 }
