@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TuiEditorSocketModule} from '@taiga-ui/addon-editor';
-import {TuiButtonModule} from '@taiga-ui/core';
+import {TuiButtonModule, TuiLoaderModule} from '@taiga-ui/core';
 import {
     TuiBadgeModule,
     TuiDataListWrapperModule, TuiIslandModule,
@@ -42,6 +42,7 @@ import {SolutionTaskOutputComponent} from './solution-task-output/solution-task-
         TuiButtonModule,
         TuiLetModule,
         TuiIslandModule,
+        TuiLoaderModule,
     ],
     providers: [
         {

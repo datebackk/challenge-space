@@ -2,9 +2,10 @@ import {
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
-    Input,
+    Input, OnChanges,
     OnInit,
     Output,
+    SimpleChanges,
 } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ISolution} from '../interfaces/solution.interface';
@@ -12,7 +13,7 @@ import {IJudge0Submission} from '../../../../shared/interfaces/judge0-submission
 import {IContestTask} from '../../interfaces/contest-task.interface';
 import {select, Store} from '@ngrx/store';
 import {getTaskSolutionByTaskId} from '../../../../store/tokens/tokens.reducer';
-import {Observable, takeUntil} from 'rxjs';
+import {Observable, takeUntil, timer} from 'rxjs';
 import {IContestTaskSolution} from '../interfaces/contest-task-solution.interface';
 import {loadTaskSolutions} from '../../../../store/tokens/tokens.actions';
 import {judge0Languages} from '../../../../shared/constants/judge0-languages.const';
@@ -29,11 +30,13 @@ import {get} from 'lodash';
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [TuiDestroyService],
 })
-export class SolutionTaskComponent implements OnInit {
+export class SolutionTaskComponent implements OnInit, OnChanges {
     @Input() taskSettingsForm!: FormGroup;
     @Input() solution!: ISolution;
     @Input() task!: IContestTask;
-    @Output() sendTaskSolution = new EventEmitter<{solutionId: number, taskId: number, body: IJudge0Submission}>();
+    @Output() sendTaskSolution = new EventEmitter<{ solutionId: number, taskId: number, body: IJudge0Submission }>();
+
+    readonly intervalUpdate = timer(0, 6000).pipe(takeUntil(this.destroy$));
 
     taskSolution: Observable<IContestTaskSolution | undefined> = this.store.pipe(select(getTaskSolutionByTaskId));
 
@@ -46,7 +49,13 @@ export class SolutionTaskComponent implements OnInit {
 
     languageControl = new FormControl(this.languages[0]);
 
-    constructor(private readonly store: Store, private readonly destroy$: TuiDestroyService) {}
+    constructor(private readonly store: Store, private readonly destroy$: TuiDestroyService) {
+    }
+
+    ngOnChanges({task}: SimpleChanges): void {
+        if (task && task.currentValue) {
+        }
+    }
 
     get taskName(): string {
         return this.taskSettingsForm.get('name')?.value;
@@ -57,7 +66,9 @@ export class SolutionTaskComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.store.dispatch(loadTaskSolutions(this.solution.id, this.task.id));
+        this.intervalUpdate.subscribe(() => {
+            this.store.dispatch(loadTaskSolutions(this.solution.id, this.task.id))
+        });
         this.listenLanguageControl();
     }
 
@@ -70,6 +81,7 @@ export class SolutionTaskComponent implements OnInit {
     }
 
     submitTaskSolution(): void {
+        this.activeItemIndex = 1;
         this.sendTaskSolution.emit({
             solutionId: this.solution.id,
             taskId: this.task.id,

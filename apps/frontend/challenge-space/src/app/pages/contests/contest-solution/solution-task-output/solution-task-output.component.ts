@@ -12,6 +12,7 @@ import {judge0SubmissionWaitingStatuses} from '../../../../shared/constants/judg
 })
 export class SolutionTaskOutputComponent {
     @Input() result!: IJudge0Submission;
+    @Input() isFullLoaded!: boolean;
     @Input() index!: number;
 
     get isPassed(): boolean {

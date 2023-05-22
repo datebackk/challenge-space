@@ -15,7 +15,7 @@ import {
     getSolutionsLoadingStatus
 } from '../../../store/solutions/solutions.reducer';
 import {ISolution} from './interfaces/solution.interface';
-import {sendTaskSolution} from '../../../store/tokens/tokens.actions';
+import {loadTaskSolutions, sendTaskSolution} from '../../../store/tokens/tokens.actions';
 import {IJudge0Submission} from '../../../shared/interfaces/judge0-submission.interface';
 
 @Component({
@@ -72,6 +72,7 @@ export class ContestSolutionComponent implements OnInit {
 
     onSendTaskSolution({solutionId, taskId, body}: {solutionId: number, taskId: number, body: IJudge0Submission}): void {
         this.store.dispatch(sendTaskSolution(solutionId, taskId, body));
+        this.store.dispatch(loadTaskSolutions(solutionId, taskId));
     }
 
     private updateContestForm(): void {

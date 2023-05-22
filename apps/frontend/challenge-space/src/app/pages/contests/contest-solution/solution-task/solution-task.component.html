@@ -17,6 +17,7 @@
                 <challenge-space-solution-task-output
                     *ngFor="let result of (taskSolution | async)?.result?.submissions; let i = index"
                     [result]="result"
+                    [isFullLoaded]="(taskSolution | async)?.isFullLoaded"
                     [index]="i"
                 ></challenge-space-solution-task-output>
             </ng-container>

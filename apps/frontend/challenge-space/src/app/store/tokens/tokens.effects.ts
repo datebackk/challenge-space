@@ -1,8 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {loadTaskSolutions, loadTaskSolutionsError, loadTaskSolutionsSuccess, sendTaskSolution} from './tokens.actions';
 import {catchError, map, of, switchMap} from 'rxjs';
+
 import {SolutionsApiService} from '../../api/solutions/solutions.api.service';
+import {
+    loadTaskSolutions,
+    loadTaskSolutionsError,
+    loadTaskSolutionsSuccess,
+    sendTaskSolution,
+} from './tokens.actions';
 
 @Injectable()
 export class TokensEffects {
@@ -11,21 +17,24 @@ export class TokensEffects {
             ofType(loadTaskSolutions),
             switchMap(({solutionId, taskId}) =>
                 this.solutionsApiService.getSolutionTaskResults(solutionId, taskId).pipe(
-                    map((contestTaskSolution) => loadTaskSolutionsSuccess(contestTaskSolution)),
+                    map(contestTaskSolution =>
+                        loadTaskSolutionsSuccess(contestTaskSolution),
+                    ),
                     catchError(() => of(loadTaskSolutionsError)),
-                )
-            ),
-        )
-    );
-
-    sendTaskSolution = createEffect(() =>
-        this.actions$.pipe(
-            ofType(sendTaskSolution),
-            switchMap(({solutionId, taskId, body}) =>
-                this.solutionsApiService.submitTaskSolution(solutionId, taskId, body)
+                ),
             ),
         ),
-        {dispatch: false}
+    );
+
+    sendTaskSolution = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(sendTaskSolution),
+                switchMap(({solutionId, taskId, body}) =>
+                    this.solutionsApiService.submitTaskSolution(solutionId, taskId, body),
+                ),
+            ),
+        {dispatch: false},
     );
 
     constructor(

@@ -4,4 +4,5 @@ export interface IContestTaskSolution {
     solutionId: number;
     taskId: number;
     result: IJudge0BatchedResponse;
+    isFullLoaded: boolean;
 }

@@ -55,6 +55,10 @@ export class TokenService {
             }
         });
 
+        if (!tokens.length) {
+            return [];
+        }
+
         const result = await firstValueFrom(this.judge0Service.getBatchedResultByTokens(tokens));
 
         return {taskId: Number(params?.taskId), solutionId: Number(params.solutionId), result};

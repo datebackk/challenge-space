@@ -19,7 +19,7 @@ export class SolutionEntity {
     @Column({type: 'timestamptz'})
     shouldCompleteAt: Date;
 
-    @OneToMany(() => TokenEntity, token => token.solution)
+    @OneToMany(() => TokenEntity, token => token.solution, {cascade: true})
     tokens: TokenEntity[];
 
     @ManyToOne(() => ContestEntity, contest => contest.solutions)
