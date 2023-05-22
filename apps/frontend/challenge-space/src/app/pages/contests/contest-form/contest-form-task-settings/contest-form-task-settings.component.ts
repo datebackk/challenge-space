@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {TUI_EDITOR_EXTENSIONS} from '@taiga-ui/addon-editor';
 import {editorExtensions} from '../../../../shared/constants/editor-extensions.const';
@@ -15,7 +15,7 @@ import {editorExtensions} from '../../../../shared/constants/editor-extensions.c
         },
     ],
 })
-export class ContestFormTaskSettingsComponent {
+export class ContestFormTaskSettingsComponent implements OnChanges {
     @Input()
     form!: FormGroup;
 
@@ -46,5 +46,9 @@ export class ContestFormTaskSettingsComponent {
 
     onTestCaseAdd(): void {
         this.testCasesFormArray.push(this.formBuilder.group(this.testCaseForm));
+    }
+
+    ngOnChanges({form}: SimpleChanges): void {
+        console.log(form && form.currentValue.getRawValue());
     }
 }

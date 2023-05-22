@@ -30,7 +30,7 @@ export class ContestFormComponent {
 
     readonly taskForm = {
         name: [null, Validators.required],
-        description: [null, Validators.required],
+        description: ['', Validators.required],
         testCases: this.formBuilder.array([this.formBuilder.group(this.testCaseForm)]),
     };
 
@@ -69,7 +69,7 @@ export class ContestFormComponent {
     }
 
     onDeleteTask(): void {
-        this.tasksFormArray.removeAt(this.activeItemIndex);
+        this.tasksFormArray.removeAt(this.activeItemIndex - 1);
         this.steps.splice(this.activeItemIndex, 1);
         this.steps = this.steps.map((value, index) => {
             if (index === 0) {

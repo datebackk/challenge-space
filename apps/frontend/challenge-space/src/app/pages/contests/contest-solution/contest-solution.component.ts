@@ -4,7 +4,7 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {getContestById, getContestsLoadingStatus} from '../../../store/contests/contests.reducer';
-import {distinctUntilKeyChanged, filter, Observable, take, takeUntil} from 'rxjs';
+import {distinctUntilKeyChanged, filter, interval, map, Observable, take, takeUntil} from 'rxjs';
 import {IContest} from '../interfaces/contest.interface';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
 import {loadContest, setCurrentTask} from '../../../store/contests/contests.actions';
@@ -41,6 +41,7 @@ export class ContestSolutionComponent implements OnInit {
     readonly contestTasksSolutions: Observable<IContestTaskSolution[]> = this.store.pipe(select(getContestTasksSolutionsByContestId, this.selectedContestId));
 
     activeItemIndex = 0;
+    timer$!: Observable<string>;
 
     readonly contestSolutionForm = this.formBuilder.group({
         tasks: this.formBuilder.array([]),
@@ -79,6 +80,7 @@ export class ContestSolutionComponent implements OnInit {
         this.store.dispatch(loadContest(this.selectedContestId));
         this.store.dispatch(loadSolutionByContestId(this.selectedContestId));
         this.updateContestForm();
+        this.updateTimer();
     }
 
     onStartContest(): void {
@@ -91,6 +93,32 @@ export class ContestSolutionComponent implements OnInit {
 
     onSendTaskSolution({contestId, solutionId, taskId, body}: {contestId: number, solutionId: number, taskId: number, body: IJudge0Submission}): void {
         this.store.dispatch(sendTaskSolution(contestId, solutionId, taskId, body));
+    }
+
+    createTimer$(targetDate: string): void {
+        this.timer$ = interval(1000).pipe(
+            map(() => {
+                const currentTime = new Date().getTime();
+                const remainingTime = new Date(targetDate).getTime() - currentTime;
+
+                const seconds = Math.floor((remainingTime / 1000) % 60);
+                const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
+                const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+                const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+
+                return `${days + ':'}${hours + ':'}${minutes + ':'}${seconds}`;
+            }),
+        );
+    }
+
+    private updateTimer(): void {
+        this.solution$.pipe(
+            filter<ISolution | undefined>(Boolean),
+            distinctUntilKeyChanged('id'),
+            takeUntil(this.destroy$),
+        ).subscribe(solution => {
+            this.createTimer$(solution.shouldCompleteAt);
+        })
     }
 
     private updateContestForm(): void {

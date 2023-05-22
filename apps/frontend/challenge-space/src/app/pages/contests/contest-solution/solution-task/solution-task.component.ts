@@ -65,13 +65,14 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
         if (codesSettingsForm && codesSettingsForm.currentValue) {
             const settings = JSONParse(this.storage.getItem(String(this.contest.id)));
 
-            this.code = settings.find((setting: any) => setting.taskId === this.task.id)?.sourceCode || '';
+            const sourceCode = settings.find((setting: any) => setting.taskId === this.task.id)?.sourceCode || '';
+            const languageId = settings.find((setting: any) => setting.taskId === this.task.id)?.languageId || judge0Languages[0].id;
 
-            console.log(this.code);
+            this.code = sourceCode;
 
             // @ts-ignore
-            this.languageControl.setValue(judge0Languages.find(language => language.id === settings[this.activeItemIndex].languageId) || judge0Languages[0].id);
-            this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, settings[this.activeItemIndex].languageId || judge0Languages[0].id)}
+            this.languageControl.setValue(judge0Languages.find(language => language.id === languageId));
+            this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, languageId)}
         }
     }
 
