@@ -15,7 +15,7 @@ import {ContestModule} from '../contest/contest.module';
     imports: [
         TypeOrmModule.forFeature([TokenEntity]),
         forwardRef(() => SolutionModule),
-        ContestModule,
+        forwardRef(() => ContestModule),
         TaskModule,
         TestCaseModule,
     ],

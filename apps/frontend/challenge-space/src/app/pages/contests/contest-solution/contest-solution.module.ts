@@ -5,7 +5,8 @@ import {TuiEditorSocketModule} from '@taiga-ui/addon-editor';
 import {TuiButtonModule, TuiLoaderModule} from '@taiga-ui/core';
 import {
     TuiBadgeModule,
-    TuiDataListWrapperModule, TuiIslandModule,
+    TuiDataListWrapperModule,
+    TuiIslandModule,
     TuiSelectModule,
     TuiStepperModule,
     TuiTabsModule,
@@ -19,6 +20,7 @@ import {SolutionTaskComponent} from './solution-task/solution-task.component';
 import {SolutionWelcomeComponent} from './solution-welcome/solution-welcome.component';
 import {TuiLetModule} from '@taiga-ui/cdk';
 import {SolutionTaskOutputComponent} from './solution-task-output/solution-task-output.component';
+import {ContestResultsComponent} from './contest-results/contest-results.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +28,7 @@ import {SolutionTaskOutputComponent} from './solution-task-output/solution-task-
         SolutionTaskComponent,
         SolutionWelcomeComponent,
         SolutionTaskOutputComponent,
+        ContestResultsComponent,
     ],
     imports: [
         CommonModule,

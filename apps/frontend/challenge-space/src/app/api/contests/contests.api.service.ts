@@ -7,6 +7,7 @@ import {mapContestFromDto} from './mapers/map-contest-from.dto';
 import {ContestDto} from './dto/contest.dto';
 import {mapContestToDto} from './mapers/map-contest-to-dto.mapper';
 import {IContestWithoutId} from '../../pages/contests/interfaces/contest-without-id.interface';
+import {IContestResults} from '../../pages/contests/interfaces/contest-results.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -24,6 +25,11 @@ export class ContestsApiService {
         return this.http.get<ContestDto>(`http://localhost:3000/api/contests/${id}`).pipe(
             map(mapContestFromDto),
         );
+    }
+
+    getContestResults(id: number): Observable<IContestResults> {
+        console.log(id);
+        return this.http.get<IContestResults>(`http://localhost:3000/api/contests/results/${id}`);
     }
 
     createContest(contest: IContestWithoutId): Observable<IContest> {

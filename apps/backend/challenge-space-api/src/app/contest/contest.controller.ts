@@ -24,6 +24,11 @@ export class ContestController {
         return this.contestService.findOne(+id);
     }
 
+    @Get('results/:id')
+    getContestResults(@Param('id') id: string) {
+        return this.contestService.getContestResults(+id);
+    }
+
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateContestDto: UpdateContestDto) {
         return this.contestService.update(+id, updateContestDto);

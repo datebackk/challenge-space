@@ -46,7 +46,7 @@ export class ContestEntity implements IContest {
     @OneToMany(() => TokenEntity, token => token.contest, {cascade: true})
     tokens: TokenEntity[];
 
-    @OneToMany(() => TaskEntity, task => task.contest, {cascade: true})
+    @OneToMany(() => TaskEntity, task => task.contest, {cascade: true, eager: true})
     tasks: TaskEntity[];
 
     @OneToMany(() => SolutionEntity, solution => solution.contest)

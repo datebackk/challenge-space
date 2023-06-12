@@ -23,6 +23,7 @@ export class SolutionService {
         @Inject(forwardRef(() => TokenService))
         private readonly tokenService: TokenService,
         private readonly userService: UserService,
+        @Inject(forwardRef(() => ContestService))
         private readonly contestService: ContestService,
         private readonly judge0Service: Judge0Service,
         private readonly taskService: TaskService,
@@ -45,7 +46,7 @@ export class SolutionService {
             },
             relations: {
                 user: true,
-                contest: true,
+                contest: {tasks: {testCases: true}},
             }
         });
     }
@@ -84,8 +85,6 @@ export class SolutionService {
 
         this.judge0Service.createBatchedSubmission(judge0BatchedRequestDto).subscribe(result => {
             const tokens = this.tokenService.removeMany(solutionId, params);
-
-            console.log(result)
 
             this.tokenService.createMany(solutionId, params, result)
         });

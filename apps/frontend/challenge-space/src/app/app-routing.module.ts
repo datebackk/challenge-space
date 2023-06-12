@@ -6,6 +6,10 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('./pages/contests/contest.module').then(m => m.ContestModule),
     },
+    {
+        path: 'users',
+        loadChildren: () => import('./pages/users/users.module').then(m => m.UsersModule),
+    },
 ];
 
 @NgModule({

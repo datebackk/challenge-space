@@ -19,9 +19,9 @@ import {TestCaseModule} from '../test-case/test-case.module';
     imports: [
         TypeOrmModule.forFeature([SolutionEntity, ContestEntity]),
         forwardRef(() => TokenModule),
+        forwardRef(() => ContestModule),
         HttpModule,
         UserModule,
-        ContestModule,
         TaskModule,
         TestCaseModule,
     ],

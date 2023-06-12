@@ -19,6 +19,7 @@ export class SolutionsApiService {
     createSolution(solution: ISolutionWithoutId): Observable<ISolution> {
         return this.http.post<ISolution>(`http://localhost:3000/api/solutions`, solution);
     }
+
     submitTaskSolution(contestId: number, solutionId: number, taskId: number, body: IJudge0Submission,): Observable<void> {
         return this.http.post<any>(`http://localhost:3000/api/solutions/${solutionId}`, body, {params: {taskId, contestId}});
     }

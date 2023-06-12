@@ -4,7 +4,7 @@ import {LoadingStatus} from '../../shared/enums/loading-status.enum';
 import {
     createContest,
     createContestError,
-    createContestSuccess,
+    createContestSuccess, loadContestResults, loadContestResultsSuccess,
     loadContests, loadContestsError,
     loadContestsSuccess, loadContestSuccess, setCurrentTask
 } from './contests.actions';
@@ -53,6 +53,14 @@ export const contestsReducer = createReducer(
         ...state,
         createLoadingStatus: LoadingStatus.Error,
     })),
+    on(loadContestResults, (state) => ({
+        ...state,
+        results: null,
+    })),
+    on(loadContestResultsSuccess, (state, {results}) => ({
+        ...state,
+        results,
+    })),
 );
 
 const contestsFeatureSelector = createFeatureSelector<IContestsState>(CONTESTS_FEATURE);
@@ -77,4 +85,9 @@ export const getContestsLoadingStatus = createSelector(
 export const getCreateContestLoadingStatus = createSelector(
     contestsFeatureSelector,
     state => state.createLoadingStatus,
+);
+
+export const getContestResults = createSelector(
+    contestsFeatureSelector,
+    state => state.results,
 );

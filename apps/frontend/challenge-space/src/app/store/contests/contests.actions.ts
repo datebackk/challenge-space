@@ -2,6 +2,7 @@ import {createAction} from '@ngrx/store';
 
 import {IContest} from '../../pages/contests/interfaces/contest.interface';
 import {IContestWithoutId} from '../../pages/contests/interfaces/contest-without-id.interface';
+import {IContestResults} from '../../pages/contests/interfaces/contest-results.interface';
 
 enum ContestsActions {
     SetCurrentTask = '[Contests] set current task',
@@ -14,6 +15,9 @@ enum ContestsActions {
     CreateContest = '[Contests] create contest',
     CreateContestSuccess = '[Contests] create contest success',
     CreateContestError = '[Contests] create contest error',
+    LoadContestResults = '[Contests] load contest results',
+    LoadContestResultsSuccess = '[Contests] load contest results success',
+    LoadContestResultsError = '[Contests] load contest results error',
 }
 
 export const setCurrentTask = createAction(
@@ -52,4 +56,18 @@ export const createContestSuccess = createAction(
 );
 export const createContestError = createAction(
     ContestsActions.CreateContestError
+);
+
+export const loadContestResults = createAction(
+    ContestsActions.LoadContestResults,
+    (id: number) => ({id}),
+);
+
+export const loadContestResultsSuccess = createAction(
+    ContestsActions.LoadContestResultsSuccess,
+    (results: IContestResults) => ({results}),
+);
+
+export const loadContestResultsError = createAction(
+    ContestsActions.LoadContestResultsError,
 );

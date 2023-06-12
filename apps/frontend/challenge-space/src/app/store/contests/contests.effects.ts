@@ -6,9 +6,16 @@ import {ContestsApiService} from '../../api/contests/contests.api.service';
 import {
     createContest,
     createContestError,
-    createContestSuccess, loadContest, loadContestError,
-    loadContests, loadContestsError,
-    loadContestsSuccess, loadContestSuccess
+    createContestSuccess,
+    loadContest,
+    loadContestError,
+    loadContestResults,
+    loadContestResultsError,
+    loadContestResultsSuccess,
+    loadContests,
+    loadContestsError,
+    loadContestsSuccess,
+    loadContestSuccess
 } from './contests.actions';
 
 @Injectable()
@@ -32,6 +39,18 @@ export class ContestsEffects {
                 this.contestsApiService.getContest(id).pipe(
                     map((contest) => loadContestSuccess(contest)),
                     catchError(() => of(loadContestError())),
+                )
+            )
+        )
+    );
+
+    loadContestResults$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadContestResults),
+            switchMap(({id}) =>
+                this.contestsApiService.getContestResults(id).pipe(
+                    map((results) => loadContestResultsSuccess(results)),
+                    catchError(() => of(loadContestResultsError())),
                 )
             )
         )

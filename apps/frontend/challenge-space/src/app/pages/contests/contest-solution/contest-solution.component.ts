@@ -3,11 +3,11 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
-import {getContestById, getContestsLoadingStatus} from '../../../store/contests/contests.reducer';
+import {getContestById, getContestResults, getContestsLoadingStatus} from '../../../store/contests/contests.reducer';
 import {distinctUntilKeyChanged, filter, interval, map, Observable, take, takeUntil} from 'rxjs';
 import {IContest} from '../interfaces/contest.interface';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
-import {loadContest, setCurrentTask} from '../../../store/contests/contests.actions';
+import {loadContest, loadContestResults, setCurrentTask} from '../../../store/contests/contests.actions';
 import {createSolution, loadSolutionByContestId} from '../../../store/solutions/solutions.actions';
 import {
     getCreateSolutionLoadingStatus,
@@ -22,6 +22,7 @@ import {getContestTasksSolutionsByContestId} from '../../../store/tokens/tokens.
 import {IContestTaskSolution} from './interfaces/contest-task-solution.interface';
 import {LOCAL_STORAGE} from '@ng-web-apis/common';
 import {judge0Languages} from '../../../shared/constants/judge0-languages.const';
+import {IContestResults} from '../interfaces/contest-results.interface';
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -32,6 +33,7 @@ import {judge0Languages} from '../../../shared/constants/judge0-languages.const'
 })
 export class ContestSolutionComponent implements OnInit {
     readonly contest$: Observable<IContest | undefined> = this.store.select(getContestById, this.selectedContestId);
+    readonly contestResults$: Observable<IContestResults | null> = this.store.pipe(select(getContestResults));
     readonly contestsLoadingStatus: Observable<LoadingStatus> = this.store.pipe(select(getContestsLoadingStatus));
 
     readonly solution$: Observable<ISolution | undefined> = this.store.select(getSolutionByUserIdAndContestId, this.selectedContestId);
@@ -79,6 +81,7 @@ export class ContestSolutionComponent implements OnInit {
     ngOnInit(): void {
         this.store.dispatch(loadContest(this.selectedContestId));
         this.store.dispatch(loadSolutionByContestId(this.selectedContestId));
+        this.store.dispatch(loadContestResults(this.selectedContestId));
         this.updateContestForm();
         this.updateTimer();
     }

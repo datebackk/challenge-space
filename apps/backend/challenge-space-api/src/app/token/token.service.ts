@@ -21,6 +21,7 @@ export class TokenService {
         private readonly tokenRepository: Repository<TokenEntity>,
         @Inject(forwardRef(() => SolutionService))
         private readonly solutionService: SolutionService,
+        @Inject(forwardRef(() => ContestService))
         private readonly contestService: ContestService,
         private readonly taskService: TaskService,
         private readonly testCaseService: TestCaseService,
@@ -52,11 +53,14 @@ export class TokenService {
         const tokens = await this.tokenRepository.find({
             where: {
                 task: {
-                    id: params?.taskId
+                    id: params?.taskId,
                 },
                 solution: {
-                    id: params?.solutionId
+                    id: params?.solutionId,
                 },
+                testCase: {
+                    id: params?.testCaseId,
+                }
             },
             relations: {
                 task: true
