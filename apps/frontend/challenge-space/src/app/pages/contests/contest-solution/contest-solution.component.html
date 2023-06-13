@@ -1,11 +1,9 @@
 <ng-container *tuiLet="{
         solution: solution$ | async,
         contest: contest$ | async,
+        user: user$ | async,
     } as contestInfo"
 >
-    <challenge-space-contest-results
-        [contestResults]="contestResults$ | async"
-    ></challenge-space-contest-results>
     <div *ngIf="contestInfo.contest" class="tui-row tui-row_adaptive margin-left-0 margin-right-0 tui-space_bottom-3">
         <div class="top-container">
             <div>
@@ -19,6 +17,7 @@
                     >
                         {{ 'Задача ' + (i + 1) }}
                     </button>
+                    <button *ngIf="canViewResults(contestInfo.solution, contestInfo.user)" tuiStep>Результаты</button>
                 </tui-stepper>
             </div>
             <div *ngIf="contestInfo.solution">
@@ -35,6 +34,10 @@
             [createSolutionLoadingStatus]="createSolutionLoadingStatus$ | async"
             (startContest)="onStartContest()"
         ></challenge-space-solution-welcome>
+        <challenge-space-contest-results
+            *ngSwitchCase="contestInfo.contest.tasks.length + 1"
+            [contestResults]="contestResults$ | async"
+        ></challenge-space-contest-results>
         <ng-container *ngIf="contestInfo.contest && contestInfo.solution">
             <challenge-space-solution-task
                 *ngSwitchDefault

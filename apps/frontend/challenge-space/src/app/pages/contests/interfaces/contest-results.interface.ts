@@ -1,7 +1,3 @@
-import {IContestMainSettings} from './contest-main-settings.interface';
-import {IContestTask} from './contest-task.interface';
+import {ISolution} from '../contest-solution/interfaces/solution.interface';
 
-export interface IContestResults extends IContestMainSettings {
-    id: number;
-    tasks: IContestTask[];
-}
+export interface IContestResults extends ISolution {}

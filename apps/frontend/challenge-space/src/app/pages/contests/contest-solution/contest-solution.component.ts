@@ -23,6 +23,9 @@ import {IContestTaskSolution} from './interfaces/contest-task-solution.interface
 import {LOCAL_STORAGE} from '@ng-web-apis/common';
 import {judge0Languages} from '../../../shared/constants/judge0-languages.const';
 import {IContestResults} from '../interfaces/contest-results.interface';
+import {IUser} from '../../../shared/interfaces/user.interface';
+import {getUser} from '../../../store/auth/auth.reducer';
+import {isAfter, parseISO} from 'date-fns'
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -33,6 +36,7 @@ import {IContestResults} from '../interfaces/contest-results.interface';
 })
 export class ContestSolutionComponent implements OnInit {
     readonly contest$: Observable<IContest | undefined> = this.store.select(getContestById, this.selectedContestId);
+    readonly user$: Observable<IUser | null> = this.store.pipe(select(getUser));
     readonly contestResults$: Observable<IContestResults | null> = this.store.pipe(select(getContestResults));
     readonly contestsLoadingStatus: Observable<LoadingStatus> = this.store.pipe(select(getContestsLoadingStatus));
 
@@ -96,6 +100,14 @@ export class ContestSolutionComponent implements OnInit {
 
     onSendTaskSolution({contestId, solutionId, taskId, body}: {contestId: number, solutionId: number, taskId: number, body: IJudge0Submission}): void {
         this.store.dispatch(sendTaskSolution(contestId, solutionId, taskId, body));
+    }
+
+    canViewResults(solution: ISolution, user: IUser): boolean {
+        if (solution?.completeAt || isAfter(new Date(), parseISO(solution.shouldCompleteAt))) {
+            return true;
+        }
+
+        return false;
     }
 
     createTimer$(targetDate: string): void {

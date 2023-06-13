@@ -2,8 +2,9 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TuiEditorSocketModule} from '@taiga-ui/addon-editor';
-import {TuiButtonModule, TuiLoaderModule} from '@taiga-ui/core';
+import {TuiButtonModule, TuiLoaderModule, TuiSvgModule} from '@taiga-ui/core';
 import {
+    TuiAccordionModule,
     TuiBadgeModule,
     TuiDataListWrapperModule,
     TuiIslandModule,
@@ -46,6 +47,8 @@ import {ContestResultsComponent} from './contest-results/contest-results.compone
         TuiLetModule,
         TuiIslandModule,
         TuiLoaderModule,
+        TuiAccordionModule,
+        TuiSvgModule,
     ],
     providers: [
         {
