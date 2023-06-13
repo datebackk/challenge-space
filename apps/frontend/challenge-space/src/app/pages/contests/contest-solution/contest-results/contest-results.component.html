@@ -59,9 +59,12 @@
                     </ng-container>
                 </div>
                 <div class="tui-col_6 right-container">
-                    <span class="tui-space_bottom-2">
-
-                    </span>
+                    <tui-select class="tui-space_bottom-2"
+                                [ngModel]="getAndUpdateLanguageOptions(solution.contest.tasks[activeItemIndex].testCases[0].result?.result?.submissions[0].language_id)"
+                                [readOnly]="true"
+                    >
+                        Язык
+                    </tui-select>
                     <ngx-monaco-editor
                         class="right-container__code-editor"
                         [options]="editorOptions"
