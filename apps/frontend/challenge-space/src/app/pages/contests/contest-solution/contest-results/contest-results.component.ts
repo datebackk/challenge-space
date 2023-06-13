@@ -5,6 +5,8 @@ import {get} from 'lodash';
 import {
     judge0LanguagesToVscodeLanguages
 } from '../../../../shared/constants/judge0-languages-to-vscode-languages.const';
+import {ITask} from '../../../../../../../../backend/challenge-space-api/src/app/task/interfaces/task.interface';
+import {judge0SubmissionSuccessStatuses} from '../../../../shared/constants/judge0-submission-success-statuses.const';
 
 @Component({
     selector: 'challenge-space-contest-results',
@@ -26,5 +28,51 @@ export class ContestResultsComponent {
         this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, languageId)}
 
         return this.judge0Languages.find(language => language.id === languageId)?.name;
+    }
+
+    getSolvedTasks(tasks: ITask[]): string {
+        const tasksAmount = tasks.length;
+
+        let fullTaskPassed = 0;
+
+        tasks.forEach(task => {
+            let testCasesSolved = 0;
+            task.testCases.forEach(testCase => {
+                // @ts-ignore
+                if (testCase.result?.result?.submissions[0]) {
+                    // @ts-ignore
+                    testCasesSolved += this.isPassed(testCase.result?.result?.submissions[0]) ? 1 : 0
+                }
+
+                console.log(testCasesSolved, task.testCases.length)
+
+                fullTaskPassed += testCasesSolved === task.testCases.length ? 1: 0;
+            });
+        });
+
+        return `${fullTaskPassed}/${tasksAmount}`;
+    }
+
+    getSolvedTestCases(tasks: ITask[]): string {
+        let testCasesAmount = 0;
+        let passedTestCasesAmount = 0;
+
+        tasks.forEach(task => {
+            testCasesAmount += task.testCases.length;
+
+            task.testCases.forEach(testCase => {
+                // @ts-ignore
+                if (testCase.result?.result?.submissions[0]) {
+                    // @ts-ignore
+                    passedTestCasesAmount += this.isPassed(testCase.result?.result?.submissions[0]) ? 1 : 0
+                }
+            });
+        });
+
+        return `${passedTestCasesAmount}/${testCasesAmount}`;
+    }
+
+    private isPassed(result: any): boolean {
+        return result?.status?.id ? result?.status.id in judge0SubmissionSuccessStatuses : false
     }
 }

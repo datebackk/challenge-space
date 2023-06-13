@@ -3,6 +3,7 @@ import {IJudge0Submission} from '../../../../shared/interfaces/judge0-submission
 import {judge0SubmissionSuccessStatuses} from '../../../../shared/constants/judge0-submission-success-statuses.const';
 import {judge0SubmissionErrorStatus} from '../../../../shared/constants/judge0-submission-error-status.const';
 import {judge0SubmissionWaitingStatuses} from '../../../../shared/constants/judge0-submission-waiting-statuses.const';
+import {tuiIconClock, tuiIconDatabase} from '@taiga-ui/icons';
 
 @Component({
     selector: 'challenge-space-solution-task-output',
@@ -30,4 +31,7 @@ export class SolutionTaskOutputComponent {
     get text(): string {
         return  this.result?.stderr || 'Passed';
     }
+
+    protected readonly tuiIconDatabase = tuiIconDatabase;
+    protected readonly tuiIconClock = tuiIconClock;
 }

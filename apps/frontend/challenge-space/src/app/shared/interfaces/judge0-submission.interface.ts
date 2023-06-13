@@ -6,4 +6,6 @@ export interface IJudge0Submission extends IJudge0SubmissionRequiredParameters {
     message?: string;
     stderr?: string;
     compile_output?: string;
+    time?: string;
+    memory?: string;
 }

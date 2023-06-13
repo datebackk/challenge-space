@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TuiEditorSocketModule} from '@taiga-ui/addon-editor';
 import {TuiButtonModule, TuiLoaderModule, TuiSvgModule} from '@taiga-ui/core';
 import {
-    TuiAccordionModule,
+    TuiAccordionModule, TuiAvatarModule,
     TuiBadgeModule,
     TuiDataListWrapperModule,
     TuiIslandModule,
@@ -49,6 +49,7 @@ import {ContestResultsComponent} from './contest-results/contest-results.compone
         TuiLoaderModule,
         TuiAccordionModule,
         TuiSvgModule,
+        TuiAvatarModule,
     ],
     providers: [
         {

@@ -1,6 +1,6 @@
 <tui-accordion
     *ngIf="contestResults"
-    class="container"
+    class="tui-space_top-4"
     [rounded]="false"
 >
     <tui-accordion-item
@@ -9,19 +9,18 @@
         [showArrow]="false"
     >
         <div class="operation-header">
-            <div class="operation-date">
-                4
-                <div class="operation-month">May</div>
-            </div>
             <div class="operation-pic">
-                <tui-svg
-                    class="operation-icon"
-                ></tui-svg>
+                <tui-avatar
+                    [rounded]="true"
+                    [text]="solution.user.username"
+                ></tui-avatar>
             </div>
-            <div class="operation-title">Get your money</div>
+            <div class="operation-title">{{ solution.user.username }}</div>
+            <div class="operation-info tui-space_right-4">
+                <div class="operation-status">Пройдено тест кейсов: {{ getSolvedTestCases(solution.contest.tasks) }}</div>
+            </div>
             <div class="operation-info">
-
-                <div class="operation-status">Waiting for approve</div>
+                <div class="operation-status">Полностью решено задач: {{ getSolvedTasks(solution.contest.tasks) }}</div>
             </div>
         </div>
         <ng-template tuiAccordionItemContent>

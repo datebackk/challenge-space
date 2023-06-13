@@ -36,9 +36,12 @@
                     [class.positive-color]="isPassed"
                     [class.negative-color]="isFailed"
                 >{{ result.compile_output }}</p>
-                <p
-                    class="tui-island__paragraph tui-island__paragraph_link"
-                ></p>
+                <p class="tui-island__paragraph">
+                    <tui-svg [src]="tuiIconDatabase"></tui-svg> {{result.memory}} bytes
+                </p>
+                <p class="tui-island__paragraph">
+                    <tui-svg [src]="tuiIconClock"></tui-svg> {{result.time}} ms
+                </p>
             </div>
         </div>
     </tui-island>
