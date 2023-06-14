@@ -10,7 +10,6 @@ export class ContestController {
 
     @Post()
     create(@AuthenticatedUser() keycloackUser, @Body() createContestDto: CreateContestDto) {
-        console.log(createContestDto);
         return this.contestService.create(keycloackUser, createContestDto);
     }
 

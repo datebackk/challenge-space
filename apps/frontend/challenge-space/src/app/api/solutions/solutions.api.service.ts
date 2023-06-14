@@ -16,6 +16,10 @@ export class SolutionsApiService {
         return this.http.get<ISolution>(`http://localhost:3000/api/solutions/solution`, {params: {contestId}});
     }
 
+    completeSolutionByContestId(contestId: number): Observable<ISolution> {
+        return this.http.get<ISolution>(`http://localhost:3000/api/solutions/complete`, {params: {contestId}});
+    }
+
     createSolution(solution: ISolutionWithoutId): Observable<ISolution> {
         return this.http.post<ISolution>(`http://localhost:3000/api/solutions`, solution);
     }

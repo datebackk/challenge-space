@@ -11,6 +11,8 @@ export function mapContestFromDto(contest: ContestDto): IContest {
         endDate,
         duration,
         tasks,
+        // @ts-ignore
+        user,
     } = contest;
 
     return {
@@ -24,6 +26,8 @@ export function mapContestFromDto(contest: ContestDto): IContest {
             },
             duration,
         },
-        tasks
+        tasks,
+        // @ts-ignore
+        user,
     }
 }

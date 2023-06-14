@@ -28,7 +28,6 @@ export class ContestsApiService {
     }
 
     getContestResults(id: number): Observable<IContestResults> {
-        console.log(id);
         return this.http.get<IContestResults>(`http://localhost:3000/api/contests/results/${id}`);
     }
 

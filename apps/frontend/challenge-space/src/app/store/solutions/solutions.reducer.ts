@@ -2,6 +2,7 @@ import {createFeatureSelector, createReducer, createSelector, on} from '@ngrx/st
 
 import {LoadingStatus} from '../../shared/enums/loading-status.enum';
 import {
+    completeSolutionSuccess,
     createSolution,
     createSolutionError,
     createSolutionSuccess, loadSolutionSuccess,
@@ -11,7 +12,6 @@ import {
     solutionsAdapter,
     solutionsInitialState,
 } from './solutions.state';
-import {Dictionary} from '@ngrx/entity';
 import {ISolution} from '../../pages/contests/contest-solution/interfaces/solution.interface';
 import {getUser} from '../auth/auth.reducer';
 import {IUser} from '../../shared/interfaces/user.interface';
@@ -33,6 +33,11 @@ export const solutionsReducer = createReducer(
         solutionsAdapter.upsertOne(solution, {
             ...state,
             createLoadingStatus: LoadingStatus.Success,
+        }),
+    ),
+    on(completeSolutionSuccess, (state, {solution}) =>
+        solutionsAdapter.upsertOne(solution, {
+            ...state,
         }),
     ),
     on(createSolutionError, state => ({

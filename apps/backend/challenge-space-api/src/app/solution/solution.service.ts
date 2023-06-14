@@ -70,6 +70,12 @@ export class SolutionService {
         });
     }
 
+    async completeSolution(keycloackUser, {contestId}: ISolutionQuery) {
+        const solution = await this.findOne(keycloackUser, {contestId})
+
+        return this.solutionRepository.save({...solution, completeAt: new Date()})
+    }
+
     async createTaskSolution(solutionId: number, params: ISolutionQuery, taskSolutionDto: TaskSolutionDto) {
         const task = await this.taskService.findOneById(params.taskId);
         const judge0SubmissionRequestDto: Judge0SubmissionRequestDto[] = task.testCases.map(testCase => ({

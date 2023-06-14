@@ -1,7 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {SolutionsApiService} from '../../api/solutions/solutions.api.service';
-import {createSolution, createSolutionSuccess, loadSolutionByContestId, loadSolutionSuccess} from './solutions.actions';
+import {
+    completeSolution, completeSolutionSuccess,
+    createSolution,
+    createSolutionSuccess,
+    loadSolutionByContestId,
+    loadSolutionSuccess
+} from './solutions.actions';
 import {filter, map, mergeMap, switchMap} from 'rxjs';
 import {loadContestSolutions} from '../tokens/tokens.actions';
 import {ISolution} from '../../pages/contests/contest-solution/interfaces/solution.interface';
@@ -26,6 +32,17 @@ export class SolutionsEffects {
             switchMap(({solution}) =>
                 this.solutionsApiService.createSolution(solution).pipe(
                     map((solution) => createSolutionSuccess(solution))
+                )
+            )
+        )
+    );
+
+    completeSolution$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(completeSolution),
+            switchMap(({contestId}) =>
+                this.solutionsApiService.completeSolutionByContestId(contestId).pipe(
+                    map((solution) => completeSolutionSuccess(solution))
                 )
             )
         )

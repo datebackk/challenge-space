@@ -8,7 +8,7 @@ import {distinctUntilKeyChanged, filter, interval, map, Observable, take, takeUn
 import {IContest} from '../interfaces/contest.interface';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
 import {loadContest, loadContestResults, setCurrentTask} from '../../../store/contests/contests.actions';
-import {createSolution, loadSolutionByContestId} from '../../../store/solutions/solutions.actions';
+import {completeSolution, createSolution, loadSolutionByContestId} from '../../../store/solutions/solutions.actions';
 import {
     getCreateSolutionLoadingStatus,
     getSolutionByUserIdAndContestId,
@@ -26,6 +26,7 @@ import {IContestResults} from '../interfaces/contest-results.interface';
 import {IUser} from '../../../shared/interfaces/user.interface';
 import {getUser} from '../../../store/auth/auth.reducer';
 import {isAfter, parseISO} from 'date-fns'
+import {getISODateFromTuiDayAndTime} from '../../../shared/utils/getISODateFromTuiDayAndTime';
 
 @Component({
     selector: 'challenge-space-contest-solution',
@@ -102,9 +103,34 @@ export class ContestSolutionComponent implements OnInit {
         this.store.dispatch(sendTaskSolution(contestId, solutionId, taskId, body));
     }
 
-    canViewResults(solution: ISolution, user: IUser): boolean {
-        if (solution?.completeAt || isAfter(new Date(), parseISO(solution.shouldCompleteAt))) {
+    isOwner(contest: IContest, user: IUser): boolean {
+        // @ts-ignore
+        return contest.user.id === user.id;
+    }
+
+    isComplete(contest: IContest, solution?: ISolution): boolean {
+        if (isAfter(new Date(), parseISO(getISODateFromTuiDayAndTime(contest.mainSettings.interval.endDate)))) {
             return true;
+        }
+
+        if (solution?.completeAt || isAfter(new Date(), parseISO(<string>solution?.shouldCompleteAt))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    onCompleteSolution(): void {
+        this.store.dispatch(completeSolution(this.selectedContestId));
+    }
+
+    canNavigateTasks(contest: IContest, user: IUser, solution?: ISolution): boolean {
+        if (this.isOwner(contest, user)) {
+            return true;
+        }
+
+        if (solution) {
+            return true
         }
 
         return false;

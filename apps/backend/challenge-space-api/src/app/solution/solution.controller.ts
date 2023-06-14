@@ -25,6 +25,11 @@ export class SolutionController {
       return this.solutionService.findOne(keycloackUser, params);
     }
 
+    @Get('solution/complete')
+    completeSolution(@AuthenticatedUser() keycloackUser, @Query() params?: ISolutionQuery) {
+        return this.solutionService.completeSolution(keycloackUser, params);
+    }
+
     @Post(':id')
     submitTaskSolution(@Param('id') solutionId: number, @Body() taskSolutionDto: TaskSolutionDto, @Query() params?: ISolutionQuery) {
         return this.solutionService.createTaskSolution(solutionId, params, taskSolutionDto);

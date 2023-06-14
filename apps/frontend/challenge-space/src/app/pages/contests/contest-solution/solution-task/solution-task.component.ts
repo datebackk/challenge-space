@@ -36,11 +36,15 @@ import {JSONParse} from '../../../../shared/utils/json-parse';
 export class SolutionTaskComponent implements OnInit, OnChanges {
     @Input() contest!: IContest;
     @Input() taskSettingsForm!: FormGroup;
+    @Input() isOwner!: boolean;
+    @Input() isComplete!: boolean;
     @Input() codesSettingsForm!: FormGroup;
     @Input() taskIndex!: number;
     @Input() solution!: ISolution;
     @Input() task!: IContestTask;
+
     @Output() sendTaskSolution = new EventEmitter<{ contestId: number, solutionId: number, taskId: number, body: IJudge0Submission }>();
+    @Output() completeSolution = new EventEmitter<void>();
 
     readonly intervalUpdate = timer(0, 6000).pipe(takeUntil(this.destroy$));
 
@@ -61,7 +65,7 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
         @Inject(LOCAL_STORAGE) private readonly storage: Storage,
     ) {}
 
-    ngOnChanges({codesSettingsForm}: SimpleChanges): void {
+    ngOnChanges({codesSettingsForm, isOwner, isComplete}: SimpleChanges): void {
         if (codesSettingsForm && codesSettingsForm.currentValue) {
             const settings = JSONParse(this.storage.getItem(String(this.contest.id)));
 
@@ -72,7 +76,19 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
 
             // @ts-ignore
             this.languageControl.setValue(judge0Languages.find(language => language.id === languageId));
-            this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, languageId)}
+            // @ts-ignore
+            this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, languageId), readOnly: false}
+        }
+
+        if (isOwner && isOwner.currentValue) {
+            // @ts-ignore
+            this.editorOptions = {...this.editorOptions, readOnly: true};
+        }
+
+        if (isComplete && isComplete.currentValue) {
+            this.languageControl.disable();
+            // @ts-ignore
+            this.editorOptions = {...this.editorOptions, readOnly: true};
         }
     }
 
@@ -126,8 +142,5 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
                 source_code: this.code,
             }
         });
-    }
-
-    onModelChange($event: any) {
     }
 }

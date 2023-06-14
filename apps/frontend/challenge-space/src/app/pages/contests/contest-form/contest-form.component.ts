@@ -92,8 +92,6 @@ export class ContestFormComponent {
     }
 
     onSubmit(): void {
-        console.log(this.form.getRawValue());
-
         if (this.form.invalid) {
             tuiMarkControlAsTouchedAndValidate(this.form);
 

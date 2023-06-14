@@ -12,6 +12,8 @@ import {ISolution} from '../interfaces/solution.interface';
 export class SolutionWelcomeComponent {
     @Input() contest!: IContest;
     @Input() solution: ISolution | undefined;
+    @Input() isOwner!: boolean;
+    @Input() isComplete!: boolean;
     @Input() createSolutionLoadingStatus!: LoadingStatus;
 
     @Output() startContest = new EventEmitter<void>();

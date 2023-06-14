@@ -13,14 +13,14 @@
                         *ngFor="let taskFormArray of tasksFormArrayControls; let i = index"
                         tuiStep
                         (click)="onTasksNavigationClick(contestInfo.contest.id, contestInfo.contest.tasks[activeItemIndex - 1].id)"
-                        [disabled]="!contestInfo.solution"
+                        [disabled]="!canNavigateTasks(contestInfo.contest, contestInfo.user, contestInfo.solution)"
                     >
                         {{ 'Задача ' + (i + 1) }}
                     </button>
-                    <button *ngIf="canViewResults(contestInfo.solution, contestInfo.user)" tuiStep>Результаты</button>
+                    <button *ngIf="isOwner(contestInfo.contest, contestInfo.user) || isComplete(contestInfo.contest, contestInfo.solution)" tuiStep>Результаты</button>
                 </tui-stepper>
             </div>
-            <div *ngIf="contestInfo.solution">
+            <div *ngIf="contestInfo.solution && !isOwner(contestInfo.contest, contestInfo.user)">
                 <span [textContent]="'Осталось: '"></span>
                 <tui-badge class="badge" status="primary" [value]="timer$ | async"></tui-badge>
             </div>
@@ -30,6 +30,8 @@
         <challenge-space-solution-welcome
             *ngSwitchCase="0"
             [contest]="contestInfo.contest"
+            [isOwner]="isOwner(contestInfo.contest, contestInfo.user)"
+            [isComplete]="isComplete(contestInfo.contest, contestInfo.solution)"
             [solution]="contestInfo.solution"
             [createSolutionLoadingStatus]="createSolutionLoadingStatus$ | async"
             (startContest)="onStartContest()"
@@ -37,17 +39,22 @@
         <challenge-space-contest-results
             *ngSwitchCase="contestInfo.contest.tasks.length + 1"
             [contestResults]="contestResults$ | async"
+            [isComplete]="isComplete(contestInfo.contest, contestInfo.solution)"
+            [isOwner]="isOwner(contestInfo.contest, contestInfo.user)"
         ></challenge-space-contest-results>
         <ng-container *ngIf="contestInfo.contest && contestInfo.solution">
             <challenge-space-solution-task
                 *ngSwitchDefault
                 [contest]="contestInfo.contest"
                 [solution]="contestInfo.solution"
+                [isComplete]="isComplete(contestInfo.contest, contestInfo.solution)"
+                [isOwner]="isOwner(contestInfo.contest, contestInfo.user)"
                 [task]="contestInfo.contest.tasks[activeItemIndex - 1]"
                 [taskIndex]="activeItemIndex - 1"
                 [taskSettingsForm]="tasksFormArrayControls[activeItemIndex - 1]"
                 [codesSettingsForm]="codesFormArrayControls[activeItemIndex - 1]"
                 (sendTaskSolution)="onSendTaskSolution($event)"
+                (completeSolution)="onCompleteSolution()"
             ></challenge-space-solution-task>
         </ng-container>
     </ng-container>

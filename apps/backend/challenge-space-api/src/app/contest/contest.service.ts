@@ -30,9 +30,10 @@ export class ContestService {
     findAll() {
         return this.contestRepository.find({
             relations: {
-            tasks: {
-                testCases: true
-                }
+                user: true,
+                tasks: {
+                    testCases: true
+                    }
             }
         });
     }
@@ -71,6 +72,7 @@ export class ContestService {
         return this.contestRepository.findOneOrFail({
             where: {id},
             relations: {
+                user: true,
                 tasks: {
                     testCases: true
                 }

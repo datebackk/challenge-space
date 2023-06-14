@@ -1,77 +1,82 @@
-<tui-accordion
-    *ngIf="contestResults"
-    class="tui-space_top-4"
-    [rounded]="false"
->
-    <tui-accordion-item
-        *ngFor="let solution of contestResults"
-        borders="top-bottom"
-        [showArrow]="false"
+<ng-container *ngIf="contestResults && (isOwner || isComplete) else noResults">
+    <tui-accordion
+        class="tui-space_top-4"
+        [rounded]="false"
     >
-        <div class="operation-header">
-            <div class="operation-pic">
-                <tui-avatar
-                    [rounded]="true"
-                    [text]="solution.user.username"
-                ></tui-avatar>
-            </div>
-            <div class="operation-title">{{ solution.user.username }}</div>
-            <div class="operation-info tui-space_right-4">
-                <div class="operation-status">Пройдено тест кейсов: {{ getSolvedTestCases(solution.contest.tasks) }}</div>
-            </div>
-            <div class="operation-info">
-                <div class="operation-status">Полностью решено задач: {{ getSolvedTasks(solution.contest.tasks) }}</div>
-            </div>
-        </div>
-        <ng-template tuiAccordionItemContent>
-            <tui-stepper [(activeItemIndex)]="activeItemIndex">
-                <button
-                    *ngFor="let taskFormArray of solution.contest.tasks; let i = index"
-                    tuiStep
-                >
-                    {{ 'Задача ' + (i + 1) }}
-                </button>
-            </tui-stepper>
-            <div class="tui-row tui-row_adaptive">
-                <div class="tui-col_6">
-                    <h2>{{ solution.contest.tasks[activeItemIndex].name }}</h2>
-                    <tui-tabs class="tui-space_bottom-5" [(activeItemIndex)]="activeSubItemIndex">
-                        <button tuiTab>Условие</button>
-                        <button tuiTab>Output</button>
-                    </tui-tabs>
-                    <ng-container [ngSwitch]="activeSubItemIndex">
-                        <tui-editor-socket
-                            *ngSwitchCase="0"
-                            class="editor-socket"
-                            [content]="solution.contest.tasks[activeItemIndex].description"
-                        ></tui-editor-socket>
-                        <ng-container
-                            *ngSwitchCase="1"
-                        >
-                            <challenge-space-solution-task-output
-                                *ngFor="let testCase of solution.contest.tasks[activeItemIndex].testCases; let i = index"
-                                [result]="testCase?.result?.result?.submissions[0]"
-                                [isFullLoaded]="true"
-                                [index]="i"
-                            ></challenge-space-solution-task-output>
-                        </ng-container>
-                    </ng-container>
+        <tui-accordion-item
+            *ngFor="let solution of contestResults"
+            borders="top-bottom"
+            [showArrow]="false"
+        >
+            <div class="operation-header">
+                <div class="operation-pic">
+                    <tui-avatar
+                        [rounded]="true"
+                        [text]="solution.user.username"
+                    ></tui-avatar>
                 </div>
-                <div class="tui-col_6 right-container">
-                    <tui-select class="tui-space_bottom-2"
-                                [ngModel]="getAndUpdateLanguageOptions(solution.contest.tasks[activeItemIndex].testCases[0].result?.result?.submissions[0].language_id)"
-                                [readOnly]="true"
+                <div class="operation-title">{{ solution.user.username }}</div>
+                <div class="operation-info tui-space_right-4">
+                    <div class="operation-status">Пройдено тест кейсов: {{ getSolvedTestCases(solution.contest.tasks) }}</div>
+                </div>
+                <div class="operation-info">
+                    <div class="operation-status">Полностью решено задач: {{ getSolvedTasks(solution.contest.tasks) }}</div>
+                </div>
+            </div>
+            <ng-template tuiAccordionItemContent>
+                <tui-stepper [(activeItemIndex)]="activeItemIndex">
+                    <button
+                        *ngFor="let taskFormArray of solution.contest.tasks; let i = index"
+                        tuiStep
                     >
-                        Язык
-                    </tui-select>
-                    <ngx-monaco-editor
-                        class="right-container__code-editor"
-                        [options]="editorOptions"
-                        [disabled]="true"
-                        [(ngModel)]="solution.contest.tasks[activeItemIndex].testCases[0].result?.result?.submissions[0].source_code"
-                    ></ngx-monaco-editor>
+                        {{ 'Задача ' + (i + 1) }}
+                    </button>
+                </tui-stepper>
+                <div class="tui-row tui-row_adaptive">
+                    <div class="tui-col_6">
+                        <h2>{{ solution.contest.tasks[activeItemIndex].name }}</h2>
+                        <tui-tabs class="tui-space_bottom-5" [(activeItemIndex)]="activeSubItemIndex">
+                            <button tuiTab>Условие</button>
+                            <button tuiTab>Output</button>
+                        </tui-tabs>
+                        <ng-container [ngSwitch]="activeSubItemIndex">
+                            <tui-editor-socket
+                                *ngSwitchCase="0"
+                                class="editor-socket"
+                                [content]="solution.contest.tasks[activeItemIndex].description"
+                            ></tui-editor-socket>
+                            <ng-container
+                                *ngSwitchCase="1"
+                            >
+                                <challenge-space-solution-task-output
+                                    *ngFor="let testCase of solution.contest.tasks[activeItemIndex].testCases; let i = index"
+                                    [result]="testCase?.result?.result?.submissions[0]"
+                                    [isFullLoaded]="true"
+                                    [index]="i"
+                                ></challenge-space-solution-task-output>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="tui-col_6 right-container">
+                        <tui-select class="tui-space_bottom-2"
+                                    [ngModel]="getAndUpdateLanguageOptions(solution.contest.tasks[activeItemIndex].testCases[0].result?.result?.submissions[0].language_id)"
+                                    [readOnly]="true"
+                        >
+                            Язык
+                        </tui-select>
+                        <ngx-monaco-editor
+                            class="right-container__code-editor"
+                            [options]="editorOptions"
+                            [disabled]="true"
+                            [(ngModel)]="solution.contest.tasks[activeItemIndex].testCases[0].result?.result?.submissions[0].source_code"
+                        ></ngx-monaco-editor>
+                    </div>
                 </div>
-            </div>
-        </ng-template>
-    </tui-accordion-item>
-</tui-accordion>
+            </ng-template>
+        </tui-accordion-item>
+    </tui-accordion>
+</ng-container>
+
+<ng-template #noResults>
+    <span *ngIf="!isComplete">Дождитесь завершения соревнования</span>
+</ng-template>

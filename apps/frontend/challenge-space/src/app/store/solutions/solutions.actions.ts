@@ -11,6 +11,8 @@ enum SolutionsActions {
     CreateSolution = '[Solutions] create solution',
     CreateSolutionSuccess = '[Solutions] create solution success',
     CreateSolutionError = '[Solutions] create solution error',
+    CompleteSolution = '[Solutions] complete solution',
+    CompleteSolutionSuccess = '[Solutions] complete solution success',
 }
 
 export const loadSolutionById = createAction(
@@ -43,3 +45,13 @@ export const createSolutionSuccess = createAction(
 );
 
 export const createSolutionError = createAction(SolutionsActions.CreateSolutionError);
+
+export const completeSolution = createAction(
+    SolutionsActions.CompleteSolution,
+    (contestId: number) => ({contestId}),
+);
+
+export const completeSolutionSuccess = createAction(
+    SolutionsActions.CompleteSolutionSuccess,
+    (solution: ISolution) => ({solution}),
+);

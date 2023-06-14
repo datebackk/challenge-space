@@ -41,11 +41,13 @@
             class="right-container__code-editor"
             [options]="editorOptions"
             [(ngModel)]="code"
-            (ngModelChange)="onModelChange($event)"
         ></ngx-monaco-editor>
-        <div class="tui-form__buttons tui-form__buttons_align_end">
-            <button tuiButton size="m" class="tui-space_left-auto" (click)="submitTaskSolution()">
+        <div class="tui-form__buttons tui-form__buttons_align_center buttons">
+            <button tuiButton size="m" [disabled]="isOwner || isComplete" (click)="submitTaskSolution()">
                 Отправить и проверить
+            </button>
+            <button tuiButton size="m" [disabled]="isOwner || isComplete" (click)="completeSolution.emit()">
+                Завершить соревнование
             </button>
         </div>
     </div>

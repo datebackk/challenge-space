@@ -16,6 +16,8 @@ import {judge0SubmissionSuccessStatuses} from '../../../../shared/constants/judg
 })
 export class ContestResultsComponent {
     @Input() contestResults!: IContestResults | null;
+    @Input() isOwner!: boolean;
+    @Input() isComplete!: boolean;
 
     activeItemIndex = 0;
     activeSubItemIndex = 0;
@@ -43,8 +45,6 @@ export class ContestResultsComponent {
                     // @ts-ignore
                     testCasesSolved += this.isPassed(testCase.result?.result?.submissions[0]) ? 1 : 0
                 }
-
-                console.log(testCasesSolved, task.testCases.length)
 
                 fullTaskPassed += testCasesSolved === task.testCases.length ? 1: 0;
             });

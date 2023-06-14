@@ -49,6 +49,5 @@ export class ContestFormTaskSettingsComponent implements OnChanges {
     }
 
     ngOnChanges({form}: SimpleChanges): void {
-        console.log(form && form.currentValue.getRawValue());
     }
 }
