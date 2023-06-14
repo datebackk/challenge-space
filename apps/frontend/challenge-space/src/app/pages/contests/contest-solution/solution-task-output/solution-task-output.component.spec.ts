@@ -1,5 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {SolutionTaskOutputComponent} from './solution-task-output.component';
+import {ContestSolutionModule} from '../contest-solution.module';
 
 describe('SolutionTaskOutputComponent', () => {
     let component: SolutionTaskOutputComponent;
@@ -7,6 +8,7 @@ describe('SolutionTaskOutputComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: [ContestSolutionModule],
             declarations: [SolutionTaskOutputComponent],
         }).compileComponents();
 

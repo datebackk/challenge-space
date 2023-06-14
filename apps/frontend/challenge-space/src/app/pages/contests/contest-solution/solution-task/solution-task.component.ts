@@ -1,7 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
-    EventEmitter, Inject,
+    EventEmitter, Inject, Injector,
     Input, OnChanges,
     OnInit,
     Output,
@@ -13,7 +13,7 @@ import {IJudge0Submission} from '../../../../shared/interfaces/judge0-submission
 import {IContestTask} from '../../interfaces/contest-task.interface';
 import {select, Store} from '@ngrx/store';
 import {getTaskSolutionByTaskId} from '../../../../store/tokens/tokens.reducer';
-import {distinctUntilChanged, Observable, takeUntil, timer} from 'rxjs';
+import {distinctUntilChanged, filter, Observable, takeUntil, timer} from 'rxjs';
 import {IContestTaskSolution} from '../interfaces/contest-task-solution.interface';
 import {loadTaskSolutions} from '../../../../store/tokens/tokens.actions';
 import {judge0Languages} from '../../../../shared/constants/judge0-languages.const';
@@ -25,6 +25,9 @@ import {get} from 'lodash';
 import {IContest} from '../../interfaces/contest.interface';
 import {LOCAL_STORAGE} from '@ng-web-apis/common';
 import {JSONParse} from '../../../../shared/utils/json-parse';
+import {TuiDialogService} from '@taiga-ui/core';
+import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
+import {PromptDialogComponent} from '../../../../shared/modules/prompt-dialog/prompt-dialog.component';
 
 @Component({
     selector: 'challenge-space-solution-task',
@@ -59,10 +62,20 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
 
     languageControl = new FormControl(this.languages[0]);
 
+    private readonly dialog = this.dialogs.open<number>(
+        new PolymorpheusComponent(PromptDialogComponent, this.injector),
+        {
+            label: 'Завершить соревнование?',
+            data: 'Это действие невозможно отменить, все не отправленные решения не сохранятся'
+        },
+    );
+
     constructor(
         private readonly store: Store,
         private readonly destroy$: TuiDestroyService,
         @Inject(LOCAL_STORAGE) private readonly storage: Storage,
+        @Inject(TuiDialogService) private readonly dialogs: TuiDialogService,
+        @Inject(Injector) private readonly injector: Injector,
     ) {}
 
     ngOnChanges({codesSettingsForm, isOwner, isComplete}: SimpleChanges): void {
@@ -116,20 +129,6 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
         this.listenLanguageControl();
     }
 
-    private listenCodesSettingsFormLanguageControl() {
-        this.codesSettingsFormLanguageControl.valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(languageId => {
-           this.languageControl.setValue({id: languageId, name: ''});
-        });
-    }
-
-    private listenLanguageControl(): void {
-        // @ts-ignore
-        this.languageControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((language: {id: number, name: string}) => {
-            const strLanguageId = String(language.id);
-            this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, strLanguageId)}
-        })
-    }
-
     submitTaskSolution(): void {
         this.activeItemIndex = 1;
         this.sendTaskSolution.emit({
@@ -142,5 +141,25 @@ export class SolutionTaskComponent implements OnInit, OnChanges {
                 source_code: this.code,
             }
         });
+    }
+
+    onCompleteSolution() {
+        this.dialog.pipe(filter(Boolean)).subscribe(() => {
+            this.completeSolution.emit();
+        })
+    }
+
+    private listenCodesSettingsFormLanguageControl() {
+        this.codesSettingsFormLanguageControl.valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(languageId => {
+           this.languageControl.setValue({id: languageId, name: ''});
+        });
+    }
+
+    private listenLanguageControl(): void {
+        // @ts-ignore
+        this.languageControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((language: {id: number, name: string}) => {
+            const strLanguageId = String(language.id);
+            this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, strLanguageId)}
+        })
     }
 }

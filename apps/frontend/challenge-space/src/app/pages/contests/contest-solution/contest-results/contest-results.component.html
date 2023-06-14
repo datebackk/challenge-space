@@ -56,7 +56,7 @@
                                 ></challenge-space-solution-task-output>
                             </ng-container>
                         </ng-container>
-                        <button class="tui-space_top-4" tuiButton size="s" (click)="onSelectWinner(solution.contest.user)">Выбрать победителем</button>
+                        <button class="tui-space_top-4" tuiButton size="s" (click)="onSelectWinner(solution.contest.user)" [disabled]="!isFinished">Выбрать победителем</button>
                     </div>
                     <div class="tui-col_6 right-container">
                         <tui-select class="tui-space_bottom-2"

@@ -22,6 +22,8 @@ import {NavigationModule} from './shared/modules/navigation/navigation.module';
 import {SharedModule} from './shared/shared.module';
 import {effects} from './store/effects';
 import {reducers} from './store/reducers';
+import {TUI_LANGUAGE, TUI_RUSSIAN_LANGUAGE} from '@taiga-ui/i18n';
+import {of} from 'rxjs';
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return async () =>
@@ -65,6 +67,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
         {
             provide: TUI_ANIMATIONS_DURATION,
             useFactory: () => (inject(TUI_IS_CYPRESS) ? 0 : 300),
+        },
+        {
+            provide: TUI_LANGUAGE,
+            useValue: of(TUI_RUSSIAN_LANGUAGE),
         },
     ],
     bootstrap: [AppComponent],

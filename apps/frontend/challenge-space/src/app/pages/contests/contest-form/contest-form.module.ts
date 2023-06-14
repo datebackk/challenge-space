@@ -3,11 +3,12 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TuiEditorModule, TuiEditorSocketModule} from '@taiga-ui/addon-editor';
 import {
-    TuiButtonModule,
+    TuiButtonModule, TuiErrorModule,
     TuiHintModule,
     TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import {
+    TuiFieldErrorPipeModule,
     TuiInputCountModule,
     TuiInputDateTimeModule,
     TuiInputModule,
@@ -43,6 +44,8 @@ import {ContestFormTaskSettingsComponent} from './contest-form-task-settings/con
         TuiTabsModule,
         TuiEditorSocketModule,
         TuiHintModule,
+        TuiErrorModule,
+        TuiFieldErrorPipeModule,
     ],
 })
 export class ContestFormModule {}

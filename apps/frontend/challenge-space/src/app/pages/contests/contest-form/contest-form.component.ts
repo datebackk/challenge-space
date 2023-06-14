@@ -1,13 +1,16 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, Injector} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {tuiMarkControlAsTouchedAndValidate} from '@taiga-ui/cdk';
-import {Observable} from 'rxjs';
+import {filter, Observable} from 'rxjs';
 
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
 import {createContest} from '../../../store/contests/contests.actions';
 import {getCreateContestLoadingStatus} from '../../../store/contests/contests.reducer';
 import {IContestWithoutId} from '../interfaces/contest-without-id.interface';
+import {TuiDialogService} from '@taiga-ui/core';
+import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
+import {PromptDialogComponent} from '../../../shared/modules/prompt-dialog/prompt-dialog.component';
 
 @Component({
     selector: 'challenge-space-contest-form',
@@ -47,6 +50,20 @@ export class ContestFormComponent {
         tasks: this.formBuilder.array([this.formBuilder.group(this.taskForm)]),
     });
 
+    private readonly dialog = this.dialogs.open<number>(
+        new PolymorpheusComponent(PromptDialogComponent, this.injector),
+        {
+            label: 'Удалить задачу?',
+        },
+    );
+
+    constructor(
+        private readonly formBuilder: FormBuilder,
+        private readonly store: Store,
+        @Inject(TuiDialogService) private readonly dialogs: TuiDialogService,
+        @Inject(Injector) private readonly injector: Injector,
+    ) {}
+
     get mainSettingsFormGroup(): FormGroup {
         return this.form.get('mainSettings') as FormGroup;
     }
@@ -59,29 +76,26 @@ export class ContestFormComponent {
         return this.tasksFormArray.controls as FormGroup[];
     }
 
-    constructor(
-        private readonly formBuilder: FormBuilder,
-        private readonly store: Store,
-    ) {}
-
     shouldShowLoader(loadingStatus: LoadingStatus): boolean {
         return loadingStatus === LoadingStatus.Loading;
     }
 
     onDeleteTask(): void {
-        this.tasksFormArray.removeAt(this.activeItemIndex - 1);
-        this.steps.splice(this.activeItemIndex, 1);
-        this.steps = this.steps.map((value, index) => {
-            if (index === 0) {
-                return value;
+        this.dialog.pipe(filter(Boolean)).subscribe(() => {
+            this.tasksFormArray.removeAt(this.activeItemIndex - 1);
+            this.steps.splice(this.activeItemIndex, 1);
+            this.steps = this.steps.map((value, index) => {
+                if (index === 0) {
+                    return value;
+                }
+
+                return `Задача ${index + 1}`;
+            });
+
+            if (this.steps.length === this.activeItemIndex) {
+                this.activeItemIndex -= 1;
             }
-
-            return `Задача ${index + 1}`;
         });
-
-        if (this.steps.length === this.activeItemIndex) {
-            this.activeItemIndex -= 1;
-        }
     }
 
     onAddTask(): void {

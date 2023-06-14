@@ -4,22 +4,38 @@
             Название соревнования
             <input tuiTextfield />
         </tui-input>
+        <tui-error
+            formControlName="name"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
     <div class="tui-form__row">
         <tui-text-area formControlName="description" [tuiTextfieldCleaner]="true">
             Описание соревнования
         </tui-text-area>
+        <tui-error
+            formControlName="description"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
     <div class="tui-form__row tui-form__row_multi-fields" [formGroup]="intervalFormGroup">
         <div class="tui-form__multi-field">
             <tui-input-date-time formControlName="startDate">
                 Дата и время начала
             </tui-input-date-time>
+            <tui-error
+                formControlName="startDate"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
         </div>
         <div class="tui-form__multi-field">
             <tui-input-date-time formControlName="endDate">
                 Дата и время окончания
             </tui-input-date-time>
+            <tui-error
+                formControlName="endDate"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
         </div>
     </div>
     <div class="tui-form__row">
@@ -31,5 +47,9 @@
         >
             Продолжительность
         </tui-input-count>
+        <tui-error
+            formControlName="duration"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
 </ng-container>

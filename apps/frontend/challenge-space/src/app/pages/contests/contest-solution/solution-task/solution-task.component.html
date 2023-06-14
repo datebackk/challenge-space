@@ -46,7 +46,7 @@
             <button tuiButton size="m" [disabled]="isOwner || isComplete" (click)="submitTaskSolution()">
                 Отправить и проверить
             </button>
-            <button tuiButton size="m" [disabled]="isOwner || isComplete" (click)="completeSolution.emit()">
+            <button tuiButton size="m" [disabled]="isOwner || isComplete" (click)="onCompleteSolution()">
                 Завершить соревнование
             </button>
         </div>

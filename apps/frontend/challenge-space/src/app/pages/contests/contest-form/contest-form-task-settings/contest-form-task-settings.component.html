@@ -4,6 +4,10 @@
             Название задачи
             <input tuiTextfield />
         </tui-input>
+        <tui-error
+            formControlName="name"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
     <div class="tui-form__row">
         <tui-tabs class="tui-space_bottom-5" [(activeItemIndex)]="activeItemIndex">
@@ -14,6 +18,10 @@
             <tui-editor *ngSwitchCase="0" formControlName="description">
                 Условие задачи
             </tui-editor>
+            <tui-error
+                formControlName="description"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
             <tui-editor-socket
                 *ngSwitchCase="1"
                 class="editor-socket"
