@@ -20,7 +20,7 @@
                     <button *ngIf="isOwner(contestInfo.contest, contestInfo.user) || isComplete(contestInfo.contest, contestInfo.solution)" tuiStep>Результаты</button>
                 </tui-stepper>
             </div>
-            <div *ngIf="contestInfo.solution && !isOwner(contestInfo.contest, contestInfo.user)">
+            <div *ngIf="contestInfo.solution && !isOwner(contestInfo.contest, contestInfo.user) && !isComplete(contestInfo.contest, contestInfo.solution)">
                 <span [textContent]="'Осталось: '"></span>
                 <tui-badge class="badge" status="primary" [value]="timer$ | async"></tui-badge>
             </div>
@@ -41,6 +41,7 @@
             [contestResults]="contestResults$ | async"
             [isComplete]="isComplete(contestInfo.contest, contestInfo.solution)"
             [isOwner]="isOwner(contestInfo.contest, contestInfo.user)"
+            [isFinished]="isFinished(contestInfo.contest)"
         ></challenge-space-contest-results>
         <ng-container *ngIf="contestInfo.contest && contestInfo.solution">
             <challenge-space-solution-task

@@ -5,7 +5,7 @@
             [content]="contest.mainSettings.description"
         ></tui-editor-socket>
         <div class="tui-space_top-4">
-            <button *ngIf="!solution && !isComplete" tuiButton (click)="onStartContest()" [showLoader]="isLoading">Начать</button>
+            <button *ngIf="canStartContest()" tuiButton (click)="onStartContest()" [showLoader]="isLoading">Начать</button>
             <div *ngIf="isOwner">
                 <span class="tui-text_body-m"><strong>Создатель соревнования не может в нем учавствовать</strong></span>
             </div>

@@ -11,6 +11,7 @@ import {
 import {filter, map, mergeMap, switchMap} from 'rxjs';
 import {loadContestSolutions} from '../tokens/tokens.actions';
 import {ISolution} from '../../pages/contests/contest-solution/interfaces/solution.interface';
+import {showSuccessNotification} from '../router/router.actions';
 
 @Injectable()
 export class SolutionsEffects {
@@ -22,8 +23,8 @@ export class SolutionsEffects {
                     filter<ISolution>(Boolean),
                     mergeMap((solution) => [loadSolutionSuccess(solution), loadContestSolutions(contestId, solution.id)])
                 )
-            )
-        )
+            ),
+        ),
     );
 
     createSolution$ = createEffect(() =>
@@ -33,8 +34,8 @@ export class SolutionsEffects {
                 this.solutionsApiService.createSolution(solution).pipe(
                     map((solution) => createSolutionSuccess(solution))
                 )
-            )
-        )
+            ),
+        ),
     );
 
     completeSolution$ = createEffect(() =>
@@ -42,10 +43,13 @@ export class SolutionsEffects {
             ofType(completeSolution),
             switchMap(({contestId}) =>
                 this.solutionsApiService.completeSolutionByContestId(contestId).pipe(
-                    map((solution) => completeSolutionSuccess(solution))
+                    mergeMap((solution) => [
+                        completeSolutionSuccess(solution),
+                        showSuccessNotification('', 'Соревнование успешно завершено'),
+                    ])
                 )
-            )
-        )
+            ),
+        ),
     );
 
     constructor(

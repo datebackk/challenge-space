@@ -22,6 +22,18 @@ export class SolutionWelcomeComponent {
         return  this.createSolutionLoadingStatus === LoadingStatus.Loading;
     }
 
+    canStartContest(): boolean {
+        if (this.isOwner || this.isComplete) {
+            return false;
+        }
+
+        if (!this.solution) {
+            return true
+        }
+
+        return false;
+    }
+
     onStartContest(): void {
         this.startContest.emit();
     }

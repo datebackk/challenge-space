@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, map, of, switchMap} from 'rxjs';
+import {catchError, map, mergeMap, of, switchMap} from 'rxjs';
 
 import {ContestsApiService} from '../../api/contests/contests.api.service';
 import {
@@ -17,6 +17,7 @@ import {
     loadContestsSuccess,
     loadContestSuccess
 } from './contests.actions';
+import {navigateByUrl, showSuccessNotification} from '../router/router.actions';
 
 @Injectable()
 export class ContestsEffects {
@@ -61,7 +62,11 @@ export class ContestsEffects {
             ofType(createContest),
             switchMap(({contest}) =>
                 this.contestsApiService.createContest(contest).pipe(
-                    map(createdContest => createContestSuccess(createdContest)),
+                    mergeMap(createdContest => [
+                        createContestSuccess(createdContest),
+                        navigateByUrl('/'),
+                        showSuccessNotification('', 'Соревнование успешно создано'),
+                    ]),
                     catchError(() => of(createContestError())),
                 ),
             ),

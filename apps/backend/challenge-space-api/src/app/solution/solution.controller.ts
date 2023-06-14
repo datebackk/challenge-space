@@ -25,7 +25,7 @@ export class SolutionController {
       return this.solutionService.findOne(keycloackUser, params);
     }
 
-    @Get('solution/complete')
+    @Get('complete')
     completeSolution(@AuthenticatedUser() keycloackUser, @Query() params?: ISolutionQuery) {
         return this.solutionService.completeSolution(keycloackUser, params);
     }

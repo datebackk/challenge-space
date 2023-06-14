@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {IContestResults} from '../../interfaces/contest-results.interface';
 import {judge0Languages} from '../../../../shared/constants/judge0-languages.const';
 import {get} from 'lodash';
@@ -7,6 +7,7 @@ import {
 } from '../../../../shared/constants/judge0-languages-to-vscode-languages.const';
 import {ITask} from '../../../../../../../../backend/challenge-space-api/src/app/task/interfaces/task.interface';
 import {judge0SubmissionSuccessStatuses} from '../../../../shared/constants/judge0-submission-success-statuses.const';
+import {IUser} from '../../../../shared/interfaces/user.interface';
 
 @Component({
     selector: 'challenge-space-contest-results',
@@ -18,6 +19,9 @@ export class ContestResultsComponent {
     @Input() contestResults!: IContestResults | null;
     @Input() isOwner!: boolean;
     @Input() isComplete!: boolean;
+    @Input() isFinished!: boolean;
+
+    @Output() selectWinner = new EventEmitter<IUser>();
 
     activeItemIndex = 0;
     activeSubItemIndex = 0;
@@ -25,6 +29,10 @@ export class ContestResultsComponent {
     editorOptions = {theme: 'vs-dark', language: 'javascript', readOnly: true};
 
     readonly judge0Languages = judge0Languages;
+
+    onSelectWinner(user: IUser): void {
+        this.selectWinner.emit(user);
+    }
 
     getAndUpdateLanguageOptions(languageId: number): string | undefined {
         this.editorOptions = {...this.editorOptions, language: get(judge0LanguagesToVscodeLanguages, languageId)}

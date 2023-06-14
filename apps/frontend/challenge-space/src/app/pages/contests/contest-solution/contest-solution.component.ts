@@ -120,6 +120,14 @@ export class ContestSolutionComponent implements OnInit {
         return false;
     }
 
+    isFinished(contest: IContest): boolean {
+        if (isAfter(new Date(), parseISO(getISODateFromTuiDayAndTime(contest.mainSettings.interval.endDate)))) {
+            return true;
+        }
+
+        return false;
+    }
+
     onCompleteSolution(): void {
         this.store.dispatch(completeSolution(this.selectedContestId));
     }
