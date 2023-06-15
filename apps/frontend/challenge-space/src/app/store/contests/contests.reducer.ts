@@ -11,6 +11,8 @@ import {
 import {contestsAdapter, contestsInitialState, IContestsState} from './contests.state';
 import {Dictionary} from '@ngrx/entity';
 import {IContest} from '../../pages/contests/interfaces/contest.interface';
+import {getUser} from '../auth/auth.reducer';
+import {IUser} from '../../shared/interfaces/user.interface';
 
 export const CONTESTS_FEATURE = 'contests';
 
@@ -70,6 +72,13 @@ export const {selectAll: getContests, selectEntities: getContestsEntities} = con
 export const getContestById = createSelector(
     getContestsEntities,
     (entities: Dictionary<IContest>, id: number) => entities[id]
+);
+
+export const getContestsByUserId = createSelector(
+    getContests,
+    getUser,
+    // @ts-ignore
+    (contests: IContest[], user: IUser | null) => contests.filter(contest.user.id === user.id),
 );
 
 export const getCurrentContestTask = createSelector(

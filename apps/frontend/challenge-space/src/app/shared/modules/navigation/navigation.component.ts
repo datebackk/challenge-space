@@ -26,7 +26,7 @@ export class NavigationComponent {
     ) {}
 
     onMyProfile() {
-        this.router.navigate([`/users/${this.user.id}`]);
+        this.router.navigate([`/users/me`]);
     }
 
     onLogout() {

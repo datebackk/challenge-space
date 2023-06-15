@@ -58,6 +58,12 @@ export const getSolutionByUserIdAndContestId = createSelector(
     (solutions: ISolution[], user: IUser | null, contestId: number) => solutions.find(solution => solution.user.id === user?.id && solution.contest.id === contestId)
 );
 
+export const getSolutionByUserId = createSelector(
+    getSolutions,
+    getUser,
+    (solutions: ISolution[], user: IUser | null) => solutions.find(solution => solution.user.id === user?.id),
+);
+
 export const getSolutionsLoadingStatus = createSelector(
     solutionsFeatureSelector,
     (state: ISolutionsState) => state.loadingStatus,

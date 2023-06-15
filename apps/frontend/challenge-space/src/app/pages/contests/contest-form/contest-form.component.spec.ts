@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ContestFormComponent} from './contest-form.component';
 import {ContestFormModule} from './contest-form.module';
+import {provideMockStore} from '@ngrx/store/testing';
 
 describe('ContestFormComponent', () => {
     let component: ContestFormComponent;
@@ -11,6 +12,9 @@ describe('ContestFormComponent', () => {
         await TestBed.configureTestingModule({
             imports: [ContestFormModule],
             declarations: [ContestFormComponent],
+            providers: [
+                provideMockStore({})
+            ]
         }).compileComponents();
 
         fixture = TestBed.createComponent(ContestFormComponent);

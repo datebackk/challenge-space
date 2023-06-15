@@ -1,0 +1,52 @@
+<ng-container
+    *tuiLet="{
+    user: user$ | async,
+    contests: myContests$ | async,
+  } as info"
+>
+    <div class="tui-container tui-container_adaptive">
+        <div class="tui-row">
+            <div class="tui-col_md-4">
+                <tui-island
+                    size="l"
+                    textAlign="center"
+                >
+                    <div class="tui-island__content">
+                        <div class="avatar-wrapper tui-space_bottom-3">
+                            <tui-avatar
+                                [text]="info.user.username"
+                                [rounded]="true"
+                            ></tui-avatar>
+                        </div>
+                        <div>
+                            <h3
+                                class="tui-island__title"
+                            >
+                                {{info.user.username}}
+                            </h3>
+                            <p
+                                class="tui-island__paragraph"
+                            >
+                                {{info.user.email}}
+                            </p>
+                        </div>
+                    </div>
+                </tui-island>
+            </div>
+            <div class="tui-col_md-6">
+                <h2
+                    class="tui-form__header_margin-top_none"
+                >
+                    Соревнования
+                </h2>
+                <ng-container>
+                    <challenge-space-contest-card
+                        *ngFor="let contest of info.contests"
+                        [contest]="contest"
+                    >
+                    </challenge-space-contest-card>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-container>

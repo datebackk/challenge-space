@@ -8,5 +8,7 @@ import {ActivatedRoute} from '@angular/router';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersComponent {
-    constructor(private readonly route: ActivatedRoute) {}
+    constructor(
+        private readonly route: ActivatedRoute,
+    ) {}
 }

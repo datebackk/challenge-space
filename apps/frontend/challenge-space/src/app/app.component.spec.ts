@@ -12,15 +12,13 @@ describe('AppComponent', () => {
         }).compileComponents();
     });
 
-    it('should render title', () => {
+    it('should render tui-root', () => {
         const fixture = TestBed.createComponent(AppComponent);
 
         fixture.detectChanges();
         const compiled = fixture.nativeElement as HTMLElement;
 
-        expect(compiled.querySelector('h1')?.textContent).toContain(
-            'Welcome frontend-challenge-space',
-        );
+        expect(compiled.querySelector('tui-root')).toBeTruthy();
     });
 
     it(`should have as title 'frontend-challenge-space'`, () => {

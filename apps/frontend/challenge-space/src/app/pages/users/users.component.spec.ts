@@ -1,5 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {UsersComponent} from './users.component';
+import {UserModule} from '../../../../../../backend/challenge-space-api/src/app/user/user.module';
 
 describe('UsersComponent', () => {
     let component: UsersComponent;
@@ -7,6 +8,7 @@ describe('UsersComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
+            imports: [UserModule],
             declarations: [UsersComponent],
         }).compileComponents();
 

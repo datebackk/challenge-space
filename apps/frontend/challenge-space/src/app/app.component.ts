@@ -34,8 +34,4 @@ export class AppComponent implements OnInit {
 
         this.store.dispatch(loadUser());
     }
-
-    login() {
-        this.keycloak.login();
-    }
 }

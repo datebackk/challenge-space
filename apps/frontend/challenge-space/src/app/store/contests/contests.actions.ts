@@ -18,6 +18,7 @@ enum ContestsActions {
     LoadContestResults = '[Contests] load contest results',
     LoadContestResultsSuccess = '[Contests] load contest results success',
     LoadContestResultsError = '[Contests] load contest results error',
+    SelectWinner = '[Contests] select winner'
 }
 
 export const setCurrentTask = createAction(
@@ -71,3 +72,7 @@ export const loadContestResultsSuccess = createAction(
 export const loadContestResultsError = createAction(
     ContestsActions.LoadContestResultsError,
 );
+
+export const contestsSelectWinner = createAction(
+    ContestsActions.SelectWinner,
+)

@@ -42,6 +42,7 @@
             [isComplete]="isComplete(contestInfo.contest, contestInfo.solution)"
             [isOwner]="isOwner(contestInfo.contest, contestInfo.user)"
             [isFinished]="isFinished(contestInfo.contest)"
+            (selectWinner)="onSelectWinner()"
         ></challenge-space-contest-results>
         <ng-container *ngIf="contestInfo.contest && contestInfo.solution">
             <challenge-space-solution-task

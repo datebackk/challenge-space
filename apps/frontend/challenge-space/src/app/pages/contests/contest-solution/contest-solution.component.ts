@@ -7,7 +7,12 @@ import {getContestById, getContestResults, getContestsLoadingStatus} from '../..
 import {distinctUntilKeyChanged, filter, interval, map, Observable, take, takeUntil} from 'rxjs';
 import {IContest} from '../interfaces/contest.interface';
 import {LoadingStatus} from '../../../shared/enums/loading-status.enum';
-import {loadContest, loadContestResults, setCurrentTask} from '../../../store/contests/contests.actions';
+import {
+    contestsSelectWinner,
+    loadContest,
+    loadContestResults,
+    setCurrentTask
+} from '../../../store/contests/contests.actions';
 import {completeSolution, createSolution, loadSolutionByContestId} from '../../../store/solutions/solutions.actions';
 import {
     getCreateSolutionLoadingStatus,
@@ -222,5 +227,9 @@ export class ContestSolutionComponent implements OnInit {
 
             this.contestSolutionForm.updateValueAndValidity();
         });
+    }
+
+    onSelectWinner(): void {
+        this.store.dispatch(contestsSelectWinner());
     }
 }

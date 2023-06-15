@@ -9,5 +9,9 @@ import {TuiIslandModule} from '@taiga-ui/kit';
 @NgModule({
     declarations: [ContestListComponent, ContestCardComponent, ContestCardComponent],
     imports: [CommonModule, ContestListRoutingModule, TuiIslandModule],
+    exports: [
+        ContestListComponent,
+        ContestCardComponent
+    ]
 })
 export class ContestListModule {}
